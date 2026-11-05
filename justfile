@@ -13,6 +13,10 @@ logos:
     Copy-Item ..\V4JB\assets\logo.png assets\v4jb-logo.png -Force
     Copy-Item ..\F4RT\assets\logo.png assets\f4rt-logo.png -Force
 
+# PNG → multi-size ICO for the browser tab. Needs ImageMagick (magick).
+icon:
+    magick assets/icon.png -define icon:auto-resize=256,128,64,48,32,16 assets/favicon.ico
+
 # Pull website demo clips from each plugin's docs/ into assets/.
 demos:
     Copy-Item ..\TEW03\docs\DEMO-B1-P2P4P7P10.ogg assets\DEMO-B1-P2P4P7P10.ogg -Force
