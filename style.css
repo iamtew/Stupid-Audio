@@ -164,14 +164,27 @@ footer {
 }
 
 .intro h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.12em;
   margin: 0.2rem 0 1rem;
   font-size: clamp(3.5rem, 11vw, 9rem);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
+  width: fit-content;
+}
+
+.intro h1 img {
+  height: 1em;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+.intro h1 span {
   /* fit-content so the gradient spans the text, not the whole row;
      bottom padding keeps descenders inside the clipped background. */
-  width: fit-content;
   padding-bottom: 0.08em;
   /* Text gradient runs through all four plugin colors. */
   background: linear-gradient(90deg, #e8c200, #d94214, #ff00ff, #6fc3b8, #02f53a);
