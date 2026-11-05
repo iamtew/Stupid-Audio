@@ -85,11 +85,20 @@ header {
 }
 
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--cream);
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
+}
+
+.brand img {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: block;
 }
 
 nav {

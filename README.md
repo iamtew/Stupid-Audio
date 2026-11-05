@@ -10,4 +10,4 @@ The animated backdrop (`fx.js`) loads a pinned [PixiJS](https://pixijs.com/) bui
 
 Preview locally with `python -m http.server`.
 
-After a plugin logo changes in its checkout, run `just logos` here to copy the PNGs into `assets/`. After a plugin-site demo clip changes, run `just demos`.
+After a plugin logo changes in its checkout, run `just logos` here to copy the PNGs into `assets/`. After a plugin-site demo clip changes, run `just demos`. After `assets/icon.png` changes, run `just icon` to rebuild `assets/favicon.ico`.
