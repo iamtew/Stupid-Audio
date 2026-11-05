@@ -176,9 +176,7 @@ footer {
 }
 
 .intro h1 img {
-  /* 1em is the font box; 1cap is the capital-letter height. */
-  height: 0.7em;
-  height: 1cap;
+  height: 1em;
   width: auto;
   display: block;
   flex-shrink: 0;
