@@ -1,0 +1,3 @@
+# Same patterns as .gitignore.
+# Affinity Studio lock files
+assets/*.af~lock~
