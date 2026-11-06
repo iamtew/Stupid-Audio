@@ -2,6 +2,9 @@
 
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
+# Plugin checkouts: ~/src (HOME, else USERPROFILE). No username in this file.
+src := env_var_or_default("HOME", env_var("USERPROFILE")) + "\\src"
+
 default:
     @just --list
 
@@ -16,6 +19,14 @@ logos:
 # PNG → multi-size ICO for the browser tab. Needs ImageMagick (magick).
 icon:
     magick assets/icon.png -define icon:auto-resize=256,128,64,48,32,16 assets/favicon.ico
+
+# Pull each plugin's main docs shot into assets/. Sources live under ~/src.
+screenshots:
+    Copy-Item '{{src}}\TEW03\docs\screenshot1.png' assets\tew03-shot.png -Force
+    Copy-Item '{{src}}\K1X\docs\screenshot1.png' assets\k1x-shot.png -Force
+    Copy-Item '{{src}}\5HKR\docs\main.png' assets\5hkr-shot.png -Force
+    Copy-Item '{{src}}\V4JB\docs\edit.png' assets\v4jb-shot.png -Force
+    Copy-Item '{{src}}\F4RT\docs\play.png' assets\f4rt-shot.png -Force
 
 # Pull website demo clips from each plugin's docs/ into assets/.
 demos:
