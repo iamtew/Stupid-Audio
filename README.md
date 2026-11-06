@@ -5,7 +5,7 @@
 <h1 align="center">Stupid Audio</h1>
 
 <p align="center">
-  Free, open-source VST3 and standalone instruments from Stupid Systems.<br>
+  Free, open-source VST3 and standalone instruments from Stupid Audio.<br>
   <a href="https://iamtew.github.io/audio-plugins/">iamtew.github.io/audio-plugins</a>
 </p>
 
