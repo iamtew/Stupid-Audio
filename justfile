@@ -28,6 +28,10 @@ screenshots:
     Copy-Item '{{src}}\V4JB\docs\edit.png' assets\v4jb-shot.png -Force
     Copy-Item '{{src}}\F4RT\docs\play.png' assets\f4rt-shot.png -Force
 
+# Move generated OG PNGs into each site's Pages tree. See og/justfile.
+og-install:
+    just -f og/justfile og-install
+
 # Pull website demo clips from each plugin's docs/ into assets/.
 demos:
     Copy-Item ..\TEW03\docs\DEMO-B1-P2P4P7P10.ogg assets\DEMO-B1-P2P4P7P10.ogg -Force
