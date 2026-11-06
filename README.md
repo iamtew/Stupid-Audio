@@ -34,7 +34,7 @@ Steal them. Twist them. This generation’s must-haves!
     <td align="center" width="20%">
       <a href="https://iamtew.github.io/5HKR/"><img src="assets/5hkr-logo.png" alt="5HKR" width="96" height="96"></a><br>
       <strong>5HKR</strong><br>
-      Shaker. Perc groove box.<br>
+      Shaker. Percussion overlay.<br>
       <a href="https://iamtew.github.io/5HKR/">Site</a> ·
       <a href="https://github.com/iamtew/5HKR">Repo</a>
     </td>
@@ -79,7 +79,7 @@ A kick drum (909 default, plus 808 / 707 / Tight / Hard). One job. It thumps.
 
 <img src="assets/5hkr-logo.png" alt="5HKR" width="96" height="96">
 
-Shaker. Perc groove box.
+Shaker. Percussion overlay.
 
 [Site](https://iamtew.github.io/5HKR/) · [Repo](https://github.com/iamtew/5HKR) · [Download](https://github.com/iamtew/5HKR/releases/latest)
 
