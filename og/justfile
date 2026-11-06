@@ -1,0 +1,70 @@
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+# Capture index.html?plugin=NAME. Default TEW03 while we iterate.
+og plugin="TEW03":
+    just _shot "index.html?plugin={{ plugin }}" "ogimage-{{ plugin }}.png"
+
+# Pack OG: index.html with no query.
+og-sa:
+    just _shot "index.html" "ogimage-stupid-audio.png"
+
+# Every key in sources.json. Do not run until the composition is settled.
+og-all:
+    #!powershell.exe -NoLogo
+    $dir = '{{ justfile_directory() }}'
+    Set-Location $dir
+    $json = Get-Content -Raw (Join-Path $dir 'sources.json') | ConvertFrom-Json
+    foreach ($p in $json.PSObject.Properties.Name) {
+      just _shot "index.html?plugin=$p" "ogimage-$p.png"
+    }
+
+# Capture a local URL path to a PNG via headless Edge.
+# Shebang: one script so the python PID survives until finally.
+# Port 18765: 8765 is already taken on this machine.
+_shot path outname:
+    #!powershell.exe -NoLogo
+    $dir = '{{ justfile_directory() }}'
+    Set-Location $dir
+    $out = Join-Path $dir '{{ outname }}'
+    $port = 18765
+    $url = "http://127.0.0.1:$port/{{ path }}"
+    $py = (python -c "import sys; print(sys.executable)").Trim()
+    $stdout = Join-Path $env:TEMP 'sa-og-http.out'
+    $stderr = Join-Path $env:TEMP 'sa-og-http.err'
+    $p = Start-Process $py -ArgumentList '-m','http.server',"$port",'--bind','127.0.0.1' -WorkingDirectory $dir -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    try {
+      $ok = $false
+      foreach ($i in 1..25) {
+        try {
+          if ((Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 1).StatusCode -eq 200) { $ok = $true; break }
+        } catch { Start-Sleep -Milliseconds 200 }
+      }
+      if (-not $ok) { throw "http.server did not come up on $url" }
+      $edge = @(
+        "${env:ProgramFiles}\Microsoft\Edge\Application\msedge.exe",
+        "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe"
+      ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+      if (-not $edge) { throw "msedge.exe not found" }
+      if (Test-Path $out) { Remove-Item $out -Force }
+      $edgeOut = Join-Path $env:TEMP 'sa-og-edge.out'
+      $edgeErr = Join-Path $env:TEMP 'sa-og-edge.err'
+      Remove-Item $edgeOut, $edgeErr -ErrorAction SilentlyContinue
+      # msedge.exe returns before the headless child finishes; wait for the PNG.
+      Start-Process $edge -ArgumentList '--headless=new','--disable-gpu','--disable-logging','--hide-scrollbars','--window-size=1200,630','--virtual-time-budget=8000','--run-all-compositor-stages-before-draw',"--screenshot=$out",$url -PassThru -WindowStyle Hidden -RedirectStandardOutput $edgeOut -RedirectStandardError $edgeErr | Out-Null
+      foreach ($i in 1..50) {
+        if (Test-Path $out) { break }
+        Start-Sleep -Milliseconds 250
+      }
+    } finally {
+      cmd /c "taskkill /PID $($p.Id) /T /F >nul 2>&1"
+    }
+    if (-not (Test-Path $out)) { throw "{{ outname }} was not written" }
+    Write-Host "Generated $out"
+
+# Serve index.html for live design. Open with or without ?plugin=TEW03. Meat Bag stops this.
+og-serve:
+    python -m http.server 18765 --bind 127.0.0.1
+
+# Drop generated OG PNGs.
+clean:
+    Remove-Item ogimage-*.png -ErrorAction SilentlyContinue

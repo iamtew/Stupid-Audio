@@ -1,0 +1,38 @@
+{
+    "TEW03": {
+        "style": "https://iamtew.github.io/TEW03/style.css",
+        "background": "https://iamtew.github.io/TEW03/fx.js",
+        "logo": "https://iamtew.github.io/TEW03/icon.png",
+        "screenshot": "https://iamtew.github.io/TEW03/screenshot1.png"
+    },
+    "K1X": {
+        "style": "https://iamtew.github.io/K1X/style.css",
+        "background": "https://iamtew.github.io/K1X/fx.js",
+        "logo": "https://iamtew.github.io/K1X/logo.png",
+        "screenshot": "https://iamtew.github.io/K1X/screenshot1.png"
+    },
+    "SNR3": {
+        "style": "https://iamtew.github.io/SNR3/style.css",
+        "background": "https://iamtew.github.io/SNR3/fx.js",
+        "logo": "https://iamtew.github.io/SNR3/logo.png",
+        "screenshot": "https://iamtew.github.io/SNR3/main.png"
+    },
+    "5HKR": {
+        "style": "https://iamtew.github.io/5HKR/style.css",
+        "background": "https://iamtew.github.io/5HKR/fx.js",
+        "logo": "https://iamtew.github.io/5HKR/logo.png",
+        "screenshot": "https://iamtew.github.io/5HKR/main.png"
+    },
+    "V4JB": {
+        "style": "https://iamtew.github.io/V4JB/style.css",
+        "background": "https://iamtew.github.io/V4JB/fx.js",
+        "logo": "https://iamtew.github.io/V4JB/logo.png",
+        "screenshot": "https://iamtew.github.io/V4JB/edit.png"
+    },   
+    "F4RT": {
+        "style": "https://iamtew.github.io/F4RT/style.css",
+        "background": "https://iamtew.github.io/F4RT/fx.js",
+        "logo": "https://iamtew.github.io/F4RT/logo.png",
+        "screenshot": "https://iamtew.github.io/F4RT/play.png"
+    }          
+}
