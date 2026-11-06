@@ -10,7 +10,7 @@ default:
 
 # Pull logos from ../TEW03 .. ../F4RT into assets/.
 logos:
-    Copy-Item ..\TEW03\assets\logo.png assets\tew03-icon.png -Force
+    Copy-Item ..\TEW03\assets\logo.png assets\tew03-logo.png -Force
     Copy-Item ..\K1X\assets\logo.png assets\k1x-logo.png -Force
     Copy-Item ..\5HKR\assets\logo.png assets\5hkr-logo.png -Force
     Copy-Item ..\V4JB\assets\logo.png assets\v4jb-logo.png -Force

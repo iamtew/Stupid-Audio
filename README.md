@@ -18,7 +18,7 @@ Steal them. Twist them. This generation’s must-haves!
 <table>
   <tr>
     <td align="center" width="20%">
-      <a href="https://iamtew.github.io/TEW03/"><img src="assets/tew03-icon.png" alt="TEW03" width="96" height="96"></a><br>
+      <a href="https://iamtew.github.io/TEW03/"><img src="assets/tew03-logo.png" alt="TEW03" width="96" height="96"></a><br>
       <strong>TEW03</strong><br>
       Monophonic acid synth. Classic 303 squelch plus extra nastiness.<br>
       <a href="https://iamtew.github.io/TEW03/">Site</a> ·
@@ -57,7 +57,7 @@ Steal them. Twist them. This generation’s must-haves!
 
 ## TEW03
 
-<img src="assets/tew03-icon.png" alt="TEW03" width="96" height="96">
+<img src="assets/tew03-logo.png" alt="TEW03" width="96" height="96">
 
 A monophonic acid synth. Classic 303 squelch (saw/square, resonant filter, accent, slide, drive) plus extra nastiness.
 
