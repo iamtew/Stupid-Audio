@@ -16,7 +16,7 @@
   <canvas id="fx" aria-hidden="true"></canvas>
   <div id="stack">
     <img id="logo" alt="">
-    <h1 id="name"></h1>
+    <h1 id="name"><span class="stroke" aria-hidden="true"></span><span class="fill"></span></h1>
   </div>
   <div id="frame"><img id="shot" alt=""></div>
   <script type="module">
@@ -73,13 +73,23 @@
         bottom: 28px;
         margin: 0;
         transform: translateX(-50%);
-        z-index: 1;
+        z-index: 3;
         font-size: 108px;
         font-weight: 700;
         line-height: 1;
         white-space: nowrap;
-        -webkit-text-stroke: 2px #000;
-        paint-order: stroke fill;
+      }
+      #name .stroke,
+      #name .fill { display: block; }
+      #name .stroke {
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #000;
+        -webkit-text-stroke: 10px #000;
+      }
+      #name .fill {
+        position: relative;
         filter:
           drop-shadow(0 0 4px #000)
           drop-shadow(0 0 18px color-mix(in srgb, var(--accent) 60%, transparent));
@@ -110,7 +120,8 @@
         bottom: auto;
       }
       body.pack #logo { width: 280px; }
-      body.pack #name {
+      body.pack #name .stroke { display: none; }
+      body.pack #name .fill {
         color: transparent;
         background: linear-gradient(90deg, #e8c200, #d94214, #ff00ff, #6fc3b8, #02f53a);
         -webkit-background-clip: text;
@@ -250,11 +261,17 @@
     const logo = document.getElementById('logo');
     const shot = document.getElementById('shot');
     const nameEl = document.getElementById('name');
+    const nameStroke = nameEl.querySelector('.stroke');
+    const nameFill = nameEl.querySelector('.fill');
+    function setName(text) {
+      nameStroke.textContent = text;
+      nameFill.textContent = text;
+    }
 
     if (!plugin) {
       document.body.classList.add('pack');
       document.documentElement.style.setProperty('--accent', '#f4ead0');
-      nameEl.textContent = 'Stupid Audio';
+      setName('Stupid Audio');
       logo.src = 'https://audio.stupid.systems/assets/icon.png';
       try { await packScene(); }
       catch (err) { console.info('fx: pack backdrop disabled:', err?.message || err); }
@@ -274,7 +291,7 @@
       });
       document.head.appendChild(overlay);
 
-      nameEl.textContent = plugin;
+      setName(plugin);
       logo.src = src.logo;
       shot.src = src.screenshot;
       document.documentElement.style.setProperty('--accent', getComputedStyle(nameEl).color);
