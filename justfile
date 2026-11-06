@@ -8,9 +8,9 @@ src := env_var_or_default("HOME", env_var("USERPROFILE")) + "\\src"
 default:
     @just --list
 
-# Pull logos from ../TEW03 .. ../F4RT into assets/. TEW03 ships icon.png; the rest ship logo.png.
+# Pull logos from ../TEW03 .. ../F4RT into assets/.
 logos:
-    Copy-Item ..\TEW03\assets\icon.png assets\tew03-icon.png -Force
+    Copy-Item ..\TEW03\assets\logo.png assets\tew03-icon.png -Force
     Copy-Item ..\K1X\assets\logo.png assets\k1x-logo.png -Force
     Copy-Item ..\5HKR\assets\logo.png assets\5hkr-logo.png -Force
     Copy-Item ..\V4JB\assets\logo.png assets\v4jb-logo.png -Force
