@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#0b0b0f">
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" href="assets/icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=16">
+  <link rel="stylesheet" href="style.css?v=17">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="fx.js?v=2"></script>
 </head>
@@ -221,7 +221,7 @@
           Windows
         </a>
         <a class="download os" data-os="linux" hidden>
-          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
+          <svg class="icon tux" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
           Linux
         </a>
         <a class="download os" data-os="mac" hidden>
@@ -238,7 +238,7 @@
           Windows
         </a>
         <a class="download os" data-os="linux" hidden>
-          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
+          <svg class="icon tux" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
           Linux
         </a>
         <a class="download os" data-os="mac" hidden>
@@ -252,7 +252,7 @@
 
   <script>
     // External sprite refs fail in some browsers. Inline the sheet, then point <use> at the local id.
-    fetch("assets/icons.svg?v=3")
+    fetch("assets/icons.svg?v=4")
       .then(function (res) { return res.ok ? res.text() : ""; })
       .then(function (text) {
         if (!text) return;
