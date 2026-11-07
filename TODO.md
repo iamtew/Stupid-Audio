@@ -13,6 +13,7 @@ Copy GH action and update docs website with new JS, copy from `SNR3` to other pl
 ## Add `SNR3` to Stupid Audio website
 Just like the other ones. 
 Put it in the list after `K1X`, because it makes sense in that order.
+NOTE: SNR3 needs to reach higher maturity first!
 
 ## Stupid Audio website direct download buttons
 Implement the Download Overlay from plugin websites onto main Stupid Audio website also.
