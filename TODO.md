@@ -16,6 +16,7 @@ Put it in the list after `K1X`, because it makes sense in that order.
 NOTE: SNR3 needs to reach higher maturity first!
 
 ## Stupid Audio website direct download buttons
+DONE: Plugin Download opens the same overlay as the plugin sites, filled from that plugin's releases.json.
 Implement the Download Overlay from plugin websites onto main Stupid Audio website also.
 
 ## Improve look and function of Manuals

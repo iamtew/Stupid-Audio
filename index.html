@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#0b0b0f">
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" href="assets/icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=12">
+  <link rel="stylesheet" href="style.css?v=13">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="fx.js?v=2"></script>
 </head>
@@ -198,6 +198,58 @@
   <footer>
     <p>Free Open Source. Stupid Audio.</p>
   </footer>
+
+  <dialog id="dl" class="dl-dialog" aria-labelledby="dl-title">
+    <button type="button" class="dl-close" data-dl-close aria-label="Close">
+      <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#close"></use></svg>
+    </button>
+    <h2 id="dl-title">Download</h2>
+    <div class="dl-kind">
+      <p>The Windows installer is the easy path. It can put the VST3, the standalone app, or both on the machine, and it adds a Start menu shortcut for the app.</p>
+      <div class="dl-row" data-kind="installer" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#windows"></use></svg>
+          Windows installer
+        </a>
+      </div>
+    </div>
+    <div class="dl-kind">
+      <p>The VST3 zip is just the plugin. Drop it where your DAW looks for VST3s. Mac builds are ad-hoc signed, so Gatekeeper will sulk until you right-click Open the first time.</p>
+      <div class="dl-row" data-kind="vst3" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#windows"></use></svg>
+          Windows
+        </a>
+        <a class="download os" data-os="linux" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
+          Linux
+        </a>
+        <a class="download os" data-os="mac" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#apple"></use></svg>
+          macOS
+        </a>
+      </div>
+    </div>
+    <div class="dl-kind">
+      <p>The standalone zip is the app, no DAW required. Same Gatekeeper story on Mac. Linux wants the usual system ALSA, FreeType, fontconfig, and X11 libraries.</p>
+      <div class="dl-row" data-kind="standalone" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#windows"></use></svg>
+          Windows
+        </a>
+        <a class="download os" data-os="linux" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#linux"></use></svg>
+          Linux
+        </a>
+        <a class="download os" data-os="mac" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#apple"></use></svg>
+          macOS
+        </a>
+      </div>
+    </div>
+    <img class="dl-logo" alt="" width="192" height="192">
+  </dialog>
+
   <script>
     // External sprite refs fail in some browsers. Inline the sheet, then point <use> at the local id.
     fetch("assets/icons.svg")
@@ -217,6 +269,89 @@
           if (hashAt > 0) node.setAttribute("href", href.slice(hashAt));
         });
       });
+
+    // Same names as the plugin sites. Bare *-win-x64.msi is an installer too.
+    var FILE = /-(win|linux|mac)-[^-]+-(installer|vst3|standalone)(?:\.zip|\.msi)$/i;
+    var MSI = /-(win|linux|mac)-[^-]+\.msi$/i;
+    var dialog = document.getElementById("dl");
+    var cache = Object.create(null);
+    var opening = 0;
+
+    function parseAsset(name) {
+      var named = name.match(FILE);
+      if (named) return { os: named[1].toLowerCase(), kind: named[2].toLowerCase() };
+      var msi = name.match(MSI);
+      if (msi) return { os: msi[1].toLowerCase(), kind: "installer" };
+      return null;
+    }
+
+    function resetLinks() {
+      dialog.querySelectorAll("a[data-os]").forEach(function (a) {
+        a.hidden = true;
+        a.removeAttribute("href");
+      });
+      dialog.querySelectorAll(".dl-row").forEach(function (row) { row.hidden = true; });
+    }
+
+    function fill(repo, data) {
+      var base = "https://github.com/iamtew/" + repo + "/releases/download/" + data.tag + "/";
+      data.files.forEach(function (name) {
+        var parsed = parseAsset(name);
+        if (!parsed) return;
+        var link = dialog.querySelector('[data-kind="' + parsed.kind + '"] a[data-os="' + parsed.os + '"]');
+        if (!link) return;
+        link.href = base + encodeURIComponent(name);
+        link.hidden = false;
+      });
+      dialog.querySelectorAll(".dl-row").forEach(function (row) {
+        if (row.querySelector("a[href]")) row.hidden = false;
+      });
+    }
+
+    function loadRelease(repo) {
+      if (cache[repo]) return Promise.resolve(cache[repo]);
+      return fetch("https://iamtew.github.io/" + repo + "/releases.json")
+        .then(function (res) { if (!res.ok) throw new Error("http"); return res.json(); })
+        .then(function (data) {
+          if (!data || !data.tag || !Array.isArray(data.files)) throw new Error("shape");
+          cache[repo] = data;
+          return data;
+        });
+    }
+
+    if (dialog) {
+      dialog.querySelectorAll("[data-dl-close]").forEach(function (btn) {
+        btn.addEventListener("click", function () { dialog.close(); });
+      });
+      dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) dialog.close();
+      });
+
+      document.querySelectorAll(".actions .download").forEach(function (btn) {
+        btn.addEventListener("click", function (event) {
+          var article = btn.closest(".plugin");
+          var repo = (btn.getAttribute("href") || "").match(/github\.com\/iamtew\/([^/]+)/);
+          if (!article || !repo) return;
+          event.preventDefault();
+          var token = ++opening;
+          var fallback = btn.href;
+          var name = repo[1];
+          loadRelease(name).then(function (data) {
+            if (token !== opening) return;
+            resetLinks();
+            dialog.style.setProperty("--accent", article.style.getPropertyValue("--accent").trim());
+            dialog.querySelector("#dl-title").textContent = "Download " + article.querySelector("h2").textContent;
+            dialog.querySelector(".dl-logo").src = article.querySelector(".logo").src;
+            fill(name, data);
+            if (!dialog.querySelector("a[data-os][href]")) throw new Error("empty");
+            dialog.showModal();
+          }).catch(function () {
+            if (token !== opening) return;
+            window.location.href = fallback;
+          });
+        });
+      });
+    }
   </script>
 </body>
 </html>
