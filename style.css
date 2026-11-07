@@ -318,6 +318,12 @@ footer {
   pointer-events: none;
 }
 
+/* Tux is a filled silhouette. The other icons are strokes. */
+.icon:has(use[href$="#linux"]) {
+  fill: currentColor;
+  stroke: none;
+}
+
 .actions a {
   display: inline-flex;
   align-items: center;
