@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#0b0b0f">
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" href="assets/icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="stylesheet" href="style.css?v=18">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="fx.js?v=2"></script>
 </head>
@@ -345,6 +345,7 @@
             if (token !== opening) return;
             resetLinks();
             dialog.style.setProperty("--accent", article.style.getPropertyValue("--accent").trim());
+            dialog.style.setProperty("--accent2", article.style.getPropertyValue("--accent2").trim());
             dialog.querySelector("#dl-title").textContent = "Download " + article.querySelector("h2").textContent;
             dialog.querySelector(".dl-logo").src = article.querySelector(".logo").src;
             fill(name, data);
