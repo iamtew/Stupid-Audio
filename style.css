@@ -109,8 +109,8 @@ header {
 }
 
 .brand img {
-  width: 1.08em;
-  height: 1.08em;
+  width: 1.24em;
+  height: 1.24em;
   margin: 0 -0.08em;
   display: block;
 }
@@ -202,7 +202,7 @@ footer {
 }
 
 .intro h1 img {
-  height: 0.8em;
+  height: 0.92em;
   width: auto;
   margin: 0 -0.06em;
   display: block;
