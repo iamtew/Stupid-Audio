@@ -13,8 +13,8 @@
   --cream: #f4ead0;
   --metal: #c8d6e5;
   --page-bg: var(--ink);
-  /* Sampled from assets/icon.png fill: left cyan, right magenta. */
-  --brand-grad: linear-gradient(90deg, #00e0e0, #ff05ff);
+  /* Logo fill: cyan, dark mid band, magenta. */
+  --brand-grad: linear-gradient(90deg, #00e0e0, #333333 42%, #333333 58%, #ff05ff);
 }
 
 * { box-sizing: border-box; }
@@ -89,7 +89,7 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.04em;
+  gap: 0.35em;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -101,9 +101,16 @@ header {
   color: transparent;
 }
 
+.brand .audio,
+.intro .audio {
+  display: flex;
+  align-items: center;
+  gap: 0.02em;
+}
+
 .brand img {
-  width: 1.35em;
-  height: 1.35em;
+  width: 1.08em;
+  height: 1.08em;
   margin: 0 -0.08em;
   display: block;
 }
@@ -164,22 +171,38 @@ footer {
 .intro h1 {
   display: flex;
   align-items: center;
-  gap: 0.02em;
+  gap: 0.35em;
   margin: 0.2rem 0 1rem;
   font-size: clamp(3.5rem, 11vw, 9rem);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
   width: fit-content;
-  padding-bottom: 0.08em;
+  padding: 24px 24px 0.08em;
   background: var(--brand-grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+.intro h1 [data-text] {
+  position: relative;
+}
+
+.intro h1 [data-text]::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  color: #000;
+  -webkit-text-fill-color: #000;
+  pointer-events: none;
+  filter: url(#word-outline);
+}
+
 .intro h1 img {
-  height: 1em;
+  height: 0.8em;
   width: auto;
   margin: 0 -0.06em;
   display: block;

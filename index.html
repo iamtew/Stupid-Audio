@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#0b0b0f">
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" href="assets/icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="stylesheet" href="style.css?v=24">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="fx.js?v=2"></script>
 </head>
@@ -26,12 +26,24 @@
 
   <!-- One shared WebGL canvas behind everything; decorative only. -->
   <canvas id="fx" aria-hidden="true"></canvas>
+  <!-- Ring only: 10px empty, then 10px #e2e2e2. Needs opaque source alpha. -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="word-outline" x="-0.25" y="-0.7" width="1.5" height="2.4" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="20" result="far"/>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="10" result="near"/>
+      <feComposite in="far" in2="near" operator="out" result="ring"/>
+      <feFlood flood-color="#e2e2e2" result="paint"/>
+      <feComposite in="paint" in2="ring" operator="in"/>
+    </filter>
+  </svg>
 
   <header>
     <a class="brand" href="#top" aria-label="Stupid Audio">
       <span>Stupid</span>
-      <img src="assets/icon.png" alt="" width="32" height="32">
-      <span>udio</span>
+      <span class="audio">
+        <img src="assets/icon.png" alt="" width="32" height="32">
+        <span>udio</span>
+      </span>
     </a>
     <nav aria-label="Plugins">
       <a href="#tew03" style="--accent: #e8c200;">TEW03</a>
@@ -45,9 +57,11 @@
   <main id="main">
     <section class="intro" id="top" data-scene="top">
       <h1 aria-label="Stupid Audio">
-        <span>Stupid</span>
-        <img src="assets/icon.png" alt="" width="144" height="144">
-        <span>udio</span>
+        <span data-text="Stupid">Stupid</span>
+        <span class="audio">
+          <img src="assets/icon.png" alt="" width="144" height="144">
+          <span data-text="udio">udio</span>
+        </span>
       </h1>
       <p class="lede">
         You already have the ideas. These five free, open-source instruments are here so those ideas stop dying in the demo folder.
