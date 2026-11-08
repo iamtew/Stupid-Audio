@@ -13,8 +13,6 @@
   --cream: #f4ead0;
   --metal: #c8d6e5;
   --page-bg: var(--ink);
-  /* Logo fill: cyan, dark mid band, magenta. */
-  --brand-grad: linear-gradient(90deg, #00e0e0, #333333 42%, #333333 58%, #ff05ff);
 }
 
 * { box-sizing: border-box; }
@@ -95,10 +93,6 @@ header {
   text-transform: uppercase;
   text-decoration: none;
   width: fit-content;
-  background: var(--brand-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .brand .audio,
@@ -176,13 +170,9 @@ footer {
   font-size: clamp(3.5rem, 11vw, 9rem);
   font-weight: 900;
   line-height: 0.95;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   width: fit-content;
   padding: 8px 8px 0.08em;
-  background: var(--brand-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .intro h1 [data-text] {
@@ -194,11 +184,29 @@ footer {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: -1;
+  z-index: 0;
   color: #000;
   -webkit-text-fill-color: #000;
   pointer-events: none;
   filter: url(#word-outline);
+}
+
+.fill-stupid,
+.fill-udio {
+  position: relative;
+  z-index: 1;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.fill-stupid {
+  background-image: linear-gradient(90deg, #000000, #00ffff);
+}
+
+.fill-udio {
+  background-image: linear-gradient(90deg, #ff00ff, #000000);
 }
 
 .intro h1 img {
