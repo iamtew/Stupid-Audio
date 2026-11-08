@@ -13,6 +13,8 @@
   --cream: #f4ead0;
   --metal: #c8d6e5;
   --page-bg: var(--ink);
+  /* Sampled from assets/icon.png fill: left cyan, right magenta. */
+  --brand-grad: linear-gradient(90deg, #00e0e0, #ff05ff);
 }
 
 * { box-sizing: border-box; }
@@ -87,17 +89,22 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--cream);
+  gap: 0.04em;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
+  width: fit-content;
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .brand img {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.35em;
+  height: 1.35em;
+  margin: 0 -0.08em;
   display: block;
 }
 
@@ -157,31 +164,26 @@ footer {
 .intro h1 {
   display: flex;
   align-items: center;
-  gap: 0.12em;
+  gap: 0.02em;
   margin: 0.2rem 0 1rem;
   font-size: clamp(3.5rem, 11vw, 9rem);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
   width: fit-content;
+  padding-bottom: 0.08em;
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .intro h1 img {
   height: 1em;
   width: auto;
+  margin: 0 -0.06em;
   display: block;
   flex-shrink: 0;
-}
-
-.intro h1 span {
-  /* fit-content so the gradient spans the text, not the whole row;
-     bottom padding keeps descenders inside the clipped background. */
-  padding-bottom: 0.08em;
-  /* Text gradient runs through all four plugin colors. */
-  background: linear-gradient(90deg, #e8c200, #d94214, #ff00ff, #6fc3b8, #02f53a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .lede {
