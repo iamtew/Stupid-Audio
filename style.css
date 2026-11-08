@@ -176,19 +176,32 @@ footer {
 }
 
 .intro h1 [data-text] {
+  /* Logo PNG ~50px black + ~50px #e0e0e0 on 2160px, drawn at 0.92em.
+     text-stroke is centered, so the width is 2× the outside band. */
+  --gap: 0.022em;
+  --silver: 0.022em;
   position: relative;
 }
 
-.intro h1 [data-text]::before {
+.intro h1 [data-text]::before,
+.intro h1 [data-text]::after {
   content: attr(data-text);
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 0;
-  color: #000;
-  -webkit-text-fill-color: #000;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   pointer-events: none;
-  filter: url(#word-outline);
+}
+
+.intro h1 [data-text]::before {
+  z-index: 0;
+  -webkit-text-stroke: calc(2 * (var(--gap) + var(--silver))) #e0e0e0;
+}
+
+.intro h1 [data-text]::after {
+  z-index: 0;
+  -webkit-text-stroke: calc(2 * var(--gap)) #000;
 }
 
 .fill-stupid,

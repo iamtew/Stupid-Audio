@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#0b0b0f">
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" href="assets/icon.png" type="image/png">
-  <link rel="stylesheet" href="style.css?v=27">
+  <link rel="stylesheet" href="style.css?v=30">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="fx.js?v=2"></script>
 </head>
@@ -26,16 +26,6 @@
 
   <!-- One shared WebGL canvas behind everything; decorative only. -->
   <canvas id="fx" aria-hidden="true"></canvas>
-  <!-- Ring only: 3px empty, then 3px #e2e2e2. Needs opaque source alpha. -->
-  <svg width="0" height="0" aria-hidden="true" focusable="false">
-    <filter id="word-outline" x="-0.25" y="-0.7" width="1.5" height="2.4" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="6" result="far"/>
-      <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="near"/>
-      <feComposite in="far" in2="near" operator="out" result="ring"/>
-      <feFlood flood-color="#e2e2e2" result="paint"/>
-      <feComposite in="paint" in2="ring" operator="in"/>
-    </filter>
-  </svg>
 
   <header>
     <a class="brand" href="#top" aria-label="Stupid Audio">
