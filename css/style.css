@@ -87,26 +87,25 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.35em;
-  font-weight: 800;
+  gap: 0.4em;
+  font-family: Beyonders, system-ui, sans-serif;
+  font-weight: 400;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   text-decoration: none;
   width: fit-content;
 }
 
-.brand .audio,
-.intro .audio {
+.wordmark {
   display: flex;
-  align-items: center;
-  gap: 0.02em;
+  align-items: baseline;
+  gap: 0.22em;
 }
 
 .brand img {
-  width: 1.24em;
-  height: 1.24em;
-  margin: 0 -0.08em;
+  width: 1.5em;
+  height: 1.5em;
   display: block;
+  flex-shrink: 0;
 }
 
 nav {
@@ -118,7 +117,8 @@ nav {
 nav a {
   position: relative;
   color: var(--metal);
-  font-weight: 700;
+  font-family: Beyonders, system-ui, sans-serif;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-decoration: none;
   transition: color 0.3s;
@@ -165,18 +165,19 @@ footer {
 .intro h1 {
   display: flex;
   align-items: center;
-  gap: 0.35em;
+  gap: 0.4em;
   margin: 0.2rem 0 1rem;
+  font-family: Beyonders, system-ui, sans-serif;
   font-size: clamp(3.5rem, 11vw, 9rem);
-  font-weight: 900;
-  line-height: 0.95;
+  font-weight: 400;
+  line-height: 1.1;
   letter-spacing: 0;
   width: fit-content;
   padding: 8px 8px 0.08em;
 }
 
 .intro h1 [data-text] {
-  /* Logo PNG ~50px black + ~50px #e0e0e0 on 2160px, drawn at 0.92em.
+  /* Logo PNG ~50px black + ~50px #e0e0e0 on 2160px, drawn at 1.15em.
      text-stroke is centered, so the width is 2× the outside band. */
   --gap: 0.022em;
   --silver: 0.022em;
@@ -223,9 +224,8 @@ footer {
 }
 
 .intro h1 img {
-  height: 0.92em;
+  height: 1.15em;
   width: auto;
-  margin: 0 -0.06em;
   display: block;
   flex-shrink: 0;
 }
@@ -257,7 +257,8 @@ footer {
   border-radius: 1rem;
   background: color-mix(in srgb, var(--accent) 8%, #0b0b0fcc);
   color: var(--accent);
-  font-weight: 800;
+  font-family: Beyonders, system-ui, sans-serif;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -321,10 +322,11 @@ footer {
 .plugin h2 {
   margin: 0;
   min-width: 0;
+  font-family: Beyonders, system-ui, sans-serif;
   font-size: clamp(3.5rem, 10vw, 7.5rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
   width: fit-content;
   max-width: 100%;
   white-space: nowrap;
