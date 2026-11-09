@@ -88,11 +88,25 @@ header {
   display: flex;
   align-items: center;
   gap: 0.4em;
-  font-family: Beyonders, system-ui, sans-serif;
-  font-weight: 400;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-decoration: none;
   width: fit-content;
+}
+
+.brand .wordmark > [data-text] {
+  position: relative;
+}
+
+.brand .wordmark > [data-text]::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px #e0e0e0;
+  pointer-events: none;
 }
 
 .wordmark {
@@ -117,8 +131,7 @@ nav {
 nav a {
   position: relative;
   color: var(--metal);
-  font-family: Beyonders, system-ui, sans-serif;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-decoration: none;
   transition: color 0.3s;
@@ -167,10 +180,9 @@ footer {
   align-items: center;
   gap: 0.4em;
   margin: 0.2rem 0 1rem;
-  font-family: Beyonders, system-ui, sans-serif;
-  font-size: clamp(1.35rem, 4vw, 3.25rem);
-  font-weight: 400;
-  line-height: 1.1;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 0.95;
   letter-spacing: 0;
   width: fit-content;
   max-width: 100%;
@@ -225,7 +237,8 @@ footer {
 }
 
 .intro h1 img {
-  height: 1.15em;
+  /* Sized off the old 9rem wordmark (1.15em), so it stays large when the type shrinks. */
+  height: clamp(4rem, 12.65vw, 10.35rem);
   width: auto;
   display: block;
   flex-shrink: 0;
@@ -258,8 +271,7 @@ footer {
   border-radius: 1rem;
   background: color-mix(in srgb, var(--accent) 8%, #0b0b0fcc);
   color: var(--accent);
-  font-family: Beyonders, system-ui, sans-serif;
-  font-weight: 400;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -324,7 +336,7 @@ footer {
   margin: 0;
   min-width: 0;
   font-family: Beyonders, system-ui, sans-serif;
-  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0;
