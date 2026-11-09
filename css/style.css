@@ -312,7 +312,10 @@ footer {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   column-gap: 0.85rem;
+  width: 100%;
   max-width: 38rem;
+  /* Heading size is in cqw, from this card rather than the window. */
+  container-type: inline-size;
   padding: clamp(1.25rem, 3vw, 2.25rem);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 1.25rem;
@@ -491,11 +494,25 @@ footer p { margin: 0; }
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
   }
 
-  .plugin:nth-of-type(even) .copy { order: 2; justify-self: end; }
+  /* stretch gives the card a definite width. auto margin keeps it on the end. */
+  .plugin:nth-of-type(even) .copy {
+    order: 2;
+    justify-self: stretch;
+    width: min(100%, 38rem);
+    margin-inline-start: auto;
+  }
 
   .plugin:nth-of-type(even) .shot { transform: rotateY(8deg) rotateX(3deg); }
 
   .plugin:nth-of-type(even) .frame:hover .shot { transform: none; }
+
+  /* The card is half the row here, so 5vw is wider than the space beside the logo. */
+  .plugin h2 {
+    font-size: min(
+      clamp(2rem, 5vw, 3.5rem),
+      calc((100cqw - clamp(96px, 12vw, 144px) - 0.85rem) * 0.15)
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
