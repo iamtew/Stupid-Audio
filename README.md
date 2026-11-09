@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/icon.png" alt="Stupid Audio" width="144" height="144">
+  <img src="img/icon-144.png" alt="Stupid Audio" width="144" height="144">
 </p>
 
 <h1 align="center">Stupid Audio</h1>
@@ -115,4 +115,4 @@ The animated backdrop (`js/fx.js`) loads a pinned [PixiJS](https://pixijs.com/) 
 
 Preview locally with `python -m http.server`.
 
-After a plugin logo changes in its checkout, run `just logos` here to copy the PNGs into `img/`. After a plugin screenshot changes, run `just screenshots` (reads `~/src/<plugin>/docs`). After a plugin-site demo clip changes, run `just demos`. After `assets/icon.png` changes, run `just icon` to rebuild `img/favicon.ico`.
+After a plugin logo changes in its checkout, run `just logos` here to copy the PNGs into `img/`. After a plugin screenshot changes, run `just screenshots` (reads `~/src/<plugin>/docs`). After a plugin-site demo clip changes, run `just demos`. After `assets/icon.png` changes, run `just icon` to rebuild `img/icon-32.png`, `img/icon-144.png`, `img/icon-512.png`, and `img/favicon.ico`.

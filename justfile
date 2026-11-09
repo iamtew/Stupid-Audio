@@ -16,9 +16,13 @@ logos:
     Copy-Item ..\V4JB\assets\logo.png img\v4jb-logo.png -Force
     Copy-Item ..\F4RT\assets\logo.png img\f4rt-logo.png -Force
 
-# PNG → multi-size ICO for the browser tab. Needs ImageMagick (magick).
+# assets/icon.png is the Affinity export. Source of truth. Never write that file.
+# Derived: img/icon-{32,144,512}.png and img/favicon.ico. Needs ImageMagick (magick).
 icon:
-    magick assets/icon.png -define icon:auto-resize=256,128,64,48,32,16 img/favicon.ico
+    magick assets/icon.png -background none -colorspace RGB -filter Lanczos +distort Resize 32x32 -colorspace sRGB PNG32:img/icon-32.png
+    magick assets/icon.png -background none -colorspace RGB -filter Lanczos +distort Resize 144x144 -colorspace sRGB PNG32:img/icon-144.png
+    magick assets/icon.png -background none -colorspace RGB -filter Lanczos +distort Resize 512x512 -colorspace sRGB PNG32:img/icon-512.png
+    magick assets/icon.png -background none -colorspace RGB -filter Lanczos -define icon:auto-resize=256,128,64,48,32,16 img/favicon.ico
 
 # Pull each plugin's main docs shot into img/. Sources live under ~/src.
 screenshots:
