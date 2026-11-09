@@ -259,11 +259,11 @@ function tewScene(PIXI) {
     update(t, w, h, dt) {
       const rowH = (h * 0.8) / ROWS, top = h * 0.1, head = w * 0.62;
 
-      // Faint piano-roll grid, scrolling with the notes.
+      // Faint piano-roll grid, scrolling left to right.
       grid.clear();
       for (let r = 0; r <= ROWS; r++) grid.moveTo(0, top + r * rowH).lineTo(w, top + r * rowH);
       const step = 64, off = (t * 90) % step;
-      for (let x = -off; x < w; x += step) grid.moveTo(x, top).lineTo(x, top + ROWS * rowH);
+      for (let x = off - step; x < w; x += step) grid.moveTo(x, top).lineTo(x, top + ROWS * rowH);
       grid.stroke({ width: 1, color: C.tewYellow, alpha: 0.07 });
       grid.moveTo(head, top).lineTo(head, top + ROWS * rowH);
       grid.stroke({ width: 2, color: C.tewRed, alpha: 0.35 });
@@ -284,16 +284,16 @@ function tewScene(PIXI) {
         notes.roundRect(b.x, y, 64, bh, 4).fill({ color, alpha: 0.35 + 0.6 * b.lit });
       }
 
-      // The squelch: cutoff wobbles slowly, resonance ring follows it.
+      // The squelch: cutoff drifts slowly; period stays put so the wave never reverses.
       wave.clear();
-      const cut = 0.5 + 0.5 * Math.sin(t * 0.8);
-      const period = 240 + 60 * Math.sin(t * 0.23);
+      const cut = 0.45 + 0.12 * Math.sin(t * 0.18);
+      const period = 260;
       const amp = h * 0.16, cy = h * 0.55, scroll = t * 140;
       const main = [], echo = [];
       for (let x = -10; x <= w + 10; x += 5) {
-        const ph = (((x + scroll) / period) % 1 + 1) % 1;
+        const ph = (((x - scroll) / period) % 1 + 1) % 1;
         const saw = 1 - 2 * ph;
-        const ring = Math.exp(-ph * (7 - 5 * cut)) * Math.sin(ph * (18 + 40 * cut) * Math.PI);
+        const ring = Math.exp(-ph * (7 - 5 * cut)) * Math.sin(ph * (20 + 8 * cut) * Math.PI);
         main.push(x, cy + amp * (saw * (0.35 + 0.4 * cut) + ring * 0.7));
         const ph2 = (ph + 0.5) % 1;
         echo.push(x, cy + amp * 0.6 * ((1 - 2 * ph2) * 0.5 + Math.exp(-ph2 * 5) * Math.sin(ph2 * 30 * Math.PI) * 0.5));
@@ -552,16 +552,19 @@ function fartScene(PIXI, glow, w0, h0) {
 
       wave.clear();
       const wet = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.35));
+      const a1 = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 0.21));
+      const a2 = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * 0.33 + 1.1));
+      const a3 = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 0.17 + 2.4));
       const amp = h * 0.16 * (0.55 + 0.45 * wet);
       const cy = h * 0.58;
       const main = [], echo = [];
       for (let x = -10; x <= w + 10; x += 5) {
-        const u = (x / w) * 6.28 + t * 1.1;
+        const u = (x / w) * 6.28 - t * 1.1;
         const body = Math.sin(u * 1.4) * 0.35;
-        const f1 = Math.sin(u * 7.2) * Math.exp(-Math.abs(Math.sin(u * 0.5)) * 1.6);
-        const f2 = Math.sin(u * 12.5 + 0.4) * 0.55 * wet;
-        const f3 = Math.sin(u * 18 + t) * 0.28 * wet;
-        const y = cy + amp * (body + f1 + f2 + f3);
+        const f1 = Math.sin(u * 7.2) * Math.exp(-Math.abs(Math.sin(u * 0.5)) * 1.6) * a1;
+        const f2 = Math.sin(u * 12.5 + 0.4) * 0.55 * a2;
+        const f3 = Math.sin(u * 18) * 0.28 * a3;
+        const y = cy + amp * (body + f1 + f2 + f3 + Math.sin(u * 4.1 - t * 0.35) * 0.18);
         main.push(x, y);
         echo.push(x, cy + (y - cy) * 0.55 + amp * 0.12 * Math.sin(u * 3));
       }
