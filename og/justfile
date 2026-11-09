@@ -84,9 +84,9 @@ og-install:
       Write-Host 'run those, then just og-install'
       exit 1
     }
-    $catalog = (Resolve-Path (Join-Path $dir '..')).Path
-    Move-Item (Join-Path $dir $pack) (Join-Path $catalog $pack) -Force
-    Write-Host "Moved $pack -> $catalog"
+    $catalogImg = (Resolve-Path (Join-Path $dir '..\img')).Path
+    Move-Item (Join-Path $dir $pack) (Join-Path $catalogImg $pack) -Force
+    Write-Host "Moved $pack -> $catalogImg"
     foreach ($p in $json.PSObject.Properties.Name) {
       $name = "ogimage-$p.png"
       $destDir = Join-Path $dir "..\..\$p\docs"
