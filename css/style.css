@@ -182,7 +182,7 @@ footer {
   gap: 0.4em;
   margin: 0.2rem 0 1rem;
   font-family: Beyonders, system-ui, sans-serif;
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-size: clamp(2rem, 6.2vw, 4.8rem);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -239,8 +239,7 @@ footer {
 }
 
 .intro h1 img {
-  /* Sized off the old 9rem wordmark (1.15em), so it stays large when the type shrinks. */
-  height: clamp(4rem, 12.65vw, 10.35rem);
+  height: clamp(6rem, 12.65vw, 12.35rem);
   width: auto;
   display: block;
   flex-shrink: 0;
