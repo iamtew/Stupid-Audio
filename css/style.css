@@ -345,7 +345,9 @@ footer {
   width: fit-content;
   max-width: 100%;
   white-space: nowrap;
-  padding-bottom: 0.08em;
+  /* Beyonders draws past the advance width (the 3 in TEW03). background-clip
+     and the drop-shadow filter both use this box, so the overhang needs padding. */
+  padding: 0.04em 0.22em 0.08em 0.06em;
   background: linear-gradient(100deg, var(--accent) 30%, var(--accent2));
   -webkit-background-clip: text;
   background-clip: text;
