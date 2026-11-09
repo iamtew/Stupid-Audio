@@ -112,6 +112,8 @@ header {
 
 .wordmark {
   display: flex;
+  /* Narrow viewports: "Audio" wraps under "Stupid" instead of squeezing. */
+  flex-wrap: wrap;
   align-items: baseline;
   gap: 0.22em;
 }
