@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>OG Generator</title>
+  <!-- Pack wordmark uses Beyonders, like the catalog hero. -->
+  <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -16,7 +18,16 @@
   <canvas id="fx" aria-hidden="true"></canvas>
   <div id="stack">
     <img id="logo" alt="">
-    <h1 id="name"><span class="stroke" aria-hidden="true"></span><span class="fill"></span></h1>
+    <h1 id="name">
+      <!-- Plugin branch: single-line name with stroke + fill. -->
+      <span class="stroke" aria-hidden="true"></span>
+      <span class="fill"></span>
+      <!-- Pack branch: catalog wordmark, per-word gradients + double outline. -->
+      <span class="wordmark" aria-hidden="true">
+        <span data-text="Stupid"><span class="fill-stupid">Stupid</span></span>
+        <span data-text="Audio"><span class="fill-udio">Audio</span></span>
+      </span>
+    </h1>
   </div>
   <div id="frame"><img id="shot" alt=""></div>
   <script type="module">
@@ -81,6 +92,7 @@
       }
       #name .stroke,
       #name .fill { display: block; }
+      #name .wordmark { display: none; }
       #name .stroke {
         position: absolute;
         left: 0;
@@ -120,27 +132,156 @@
         bottom: auto;
       }
       body.pack #logo { width: 280px; }
-      body.pack #name .stroke { display: none; }
-      body.pack #name .fill {
+
+      /* Pack wordmark mirrors the catalog hero (css/style.css):
+         Beyonders 400, per-word gradients with a silver + black double
+         outline layered behind each word. */
+      body.pack #name {
+        font-family: Beyonders, system-ui, sans-serif;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        white-space: normal;
+      }
+      body.pack #name .stroke,
+      body.pack #name .fill { display: none; }
+      body.pack #name .wordmark {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.22em;
+      }
+      body.pack #name .wordmark > [data-text] {
+        --gap: 0.022em;
+        --silver: 0.022em;
+        position: relative;
+      }
+      body.pack #name .wordmark > [data-text]::before,
+      body.pack #name .wordmark > [data-text]::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
         color: transparent;
-        background: linear-gradient(90deg, #e8c200, #d94214, #ff00ff, #6fc3b8, #02f53a);
+        -webkit-text-fill-color: transparent;
+        pointer-events: none;
+      }
+      body.pack #name .wordmark > [data-text]::before {
+        z-index: 0;
+        -webkit-text-stroke: calc(2 * (var(--gap) + var(--silver))) #e0e0e0;
+      }
+      body.pack #name .wordmark > [data-text]::after {
+        z-index: 0;
+        -webkit-text-stroke: calc(2 * var(--gap)) #000;
+      }
+      body.pack #name .fill-stupid,
+      body.pack #name .fill-udio {
+        position: relative;
+        z-index: 1;
         -webkit-background-clip: text;
         background-clip: text;
-        filter: drop-shadow(0 0 4px #000);
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+      body.pack #name .fill-stupid {
+        background-image: linear-gradient(90deg, #000000, #00ffff);
+      }
+      body.pack #name .fill-udio {
+        background-image: linear-gradient(90deg, #ff00ff, #000000);
       }
     `;
 
     const PIXI_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@8.22.0/dist/pixi.min.mjs';
     const INK = 0x0b0b0f;
-    const STOPS = [0xe8c200, 0xd94214, 0xff00ff, 0x6fc3b8, 0x02f53a];
 
-    function ramp(x) {
-      const t = Math.min(1, Math.max(0, x / 1200)) * (STOPS.length - 1);
-      const i = Math.min(STOPS.length - 2, Math.floor(t));
-      const f = t - i;
-      const a = STOPS[i], b = STOPS[i + 1];
-      const ch = (s, sh) => Math.round(((s >> sh) & 255) * (1 - f) + ((b >> sh) & 255) * f);
-      return (ch(a, 16) << 16) | (ch(a, 8) << 8) | ch(a, 0);
+    const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+    const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+
+    // Pointer in 0..1 viewport units; heroScene parts around it. Defaults to
+    // centre: headless captures have no pointer events.
+    const pointer = { x: 0.5, y: 0.5 };
+    addEventListener('pointermove', (e) => {
+      pointer.x = e.clientX / innerWidth;
+      pointer.y = e.clientY / innerHeight;
+    }, { passive: true });
+
+    // Soft white radial dot; tinted per sprite. Copied from js/fx.js.
+    function glowTexture(PIXI, size = 64) {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d');
+      const r = size / 2;
+      const grd = g.createRadialGradient(r, r, 0, r, r, r);
+      grd.addColorStop(0, 'rgba(255,255,255,1)');
+      grd.addColorStop(0.25, 'rgba(255,255,255,0.5)');
+      grd.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, size, size);
+      return PIXI.Texture.from(c);
+    }
+
+    function glowSprite(PIXI, tex, tint) {
+      const s = new PIXI.Sprite(tex);
+      s.anchor.set(0.5);
+      s.tint = tint;
+      s.blendMode = 'add';
+      return s;
+    }
+
+    function wrap(s, w, h, m = 40) {
+      if (s.x < -m) s.x += w + 2 * m; else if (s.x > w + m) s.x -= w + 2 * m;
+      if (s.y < -m) s.y += h + 2 * m; else if (s.y > h + m) s.y -= h + 2 * m;
+    }
+
+    // Hero palette, copied from js/fx.js: five-color flow field.
+    const C = {
+      tewYellow: 0xe8c200,
+      k1xOrange: 0xd94214,
+      hkrMagenta: 0xff00ff,
+      v4jbTeal: 0x6fc3b8,
+      f4rtGreen: 0x02f53a,
+    };
+
+    // Hero scene copied from js/fx.js so the pack backdrop matches the site
+    // without fetching fx.js. Keep in sync with the original.
+    function heroScene(PIXI, glow, w0, h0, n) {
+      const root = new PIXI.Container();
+      const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
+      const ps = [];
+      for (let i = 0; i < n; i++) {
+        const s = glowSprite(PIXI, glow, colors[i % 5]);
+        s.x = rand(0, w0);
+        s.y = rand(0, h0);
+        // Mostly small streaks, with ~8% big soft bokeh for depth.
+        const big = Math.random() < 0.08;
+        s.size = big ? rand(1.2, 2.4) : rand(0.08, 0.3);
+        s.alpha = big ? rand(0.05, 0.12) : rand(0.35, 0.85);
+        s.speed = big ? rand(8, 20) : rand(25, 80);
+        root.addChild(s);
+        ps.push(s);
+      }
+
+      return {
+        root,
+        update(t, w, h, dt) {
+          const px = pointer.x * w, py = pointer.y * h, r2 = 150 * 150;
+          for (const s of ps) {
+            const a = (Math.sin(s.x * 0.0025 + t * 0.15) + Math.cos(s.y * 0.003 - t * 0.1)) * Math.PI;
+            let vx = Math.cos(a) * s.speed, vy = Math.sin(a) * s.speed;
+            const dx = s.x - px, dy = s.y - py, d2 = dx * dx + dy * dy;
+            if (d2 < r2) {
+              const f = (1 - d2 / r2) * 400 / Math.sqrt(d2 + 1);
+              vx += dx * f;
+              vy += dy * f;
+            }
+            s.x += vx * dt;
+            s.y += vy * dt;
+            // Stretch along travel direction so dots read as light trails.
+            s.rotation = Math.atan2(vy, vx);
+            s.scale.set(s.size * 2.6, s.size);
+            wrap(s, w, h);
+          }
+        },
+      };
     }
 
     function creamGlow(PIXI) {
@@ -161,32 +302,6 @@
       return s;
     }
 
-    function hexCenters(R, w, h, pad) {
-      const dy = R * Math.sqrt(3) / 2;
-      const pts = [];
-      let row = 0;
-      for (let y = -pad; y <= h + pad; y += dy, row++) {
-        const x0 = (row % 2) * (R / 2) - pad;
-        for (let x = x0; x <= w + pad; x += R) pts.push([x, y]);
-      }
-      return pts;
-    }
-
-    function metatronCenters(cx, cy, r) {
-      const pts = [[cx, cy]];
-      for (let ring = 1; ring <= 2; ring++) {
-        for (let i = 0; i < 6; i++) {
-          const a = -Math.PI / 2 + i * Math.PI / 3;
-          pts.push([cx + ring * r * Math.cos(a), cy + ring * r * Math.sin(a)]);
-        }
-      }
-      return pts;
-    }
-
-    function strokeCircle(g, x, y, r, color, width, alpha) {
-      g.circle(x, y, r).stroke({ width, color, alpha });
-    }
-
     async function packScene() {
       const PIXI = await import(PIXI_URL);
       const app = new PIXI.Application();
@@ -199,45 +314,22 @@
         preference: 'webgl',
       });
 
-      const R = 72;
-      const flower = new PIXI.Container();
-      const flowerG = new PIXI.Graphics();
-      flowerG.blendMode = 'add';
-      hexCenters(R, 1200, 630, R * 3).forEach(([x, y]) => {
-        strokeCircle(flowerG, x, y, R, ramp(x), 1, 0.16);
-      });
-      flower.addChild(flowerG);
-
-      const meta = new PIXI.Container();
-      const metaG = new PIXI.Graphics();
-      metaG.blendMode = 'add';
-      const mR = 88;
-      const nodes = metatronCenters(600, 300, mR);
-      for (const [x, y] of nodes) strokeCircle(metaG, x, y, mR, ramp(x), 1.5, 0.2);
-      const rings = [nodes.slice(1, 7), nodes.slice(7)];
-      for (const ring of rings) {
-        for (let i = 0; i < 6; i++) {
-          const a = ring[i], b = ring[(i + 1) % 6];
-          metaG.moveTo(a[0], a[1]).lineTo(b[0], b[1]);
-          metaG.stroke({ width: 1.5, color: ramp((a[0] + b[0]) / 2), alpha: 0.2 });
-        }
-      }
-      meta.addChild(metaG);
+      // Same particle budget as the site: scales with canvas area, 120..500.
+      const budget = clamp(Math.round((1200 * 630) / 4000), 120, 500);
+      const glow = glowTexture(PIXI);
+      const hero = heroScene(PIXI, glow, 1200, 630, budget);
 
       const highlight = creamGlow(PIXI);
       highlight.x = 600;
       highlight.y = 280;
       highlight.scale.set(4.2);
-      app.stage.addChild(flower, meta, highlight);
+      app.stage.addChild(hero.root, highlight);
 
       let t = 0;
       app.ticker.add((ticker) => {
         const dt = Math.min(ticker.deltaMS / 1000, 0.05);
-        t += dt * 0.12;
-        flower.x = Math.sin(t) * 28;
-        flower.y = Math.cos(t * 0.7) * 18;
-        meta.x = Math.sin(t * 0.55) * 10;
-        meta.y = Math.cos(t * 0.4) * 8;
+        t += dt;
+        hero.update(t, 1200, 630, dt);
         highlight.x = 600 + Math.sin(t * 0.5) * 16;
         highlight.y = 280 + Math.cos(t * 0.4) * 10;
       });
