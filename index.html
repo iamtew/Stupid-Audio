@@ -19,7 +19,7 @@
   <link rel="icon" href="img/favicon.ico" sizes="any">
   <link rel="icon" href="img/icon-32.png" type="image/png">
   <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
-  <link rel="stylesheet" href="css/style.css?v=44">
+  <link rel="stylesheet" href="css/style.css?v=45">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
   <script type="module" src="js/fx.js?v=3"></script>
 </head>
@@ -330,6 +330,69 @@
           return data;
         });
     }
+
+    // Native <audio> progress ignores accent-color. Skin it; controls stay if JS is off.
+    function fmtTime(sec) {
+      if (!isFinite(sec) || sec < 0) return "0:00";
+      var s = Math.floor(sec);
+      return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    }
+
+    document.querySelectorAll(".demo audio").forEach(function (audio) {
+      var player = document.createElement("div");
+      player.className = "player";
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("aria-label", "Play");
+      btn.textContent = "▶";
+      var bar = document.createElement("input");
+      bar.type = "range";
+      bar.min = "0";
+      bar.max = "0";
+      bar.step = "any";
+      bar.value = "0";
+      bar.setAttribute("aria-label", "Seek");
+      var time = document.createElement("span");
+      time.className = "player-time";
+      time.textContent = "0:00";
+      audio.classList.add("skinned");
+      audio.removeAttribute("controls");
+      audio.before(player);
+      player.append(btn, bar, time);
+
+      function stamp() {
+        time.textContent = fmtTime(audio.currentTime) + " / " + fmtTime(audio.duration);
+        if (!isFinite(audio.duration) || audio.duration <= 0) return;
+        bar.max = String(audio.duration);
+        if (document.activeElement !== bar) bar.value = String(audio.currentTime);
+      }
+
+      btn.addEventListener("click", function () {
+        if (audio.paused) {
+          document.querySelectorAll(".demo audio").forEach(function (other) {
+            if (other !== audio) other.pause();
+          });
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+      audio.addEventListener("play", function () {
+        btn.textContent = "❚❚";
+        btn.setAttribute("aria-label", "Pause");
+      });
+      audio.addEventListener("pause", function () {
+        btn.textContent = "▶";
+        btn.setAttribute("aria-label", "Play");
+      });
+      audio.addEventListener("timeupdate", stamp);
+      audio.addEventListener("loadedmetadata", stamp);
+      bar.addEventListener("input", function () {
+        audio.currentTime = Number(bar.value);
+        stamp();
+      });
+      stamp();
+    });
 
     if (dialog) {
       dialog.querySelectorAll("[data-dl-close]").forEach(function (btn) {
