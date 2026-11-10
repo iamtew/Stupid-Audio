@@ -2,11 +2,8 @@
 //
 // One fixed, full-viewport PixiJS canvas sits behind the content. Each section
 // (hero + one per plugin) owns a scene; scenes crossfade as you scroll.
-// Everything visual here is decoration: if PixiJS fails to load, WebGL is
-// missing, or the visitor prefers reduced motion, the page still works on CSS.
-
-// Pinned so the look never changes under us. Bump deliberately.
-const PIXI_URL = 'https://cdn.jsdelivr.net/npm/pixi.js@8.22.0/dist/pixi.min.mjs';
+// Everything visual here is decoration: if WebGL is missing or the visitor
+// prefers reduced motion, the page still works on CSS.
 
 // Shared tempo so every scene grooves together.
 const BPM = 124;
@@ -67,7 +64,7 @@ if (!reduceMotion) {
 }
 
 start().catch((err) => {
-  // CDN blocked, no WebGL, or an old browser: the CSS gradients carry the page.
+  // No WebGL or an old browser: the CSS gradients carry the page.
   console.info('fx: animated backdrop disabled:', err?.message || err);
   document.getElementById('fx')?.remove();
 });
@@ -75,7 +72,7 @@ start().catch((err) => {
 // ---------- PixiJS app ----------
 
 async function start() {
-  const PIXI = await import(PIXI_URL);
+  const PIXI = await import('./vendor/pixi.min.mjs');
   const app = new PIXI.Application();
   await app.init({
     canvas: document.getElementById('fx'),

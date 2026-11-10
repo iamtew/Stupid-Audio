@@ -111,7 +111,7 @@ Catalog site for the Stupid Audio product line. Static HTML on GitHub Pages: [ia
 
 Each plugin keeps its own site, downloads, and GitHub repo. This hub only lists them.
 
-The animated backdrop (`js/fx.js`) loads a pinned [PixiJS](https://pixijs.com/) build from jsDelivr. No build step. If the CDN or WebGL is unavailable, or the visitor prefers reduced motion, the page falls back to its CSS gradients (or a still frame).
+The animated backdrop (`js/fx.js`) uses a vendored [PixiJS](https://pixijs.com/) build (`js/vendor/pixi.min.mjs`, MIT license beside it). No build step. If WebGL is unavailable, or the visitor prefers reduced motion, the page falls back to its CSS gradients (or a still frame).
 
 Preview locally with `python -m http.server`.
 
