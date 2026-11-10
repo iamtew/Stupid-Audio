@@ -263,6 +263,26 @@ footer,
   text-shadow: 0 1px 12px #000;
 }
 
+/* Frosted panel; mask fades the edges so it sits in the Pixi backdrop. */
+.about::before {
+  content: "";
+  position: absolute;
+  inset: -1rem -2rem;
+  z-index: -1;
+  background: #0b0b0fb3;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  mask-image:
+    linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent),
+    linear-gradient(to bottom, transparent, #000 2.5rem, #000 calc(100% - 3rem), transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent),
+    linear-gradient(to bottom, transparent, #000 2.5rem, #000 calc(100% - 3rem), transparent);
+  -webkit-mask-composite: source-in;
+  pointer-events: none;
+}
+
 .mast {
   display: flex;
   justify-content: center;
