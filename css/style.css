@@ -425,7 +425,21 @@ footer,
 
 .demo a { display: block; font-size: 0.85rem; margin-bottom: 0.25rem; }
 
-.demo audio { width: 100%; display: block; }
+.demo audio {
+  width: 100%;
+  display: block;
+  height: 2.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color-scheme: dark;
+  accent-color: var(--accent);
+  overflow: hidden;
+}
+
+.demo audio::-webkit-media-controls-panel {
+  background-color: color-mix(in srgb, var(--accent) 18%, transparent);
+}
 
 .tagline {
   color: var(--accent);
