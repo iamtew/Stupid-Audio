@@ -162,7 +162,8 @@ nav a:hover::after,
 nav a.active::after { transform: scaleX(1); }
 
 main,
-footer {
+footer,
+.mast {
   position: relative;
   z-index: 1;
 }
@@ -261,7 +262,12 @@ footer {
   padding: 2rem clamp(1.25rem, 4vw, 3rem) 4rem;
 }
 
-.mast { margin: 0 0 2rem; }
+.mast {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 2rem;
+  padding: 2rem clamp(1.25rem, 4vw, 3rem) 0;
+}
 
 .about h2 {
   margin: 2.5rem 0 0.75rem;
