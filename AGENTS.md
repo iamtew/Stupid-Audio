@@ -8,9 +8,17 @@ Plugin set and remotes: `.cursor/rules/stupid-audio.mdc`.
 
 Stupid Audio is the product line. Write direct, not brochure-speak. Do not advertise AI authorship on public pages. Never invent features.
 
+## Voice
+
+Public copy is professional and serious, with humor and humility. Straight sentences. Warm, not snarky.
+
+Humor can name the product as it is (F4RT is a fart designer). Humor cannot dunk on the reader, on “pro” tools, on subscriptions, or on the competition. No sermons, no “steal them,” no “must-haves,” no Gatekeeper sulking.
+
+Humble means one person, focused boxes, MIT, the site is the front door. It does not mean talking down or apologizing for the work.
+
 ## Main page
 
-The intro lede is visitor copy (bold, funny, down-to-earth). Do not rewrite it into catalog/hub instructions.
+The intro lede is visitor copy in that voice. Do not rewrite it into catalog/hub instructions.
 
 Introduce the collection and give each plugin—TEW03, K1X, SNR3, 5HKR, V4JB, and F4RT—a 3-5 sentence blurb. Base every blurb on verified details from that plugin's checkout or GitHub remote; do not infer or invent features. Locate each project's logo in its checkout, include the logo on the main page, and use static asset paths that work on GitHub Pages. Keep plugin names, logos, and links consistent with the authoritative project sources.
 
