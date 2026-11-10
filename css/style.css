@@ -96,6 +96,10 @@ body > header {
   width: fit-content;
 }
 
+.brand .wordmark {
+  font-size: 0.85em;
+}
+
 .brand .wordmark > [data-text] {
   position: relative;
 }
