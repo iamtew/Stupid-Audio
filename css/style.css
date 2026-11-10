@@ -179,7 +179,8 @@ footer {
   padding: 4rem clamp(1.25rem, 4vw, 3rem);
 }
 
-.intro h1 {
+.intro h1,
+.mast h1 {
   display: flex;
   align-items: center;
   gap: 0.4em;
@@ -194,7 +195,8 @@ footer {
   padding: 8px 8px 0.08em;
 }
 
-.intro h1 [data-text] {
+.intro h1 [data-text],
+.mast h1 [data-text] {
   /* Logo PNG ~50px black + ~50px #e0e0e0 on 2160px, drawn at 1.15em.
      text-stroke is centered, so the width is 2× the outside band. */
   --gap: 0.022em;
@@ -203,7 +205,9 @@ footer {
 }
 
 .intro h1 [data-text]::before,
-.intro h1 [data-text]::after {
+.intro h1 [data-text]::after,
+.mast h1 [data-text]::before,
+.mast h1 [data-text]::after {
   content: attr(data-text);
   position: absolute;
   left: 0;
@@ -213,12 +217,14 @@ footer {
   pointer-events: none;
 }
 
-.intro h1 [data-text]::before {
+.intro h1 [data-text]::before,
+.mast h1 [data-text]::before {
   z-index: 0;
   -webkit-text-stroke: calc(2 * (var(--gap) + var(--silver))) #e0e0e0;
 }
 
-.intro h1 [data-text]::after {
+.intro h1 [data-text]::after,
+.mast h1 [data-text]::after {
   z-index: 0;
   -webkit-text-stroke: calc(2 * var(--gap)) #000;
 }
@@ -241,11 +247,34 @@ footer {
   background-image: linear-gradient(90deg, #ff00ff, #000000);
 }
 
-.intro h1 img {
+.intro h1 img,
+.mast h1 img {
   height: clamp(6rem, 12.65vw, 12.35rem);
   width: auto;
   display: block;
   flex-shrink: 0;
+}
+
+.about {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem clamp(1.25rem, 4vw, 3rem) 4rem;
+}
+
+.mast { margin: 0 0 2rem; }
+
+.about h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 1.4rem;
+}
+
+.about section:first-of-type h2 { margin-top: 0; }
+
+.about p { margin: 0 0 0.85rem; }
+
+.about ul {
+  margin: 0;
+  padding-left: 1.2rem;
 }
 
 .lede {
