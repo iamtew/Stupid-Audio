@@ -326,8 +326,9 @@ async function start() {
         spinY0: rnd() * Math.PI * 2,
         pair: slot,
       },
-      fx: side ? 0.70 + (slot % 2) * 0.24 : 0.28 - (slot % 2) * 0.24,
-      fy: 0.04 + slot * 0.182 + (rnd() - 0.5) * 0.03,
+      // Zigzag in the outer band so they do not stack in four columns.
+      fx: (side ? 0.70 : 0.28) + (side ? 1 : -1) * [0.04, 0.22, 0.10, 0.20, 0.06, 0.24][slot],
+      fy: 0.04 + (slot + side * 0.5) * 0.168 + (rnd() - 0.5) * 0.04,
       ax: 16 + rnd() * 12,
       ay: 14 + rnd() * 16,
       freq: 0.04 + rnd() * 0.03,
