@@ -19,10 +19,15 @@
   <link rel="icon" href="img/favicon.ico" sizes="any">
   <link rel="icon" href="img/icon-32.png" type="image/png">
   <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
-  <link rel="stylesheet" href="css/style.css?v=40">
+  <link rel="stylesheet" href="css/style.css?v=41">
+  <!-- about-fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
+  <script type="module" src="js/about-fx.js?v=1"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+
+  <!-- One shared WebGL canvas behind everything; decorative only. -->
+  <canvas id="fx" aria-hidden="true"></canvas>
 
   <header>
     <a class="brand" href="index.html" aria-label="Stupid Audio">
