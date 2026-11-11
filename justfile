@@ -5,6 +5,7 @@ set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 # Plugin checkouts: ~/src (HOME, else USERPROFILE). No username in this file.
 src := env_var_or_default("HOME", env_var("USERPROFILE")) + "\\src"
 
+# Target list from `just --list`
 default:
     @just --list
 
@@ -25,6 +26,16 @@ icon:
     magick assets/icon.png -background none -colorspace RGB -filter Lanczos +distort Resize 512x512 -colorspace sRGB PNG32:img/icon-512.png
     magick assets/favicon.png -background none -colorspace RGB -filter Lanczos -define icon:auto-resize=256,128,64,48,32,16 img/favicon.ico
 
+# Convert PNG sources to 24-bit BMP files
+wix-bitmaps:
+    magick assets/installer-dialog.png -type TrueColor -alpha off BMP3:assets/installer-dialog.bmp
+    magick assets/installer-banner.png -type TrueColor -alpha off BMP3:assets/installer-banner.bmp
+
+# Copy graphics for the plugins Wix installers 
+wix-copy:
+    Copy-Item assets/installer-dialog.bmp '{{src}}\SNR3\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\SNR3\installer\banner.bmp' -Force
+
 # Pull each plugin's main docs shot into img/. Sources live under ~/src.
 screenshots:
     Copy-Item '{{src}}\TEW03\docs\screenshot1.png' img\tew03-shot.png -Force
@@ -39,9 +50,9 @@ og-install:
 
 # Pull website demo clips from each plugin's docs/ into snd/.
 demos:
-    Copy-Item ..\TEW03\docs\DEMO-B1-P2P4P7P10.ogg snd\DEMO-B1-P2P4P7P10.ogg -Force
-    Copy-Item ..\TEW03\docs\DEMO-DELIGHTED-TEW03.ogg snd\DEMO-DELIGHTED-TEW03.ogg -Force
-    Copy-Item ..\K1X\docs\K1X-DEMO1.mp3 snd\K1X-DEMO1.mp3 -Force
-    Copy-Item ..\5HKR\docs\5HKR-DEMO1.mp3 snd\5HKR-DEMO1.mp3 -Force
-    Copy-Item ..\V4JB\docs\V4JB-DEMO.ogg snd\V4JB-DEMO.ogg -Force
-    Copy-Item ..\F4RT\docs\F4RT-DEMO1.mp3 snd\F4RT-DEMO1.mp3 -Force
+    Copy-Item '{{src}}\TEW03\docs\DEMO-B1-P2P4P7P10.ogg' snd\DEMO-B1-P2P4P7P10.ogg -Force
+    Copy-Item '{{src}}\TEW03\docs\DEMO-DELIGHTED-TEW03.ogg' snd\DEMO-DELIGHTED-TEW03.ogg -Force
+    Copy-Item '{{src}}\K1X\docs\K1X-DEMO1.mp3' snd\K1X-DEMO1.mp3 -Force
+    Copy-Item '{{src}}\5HKR\docs\5HKR-DEMO1.mp3' snd\5HKR-DEMO1.mp3 -Force
+    Copy-Item '{{src}}\V4JB\docs\V4JB-DEMO.ogg' snd\V4JB-DEMO.ogg -Force
+    Copy-Item '{{src}}\F4RT\docs\F4RT-DEMO1.mp3' snd\F4RT-DEMO1.mp3 -Force
