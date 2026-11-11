@@ -10,11 +10,11 @@ default:
 
 # Pull logos from ../TEW03 .. ../F4RT into img/.
 logos:
-    Copy-Item ..\TEW03\assets\logo.png img\tew03-logo.png -Force
-    Copy-Item ..\K1X\assets\logo.png img\k1x-logo.png -Force
-    Copy-Item ..\5HKR\assets\logo.png img\5hkr-logo.png -Force
-    Copy-Item ..\V4JB\assets\logo.png img\v4jb-logo.png -Force
-    Copy-Item ..\F4RT\assets\logo.png img\f4rt-logo.png -Force
+    Copy-Item '{{src}}\TEW03\assets\logo.png' img\tew03-logo.png -Force
+    Copy-Item '{{src}}\K1X\assets\logo.png' img\k1x-logo.png -Force
+    Copy-Item '{{src}}\5HKR\assets\logo.png' img\5hkr-logo.png -Force
+    Copy-Item '{{src}}\V4JB\assets\logo.png' img\v4jb-logo.png -Force
+    Copy-Item '{{src}}\F4RT\assets\logo.png' img\f4rt-logo.png -Force
 
 # assets/icon.png is the Affinity export. Source of truth. Never write that file.
 # Derived: img/icon-{32,144,512}.png and img/favicon.ico. Needs ImageMagick (magick).
