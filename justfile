@@ -31,10 +31,20 @@ wix-bitmaps:
     magick assets/installer-dialog.png -type TrueColor -alpha off BMP3:assets/installer-dialog.bmp
     magick assets/installer-banner.png -type TrueColor -alpha off BMP3:assets/installer-banner.bmp
 
-# Copy graphics for the plugins Wix installers 
+# Copy graphics for the plugins Wix installers
 wix-copy:
+    Copy-Item assets/installer-dialog.bmp '{{src}}\TEW03\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\TEW03\installer\banner.bmp' -Force
+    Copy-Item assets/installer-dialog.bmp '{{src}}\K1X\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\K1X\installer\banner.bmp' -Force
     Copy-Item assets/installer-dialog.bmp '{{src}}\SNR3\installer\dialog.bmp' -Force
     Copy-Item assets/installer-banner.bmp '{{src}}\SNR3\installer\banner.bmp' -Force
+    Copy-Item assets/installer-dialog.bmp '{{src}}\5HKR\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\5HKR\installer\banner.bmp' -Force
+    Copy-Item assets/installer-dialog.bmp '{{src}}\V4JB\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\V4JB\installer\banner.bmp' -Force
+    Copy-Item assets/installer-dialog.bmp '{{src}}\F4RT\installer\dialog.bmp' -Force
+    Copy-Item assets/installer-banner.bmp '{{src}}\F4RT\installer\banner.bmp' -Force
 
 # Pull each plugin's main docs shot into img/. Sources live under ~/src.
 screenshots:
