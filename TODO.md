@@ -20,12 +20,6 @@ The plugins have multiple pages, for various function.
 A lot of pages are the same across the plugins, ie. Main, Effects, etc.
 Make this order the same across plugins to keep consistency.
 
-## TEW03 Note length
-Remove 2x button LED from sequencer, replace with drop-down to select note length.
-Lengths should be 32 (old 2x behavior), 16 (default), 8, and 4.
-As it sounds, this should make the notes longer, keep the gate open longer. 
-Not typical TB-303, but very typical TEW03!
-
 ## F4RT UI improvements
 Right click to assign modulations + visual indicator on control when it's being modulated. 
 See TEW03 for example of visual indication on controls when modulated.
@@ -38,6 +32,13 @@ Must be a lot more clear how the envelopes and filters on Motion page maps.
 Completed items below, keeping for now, will clean up later.
 
 ----
+
+## TEW03 Note length
+DONE: Sequencer 2x LED replaced by note-length combo 32/16/8/4 (default 16). 32 is old 2x split; 8 and 4 keep 16 columns and hold the gate longer. In `TEW03`.
+Remove 2x button LED from sequencer, replace with drop-down to select note length.
+Lengths should be 32 (old 2x behavior), 16 (default), 8, and 4.
+As it sounds, this should make the notes longer, keep the gate open longer. 
+Not typical TB-303, but very typical TEW03!
 
 ## TEW03 Sequencer sync
 DONE: `seqGridSync` LED next to Run. Default off: host BPM only, pattern starts at step 1 on note/Run. On: DAW PPQ lock (loop/locate). In `TEW03`.
