@@ -12,9 +12,6 @@ Following plugins are still under development and shall not be included on main 
 `TEW03` and `5HKR` have `just docs-screenshot` target and a script that will automatically take screenshots of the standalone debug build, for the docs website.
 This needs to be implemented across the whole suite of plugins.
 
-## Add `just install-debug` to all plugins
-`5HKR` has `just install-debug`: build Debug, print that it overwrites the installed VST3, copy `Builds\VisualStudio2022\x64\Debug\VST3\<Name>.vst3` over `%ProgramFiles%\Common Files\VST3\<Name>.vst3`. Close the DAW first. If the shell is not admin, UAC via `Start-Process powershell -Verb RunAs` and `-EncodedCommand` (paths have spaces). Already-admin shells copy in-process. Copy the target from `5HKR/justfile` and swap the plugin name / bundle path. Same slot as the MSI, so it replaces Release until the MSI is run again.
-
 ## Unify plugin page order
 The plugins have multiple pages, for various function.
 A lot of pages are the same across the plugins, ie. Main, Effects, etc.
@@ -32,6 +29,10 @@ Must be a lot more clear how the envelopes and filters on Motion page maps.
 Completed items below, keeping for now, will clean up later.
 
 ----
+
+## just install-debug
+DONE: Copied `5HKR` `just install-debug` to TEW03, K1X, SNR3, V4JB, F4RT, fN0B. Skipped fR3Z0 (no justfile).
+Build Debug, overwrite `%ProgramFiles%\Common Files\VST3\<Name>.vst3` (same slot as the MSI). Close the DAW first. UAC via `Start-Process powershell -Verb RunAs` when not admin.
 
 ## TEW03 Note length
 DONE: Sequencer 2x LED replaced by note-length combo 32/16/8/4 (default 16). 32 is old 2x split; 8 and 4 keep 16 columns and hold the gate longer. In `TEW03`.
