@@ -1,5 +1,12 @@
 # Stupid Audio TODO
-In no particular order, just to help me remember.
+Plugins with prefix lower case 'f' is effects, from FX.
+When displaying the names, it should use the Florin sign.
+That is U+0192 or &fnof;
+
+Following plugins are still under development and shall not be included on main website.
+- SNR3
+- fN0B
+- fR3Z0
 
 ## Add `just docs-screenshot` to all plugins
 `TEW03` and `5HKR` have `just docs-screenshot` target and a script that will automatically take screenshots of the standalone debug build, for the docs website.
@@ -9,11 +16,6 @@ This needs to be implemented across the whole suite of plugins.
 DONE: THIS ONE HAS BEEN COMPLETED WITH THE WEBSITE UPDATES RECENTLY
 New plugin `SNR3` have on its docs website direct download buttons, by way of a GH action that writes a `releases.json` file wil filenames for the website.
 Copy GH action and update docs website with new JS, copy from `SNR3` to other plugins.
-
-## Add `SNR3` to Stupid Audio website
-Just like the other ones. 
-Put it in the list after `K1X`, because it makes sense in that order.
-NOTE: SNR3 needs to reach higher maturity first!
 
 ## Stupid Audio website direct download buttons
 DONE: Plugin Download opens the same overlay as the plugin sites, filled from that plugin's releases.json.
