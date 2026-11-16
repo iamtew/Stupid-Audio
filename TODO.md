@@ -20,12 +20,6 @@ The plugins have multiple pages, for various function.
 A lot of pages are the same across the plugins, ie. Main, Effects, etc.
 Make this order the same across plugins to keep consistency.
 
-## TEW03 Sequencer sync
-Currently TEW03 DAW sync seem to sync also position on grid into the sequencer.
-This shall be known as "Grid Sync ON". 
-Add a LED button, label "Grid Sync".
-Default behavior should be just BPM sync, and when note plays the TEW03 sequencer starts from its beginning and plays until the note stops playing.
-
 ## TEW03 Note length
 Remove 2x button LED from sequencer, replace with drop-down to select note length.
 Lengths should be 32 (old 2x behavior), 16 (default), 8, and 4.
@@ -44,6 +38,13 @@ Must be a lot more clear how the envelopes and filters on Motion page maps.
 Completed items below, keeping for now, will clean up later.
 
 ----
+
+## TEW03 Sequencer sync
+DONE: `seqGridSync` LED next to Run. Default off: host BPM only, pattern starts at step 1 on note/Run. On: DAW PPQ lock (loop/locate). In `TEW03`.
+Currently TEW03 DAW sync seem to sync also position on grid into the sequencer.
+This shall be known as "Grid Sync ON". 
+Add a LED button, label "Grid Sync".
+Default behavior should be just BPM sync, and when note plays the TEW03 sequencer starts from its beginning and plays until the note stops playing.
 
 ## 5HKR Polymeter bug
 DONE: Lane loop wraps on the free-running 16th clock (`g % loop`) for the whole MIDI hold. No reset at 16 / 32 / 64. In `5HKR` sequencer + `just check`.
