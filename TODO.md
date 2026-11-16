@@ -12,6 +12,37 @@ Following plugins are still under development and shall not be included on main 
 `TEW03` and `5HKR` have `just docs-screenshot` target and a script that will automatically take screenshots of the standalone debug build, for the docs website.
 This needs to be implemented across the whole suite of plugins.
 
+## Unify plugin page order
+The plugins have multiple pages, for various function.
+A lot of pages are the same across the plugins, ie. Main, Effects, etc.
+Make this order the same across plugins to keep consistency.
+
+## TEW03 Sequencer sync
+Currently TEW03 DAW sync seem to sync also position on grid into the sequencer.
+This shall be known as "Grid Sync ON". 
+Add a LED button, label "Grid Sync".
+Default behavior should be just BPM sync, and when note plays the TEW03 sequencer starts from its beginning and plays until the note stops playing.
+
+## TEW03 Note length
+Remove 2x button LED from sequencer, replace with drop-down to select note length.
+Lengths should be 32 (old 2x behavior), 16 (default), 8, and 4.
+As it sounds, this should make the notes longer, keep the gate open longer. 
+Not typical TB-303, but very typical TEW03!
+
+## 5HKR Polymeter bug
+The polymeter function isn't working as intended. 
+Example: Make a 2 bar long note in DAW, put a lane in 5HKR shorter than 16 steps (polymeter on).
+Result: Polymeter loops correctly during the first bar, but when DAW hits second bar, the pattern begins from beginning. 
+Expected behavior: Lane with shorter steps, polymeter on, should keep looping in those short steps. No reset.
+
+# F4RT UI improvements
+Right click to assign modulations + visual indicator on control when it's being modulated. 
+See TEW03 for example of visual indication on controls when modulated.
+Top tab-bar needs to be replaced with a page-selector like the other plugins, holding the pages.
+Oscilators need to be better distinguished from each other.
+The different controls and modulators need to be more clear where they go, how they're routed.
+Must be a lot more clear how the envelopes and filters on Motion page maps.
+
 # Completed, historical
 Completed items below, keeping for now, will clean up later.
 
