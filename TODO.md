@@ -35,7 +35,7 @@ Example: Make a 2 bar long note in DAW, put a lane in 5HKR shorter than 16 steps
 Result: Polymeter loops correctly during the first bar, but when DAW hits second bar, the pattern begins from beginning. 
 Expected behavior: Lane with shorter steps, polymeter on, should keep looping in those short steps. No reset.
 
-# F4RT UI improvements
+## F4RT UI improvements
 Right click to assign modulations + visual indicator on control when it's being modulated. 
 See TEW03 for example of visual indication on controls when modulated.
 Top tab-bar needs to be replaced with a page-selector like the other plugins, holding the pages.
