@@ -12,6 +12,11 @@ Following plugins are still under development and shall not be included on main 
 `TEW03` and `5HKR` have `just docs-screenshot` target and a script that will automatically take screenshots of the standalone debug build, for the docs website.
 This needs to be implemented across the whole suite of plugins.
 
+# Completed, historical
+Completed items below, keeping for now, will clean up later.
+
+----
+
 ## Direct download buttons
 DONE: THIS ONE HAS BEEN COMPLETED WITH THE WEBSITE UPDATES RECENTLY
 New plugin `SNR3` have on its docs website direct download buttons, by way of a GH action that writes a `releases.json` file wil filenames for the website.
