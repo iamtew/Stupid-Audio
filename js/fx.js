@@ -92,7 +92,7 @@ async function start() {
 
   // Only build scenes the page actually has. Landing is hero only.
   const makers = {
-    top: () => vuScene(PIXI, w0, h0),
+    top: () => vuScene(PIXI, glow, w0, h0),
     catalog: () => heroScene(PIXI, glow, w0, h0, budget, 120),
     tew03: () => tewScene(PIXI),
     k1x: () => kickScene(PIXI, glow),
@@ -196,7 +196,7 @@ function wrap(s, w, h, m = 40) {
 // Five vintage faces in the lower third. Needles idle, kick together on a
 // 120 BPM bar, never pin. Housing is not additive (that would look neon).
 
-function vuScene(PIXI, _w0, _h0) {
+function vuScene(PIXI, glow, w0, h0) {
   const VU_BPM = 120;
   const VU_BAR = (60 / VU_BPM) * 4; // 2 s
   const REST = 0.28;
@@ -206,10 +206,11 @@ function vuScene(PIXI, _w0, _h0) {
   const NEEDLE_GLOW = [[7, 0.12], [2, 0.85]];
 
   const root = new PIXI.Container();
+  const sky = new PIXI.Container();
   const chassis = new PIXI.Graphics();
   const needles = new PIXI.Graphics();
   needles.blendMode = 'add';
-  root.addChild(chassis, needles);
+  root.addChild(sky, chassis, needles);
 
   const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
   const meters = colors.map((color, i) => ({
@@ -220,13 +221,48 @@ function vuScene(PIXI, _w0, _h0) {
     w: 0.35 + i * 0.07,
   }));
 
+  const nStar = clamp(Math.round((w0 * h0) / 9000), 90, 140);
+  const stars = [];
+  for (let i = 0; i < nStar; i++) {
+    const s = glowSprite(PIXI, glow, C.cream);
+    s.x = rand(0, w0);
+    s.y = rand(0, h0);
+    s.z = rand(0.15, 1);
+    s.size = rand(0.04, 0.12);
+    s.vx = rand(4, 14);
+    s.vy = rand(2, 8);
+    s.vz = rand(0.04, 0.12);
+    s.baseAlpha = rand(0.25, 0.7);
+    sky.addChild(s);
+    stars.push(s);
+  }
+
+  const clouds = [];
+  for (let i = 0; i < 13; i++) {
+    const huge = i < 5;
+    const s = glowSprite(PIXI, glow, colors[i % 5]);
+    s.x = rand(0, w0);
+    s.y = rand(0, h0);
+    s.size = huge ? rand(5.5, 8) : rand(3, 5.2);
+    s.baseAlpha = huge ? rand(0.04, 0.07) : rand(0.06, 0.1);
+    s.vx = rand(-6, 6);
+    s.vy = rand(-4, 4);
+    s.ph = i * 0.87;
+    s.scale.set(s.size);
+    sky.addChild(s);
+    clouds.push(s);
+  }
+
   return {
     root,
     update(t, w, h, dt) {
       const bandH = Math.min(h * 0.28, w * 0.18);
       const bandY = h * 0.78;
-      const faceW = Math.min(w / 5.6, bandH * 1.35);
+      const padX = Math.max(32, w * 0.05);
+      const span = w - padX * 2;
+      const faceW = Math.min(span / 6.2, bandH * 1.2);
       const faceH = bandH * 0.92;
+      const slot = (i) => padX + span * (i + 0.5) / 5;
       const inset = Math.max(5, faceW * 0.06);
       const innerW = faceW - inset * 2;
       const innerH = faceH - inset * 2;
@@ -236,7 +272,7 @@ function vuScene(PIXI, _w0, _h0) {
 
       let hit = 0, hitD = Infinity, inside = -1;
       for (let i = 0; i < 5; i++) {
-        const cx = w * (i + 0.5) / 5;
+        const cx = slot(i);
         const left = cx - faceW / 2;
         const top = bandY - faceH / 2;
         if (px >= left && px <= left + faceW && py >= top && py <= top + faceH) inside = i;
@@ -252,12 +288,46 @@ function vuScene(PIXI, _w0, _h0) {
         else if (p < 0.78) kick = 1 - (p - 0.08) / 0.7;
       }
 
+      const beatHz = Math.PI * 2 * (VU_BPM / 60);
+      if (dt === 0) {
+        for (const s of stars) {
+          s.alpha = s.baseAlpha * (0.35 + 0.65 * s.z);
+          s.scale.set(s.size * (0.4 + s.z * 2.2));
+        }
+        for (const s of clouds) {
+          s.alpha = s.baseAlpha;
+          s.scale.set(s.size);
+        }
+      } else {
+        for (const s of stars) {
+          s.z += s.vz * dt;
+          if (s.z > 1.2) {
+            s.z = 0.15;
+            s.x = rand(0, w);
+            s.y = rand(0, h);
+          }
+          s.x += s.vx * s.z * dt;
+          s.y += s.vy * s.z * dt;
+          s.alpha = s.baseAlpha * (0.35 + 0.65 * s.z);
+          s.scale.set(s.size * (0.4 + s.z * 2.2));
+          wrap(s, w, h);
+        }
+        for (const s of clouds) {
+          const beat = 0.5 + 0.5 * Math.sin(t * beatHz + s.ph);
+          s.x += s.vx * dt;
+          s.y += s.vy * dt;
+          s.alpha = s.baseAlpha * (0.55 + 0.45 * beat) * (1 + 0.12 * kick);
+          s.scale.set(s.size * (1 + 0.04 * beat));
+          wrap(s, w, h, 120);
+        }
+      }
+
       chassis.clear();
       needles.clear();
 
       for (let i = 0; i < 5; i++) {
         const m = meters[i];
-        const cx = w * (i + 0.5) / 5;
+        const cx = slot(i);
         const left = cx - faceW / 2;
         const top = bandY - faceH / 2;
         const innerL = left + inset;
