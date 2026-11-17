@@ -19,9 +19,9 @@
   <link rel="icon" href="img/favicon.ico" sizes="any">
   <link rel="icon" href="img/icon-32.png" type="image/png">
   <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
-  <link rel="stylesheet" href="css/style.css?v=45">
+  <link rel="stylesheet" href="css/style.css?v=46">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
-  <script type="module" src="js/fx.js?v=3"></script>
+  <script type="module" src="js/fx.js?v=4"></script>
 </head>
 <body data-active="top">
   <a class="skip" href="#main">Skip to content</a>
@@ -38,11 +38,11 @@
       </span>
     </a>
     <nav aria-label="Plugins">
-      <a href="#tew03" style="--accent: #e8c200;">TEW03</a>
-      <a href="#k1x" style="--accent: #d94214;">K1X</a>
-      <a href="#5hkr" style="--accent: #ff00ff;">5HKR</a>
-      <a href="#v4jb" style="--accent: #6fc3b8;">V4JB</a>
-      <a href="#f4rt" style="--accent: #02f53a;">F4RT</a>
+      <a href="instruments.html#tew03" style="--accent: #e8c200;">TEW03</a>
+      <a href="instruments.html#k1x" style="--accent: #d94214;">K1X</a>
+      <a href="instruments.html#5hkr" style="--accent: #ff00ff;">5HKR</a>
+      <a href="instruments.html#v4jb" style="--accent: #6fc3b8;">V4JB</a>
+      <a href="instruments.html#f4rt" style="--accent: #02f53a;">F4RT</a>
       <a href="about.html" style="--accent: var(--cream);">About</a>
     </nav>
   </header>
@@ -63,370 +63,23 @@
         See individual plugin websites for full details and manual, this is just the front page. Enjoy!
       </p>
         <ul class="tiles">
-          <li style="--accent: #e8c200;"><a href="#tew03"><img src="img/tew03-logo.png" alt="" width="96" height="96"><span>TEW03</span></a></li>
-          <li style="--accent: #d94214;"><a href="#k1x"><img src="img/k1x-logo.png" alt="" width="96" height="96"><span>K1X</span></a></li>
-          <li style="--accent: #ff00ff;"><a href="#5hkr"><img src="img/5hkr-logo.png" alt="" width="96" height="96"><span>5HKR</span></a></li>
-          <li style="--accent: #6fc3b8;"><a href="#v4jb"><img src="img/v4jb-logo.png" alt="" width="96" height="96"><span>V4JB</span></a></li>
-          <li style="--accent: #02f53a;"><a href="#f4rt"><img src="img/f4rt-logo.png" alt="" width="96" height="96"><span>F4RT</span></a></li>
+          <li style="--accent: #e8c200;"><a href="instruments.html#tew03"><img src="img/tew03-logo.png" alt="" width="96" height="96"><span>TEW03</span></a></li>
+          <li style="--accent: #d94214;"><a href="instruments.html#k1x"><img src="img/k1x-logo.png" alt="" width="96" height="96"><span>K1X</span></a></li>
+          <li style="--accent: #ff00ff;"><a href="instruments.html#5hkr"><img src="img/5hkr-logo.png" alt="" width="96" height="96"><span>5HKR</span></a></li>
+          <li style="--accent: #6fc3b8;"><a href="instruments.html#v4jb"><img src="img/v4jb-logo.png" alt="" width="96" height="96"><span>V4JB</span></a></li>
+          <li style="--accent: #02f53a;"><a href="instruments.html#f4rt"><img src="img/f4rt-logo.png" alt="" width="96" height="96"><span>F4RT</span></a></li>
         </ul>
     </section>
-
-    <!-- Each plugin: --accent is the brand color, --accent2 the partner color, --bg the page tint. -->
-    <article class="plugin" id="tew03" data-scene="tew03" style="--accent: #e8c200; --accent2: #22b14c; --bg: #171400;">
-      <div class="copy">
-        <img class="logo" src="img/tew03-logo.png" alt="" width="144" height="144">
-        <h2>TEW03</h2>
-        <p class="tagline">A monophonic acid synth. Classic 303 squelch (saw/square, resonant filter, accent, slide, drive) plus a bit more bite than a straight clone.</p>
-        <p>A 3x12 step sequencer (16 or 32 steps, accent and slide, key lock), two drawn LFOs you drop on any knob, and a click-to-add FX rack that stays off until you turn it on.</p>
-        <p>Keyboard, Standalone, or Pattern mode. Patterns play the voice and go out as MIDI.</p>
-        <p>Effects are chorus, compressor, delay, distortion, EQ, filter, flanger, phaser, and reverb — click to add, drag to reorder. A five-band parametric EQ sits before and after the rack, with the spectrum behind the curve.</p>
-        <p class="demo">
-          <a href="snd/DEMO-B1-P2P4P7P10.ogg">DEMO-B1-P2P4P7P10.ogg</a>
-          <audio controls preload="metadata" src="snd/DEMO-B1-P2P4P7P10.ogg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="demo">
-          <a href="snd/DEMO-DELIGHTED-TEW03.ogg">DEMO-DELIGHTED-TEW03.ogg</a>
-          <audio controls preload="metadata" src="snd/DEMO-DELIGHTED-TEW03.ogg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="meta">VST3 and standalone.</p>
-        <p class="actions">
-          <a class="download" href="https://github.com/iamtew/TEW03/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
-          <a href="https://iamtew.github.io/TEW03/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
-          <a href="https://iamtew.github.io/TEW03/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
-          <a href="https://github.com/iamtew/TEW03"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
-        </p>
-      </div>
-      <figure class="frame"><img class="shot" src="img/tew03-shot.png" alt="TEW03 main page: synth, sequencer, and LFOs" loading="lazy"></figure>
-    </article>
-
-    <article class="plugin" id="k1x" data-scene="k1x" style="--accent: #d94214; --accent2: #b8c4d6; --bg: #121a28;">
-      <div class="copy">
-        <img class="logo" src="img/k1x-logo.png" alt="" width="144" height="144">
-        <h2>K1X</h2>
-        <p class="tagline">A kick drum (909 default, plus 808 / 707 / Tight / Hard). One job: a kick that sits in the track.</p>
-        <p>Tune, click, decay, drive, filters, then a parallel FX send (distortion / delay / reverb) and post EQ.</p>
-        <p>Length and reverb predelay snap to the DAW tempo.</p>
-        <p>Standalone Play previews the kick. Export WAV writes a stereo shot including the FX tail.</p>
-        <p class="demo">
-          <a href="snd/K1X-DEMO1.mp3">K1X-DEMO1.mp3</a>
-          <audio controls preload="metadata">
-            <source src="snd/K1X-DEMO1.mp3" type="audio/mpeg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="meta">VST3 and standalone.</p>
-        <p class="actions">
-          <a class="download" href="https://github.com/iamtew/K1X/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
-          <a href="https://iamtew.github.io/K1X/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
-          <a href="https://iamtew.github.io/K1X/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
-          <a href="https://github.com/iamtew/K1X"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
-        </p>
-      </div>
-      <figure class="frame"><img class="shot" src="img/k1x-shot.png" alt="K1X Main: waveform, Style, Shape, Hold, Play, Loop, and kick knobs" loading="lazy"></figure>
-    </article>
-
-    <article class="plugin" id="5hkr" data-scene="5hkr" style="--accent: #ff00ff; --accent2: #00e0e0; --bg: #120a1c;">
-      <div class="copy">
-        <img class="logo" src="img/5hkr-logo.png" alt="" width="144" height="144">
-        <h2>5HKR</h2>
-        <p class="tagline">Shaker and percussion overlay — eight lanes on a grid, for groove on top of the drums.</p>
-        <p>Eight synth lanes on a 16th-note grid: CHH, OHH, Crash, Cym, Shaker, Clave, Cow, Rim. Pattern banks, swing, probability, flam, ratchet. CHH chokes OHH.</p>
-        <p>Kits are 707 / 808 / 909 / Linn / Sample, or drop a one-shot on a lane. Mixer, click-to-add FX, post EQ, sidechain duck, and optional per-lane stereo outs.</p>
-        <p>36 factory grooves in three banks. Hold MIDI C1 for bank 1 pattern 1 (Ableton C0), like TEW03.</p>
-        <p class="demo">
-          <a href="snd/5HKR-DEMO1.mp3">5HKR-DEMO1.mp3</a>
-          <audio controls preload="metadata">
-            <source src="snd/5HKR-DEMO1.mp3" type="audio/mpeg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="meta">VST3 and standalone.</p>
-        <p class="actions">
-          <a class="download" href="https://github.com/iamtew/5HKR/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
-          <a href="https://iamtew.github.io/5HKR/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
-          <a href="https://iamtew.github.io/5HKR/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
-          <a href="https://github.com/iamtew/5HKR"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
-        </p>
-      </div>
-      <figure class="frame"><img class="shot" src="img/5hkr-shot.png" alt="5HKR main page: eight lanes and step grid" loading="lazy"></figure>
-    </article>
-
-    <article class="plugin" id="v4jb" data-scene="v4jb" style="--accent: #6fc3b8; --accent2: #f0a030; --bg: #191830;">
-      <div class="copy">
-        <img class="logo" src="img/v4jb-logo.png" alt="" width="144" height="144">
-        <h2>V4JB</h2>
-        <p class="tagline">An atmosphere and texture instrument. Pads, drones, air, fog. Sister plugin to TEW03 and K1X, for beds, drones, and space.</p>
-        <p>A modular additive synth: up to 512 sine partials per voice, 8 voices. A spectral stage feeds swappable spectral modules, then drive, chorus or phaser, delay, and reverb.</p>
-        <p>A morph pad blends four macro snapshots by hand, along drawn paths, or as an envelope.</p>
-        <p>194 factory presets in 16 categories, grouped by mood.</p>
-        <p class="demo">
-          <a href="snd/V4JB-DEMO.ogg">V4JB-DEMO.ogg</a>
-          <audio controls preload="metadata" src="snd/V4JB-DEMO.ogg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="meta">VST3 and standalone.</p>
-        <p class="actions">
-          <a class="download" href="https://github.com/iamtew/V4JB/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
-          <a href="https://iamtew.github.io/V4JB/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
-          <a href="https://iamtew.github.io/V4JB/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
-          <a href="https://github.com/iamtew/V4JB"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
-        </p>
-      </div>
-      <figure class="frame"><img class="shot" src="img/v4jb-shot.png" alt="V4JB Edit page: spectral stage, modules, effects, and keys" loading="lazy"></figure>
-    </article>
-
-    <article class="plugin" id="f4rt" data-scene="f4rt" style="--accent: #02f53a; --accent2: #e4f20f; --bg: #0a1408;">
-      <div class="copy">
-        <img class="logo" src="img/f4rt-logo.png" alt="" width="144" height="144">
-        <h2>F4RT</h2>
-        <p class="tagline">PsyFart Designer. MIDI-triggered psytrance farts, squelches, croaks, zaps, and formant hits.</p>
-        <p>Four oscillators, FM, formants, macros, randomizer, 200 factory seeds, FX rack, MPE-friendly MIDI.</p>
-        <p>The Sound tab is the chain: Oscillators, FM, Vowel → Filter → Grit, Character, Voice, and a Wave scope. Character macros are Size, Wetness, Anger, Alienness, Squelch, Rip Length, Toxicity.</p>
-        <p>Motion, Matrix, FX, and Patches are the other tabs. Flavour (Clean, Psytrance, Forest, Darkpsy, Hi-Tech, Experimental) plus All / Safe / FX / Mutate sit on Voice.</p>
-        <p class="demo">
-          <a href="snd/F4RT-DEMO1.mp3">F4RT-DEMO1.mp3</a>
-          <audio controls preload="metadata">
-            <source src="snd/F4RT-DEMO1.mp3" type="audio/mpeg">
-            Your browser cannot play this demo.
-          </audio>
-        </p>
-        <p class="meta">VST3 and standalone.</p>
-        <p class="actions">
-          <a class="download" href="https://github.com/iamtew/F4RT/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
-          <a href="https://iamtew.github.io/F4RT/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
-          <a href="https://iamtew.github.io/F4RT/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
-          <a href="https://github.com/iamtew/F4RT"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
-        </p>
-      </div>
-      <figure class="frame"><img class="shot" src="img/f4rt-shot.png" alt="F4RT Sound page: oscillators, FM, vowel, filter, grit" loading="lazy"></figure>
-    </article>
   </main>
 
   <footer>
     <p>Free Open Source. Stupid Audio.</p>
   </footer>
 
-  <dialog id="dl" class="dl-dialog" aria-labelledby="dl-title">
-    <button type="button" class="dl-close" data-dl-close aria-label="Close">
-      <svg class="icon" aria-hidden="true"><use href="img/icons.svg#close"></use></svg>
-    </button>
-    <h2 id="dl-title">Download</h2>
-    <div class="dl-kind">
-      <p>The Windows installer is the easy path. It can put the VST3, the standalone app, or both on the machine, and it adds a Start menu shortcut for the app.</p>
-      <div class="dl-row" data-kind="installer" hidden>
-        <a class="download os" data-os="win" hidden>
-          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
-          Windows installer
-        </a>
-      </div>
-    </div>
-    <div class="dl-kind">
-      <p>The VST3 zip is just the plugin. Drop it where your DAW looks for VST3s. Mac builds are ad-hoc signed. The first launch may need a right-click and Open so Gatekeeper lets it through.</p>
-      <div class="dl-row" data-kind="vst3" hidden>
-        <a class="download os" data-os="win" hidden>
-          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
-          Windows
-        </a>
-        <a class="download os" data-os="linux" hidden>
-          <svg class="icon tux" aria-hidden="true"><use href="img/icons.svg#linux"></use></svg>
-          Linux
-        </a>
-        <a class="download os" data-os="mac" hidden>
-          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#apple"></use></svg>
-          macOS
-        </a>
-      </div>
-    </div>
-    <div class="dl-kind">
-      <p>The standalone zip is the app, no DAW required. Same first-launch step on Mac. Linux wants the usual system ALSA, FreeType, fontconfig, and X11 libraries.</p>
-      <div class="dl-row" data-kind="standalone" hidden>
-        <a class="download os" data-os="win" hidden>
-          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
-          Windows
-        </a>
-        <a class="download os" data-os="linux" hidden>
-          <svg class="icon tux" aria-hidden="true"><use href="img/icons.svg#linux"></use></svg>
-          Linux
-        </a>
-        <a class="download os" data-os="mac" hidden>
-          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#apple"></use></svg>
-          macOS
-        </a>
-      </div>
-    </div>
-    <img class="dl-logo" alt="" width="192" height="192">
-  </dialog>
-
   <script>
-    // External sprite refs fail in some browsers. Inline the sheet, then point <use> at the local id.
-    fetch("img/icons.svg?v=5")
-      .then(function (res) { return res.ok ? res.text() : ""; })
-      .then(function (text) {
-        if (!text) return;
-        var wrap = document.createElement("div");
-        wrap.innerHTML = text;
-        var sprite = wrap.firstElementChild;
-        if (!sprite) return;
-        sprite.setAttribute("aria-hidden", "true");
-        sprite.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
-        document.body.insertBefore(sprite, document.body.firstChild);
-        document.querySelectorAll("use").forEach(function (node) {
-          var href = node.getAttribute("href") || "";
-          var hashAt = href.indexOf("#");
-          if (hashAt > 0) node.setAttribute("href", href.slice(hashAt));
-        });
-      });
-
-    // Same names as the plugin sites. Bare *-win-x64.msi is an installer too.
-    var FILE = /-(win|linux|mac)-[^-]+-(installer|vst3|standalone)(?:\.zip|\.msi)$/i;
-    var MSI = /-(win|linux|mac)-[^-]+\.msi$/i;
-    var dialog = document.getElementById("dl");
-    var cache = Object.create(null);
-    var opening = 0;
-
-    function parseAsset(name) {
-      var named = name.match(FILE);
-      if (named) return { os: named[1].toLowerCase(), kind: named[2].toLowerCase() };
-      var msi = name.match(MSI);
-      if (msi) return { os: msi[1].toLowerCase(), kind: "installer" };
-      return null;
-    }
-
-    function resetLinks() {
-      dialog.querySelectorAll("a[data-os]").forEach(function (a) {
-        a.hidden = true;
-        a.removeAttribute("href");
-      });
-      dialog.querySelectorAll(".dl-row").forEach(function (row) { row.hidden = true; });
-    }
-
-    function fill(repo, data) {
-      var base = "https://github.com/iamtew/" + repo + "/releases/download/" + data.tag + "/";
-      data.files.forEach(function (name) {
-        var parsed = parseAsset(name);
-        if (!parsed) return;
-        var link = dialog.querySelector('[data-kind="' + parsed.kind + '"] a[data-os="' + parsed.os + '"]');
-        if (!link) return;
-        link.href = base + encodeURIComponent(name);
-        link.hidden = false;
-      });
-      dialog.querySelectorAll(".dl-row").forEach(function (row) {
-        if (row.querySelector("a[href]")) row.hidden = false;
-      });
-    }
-
-    function loadRelease(repo) {
-      if (cache[repo]) return Promise.resolve(cache[repo]);
-      return fetch("https://iamtew.github.io/" + repo + "/releases.json")
-        .then(function (res) { if (!res.ok) throw new Error("http"); return res.json(); })
-        .then(function (data) {
-          if (!data || !data.tag || !Array.isArray(data.files)) throw new Error("shape");
-          cache[repo] = data;
-          return data;
-        });
-    }
-
-    // Native <audio> progress ignores accent-color. Skin it; controls stay if JS is off.
-    function fmtTime(sec) {
-      if (!isFinite(sec) || sec < 0) return "0:00";
-      var s = Math.floor(sec);
-      return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
-    }
-
-    document.querySelectorAll(".demo audio").forEach(function (audio) {
-      var player = document.createElement("div");
-      player.className = "player";
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.setAttribute("aria-label", "Play");
-      btn.textContent = "▶";
-      var bar = document.createElement("input");
-      bar.type = "range";
-      bar.min = "0";
-      bar.max = "0";
-      bar.step = "any";
-      bar.value = "0";
-      bar.setAttribute("aria-label", "Seek");
-      var time = document.createElement("span");
-      time.className = "player-time";
-      time.textContent = "0:00";
-      audio.classList.add("skinned");
-      audio.removeAttribute("controls");
-      audio.before(player);
-      player.append(btn, bar, time);
-
-      function stamp() {
-        time.textContent = fmtTime(audio.currentTime) + " / " + fmtTime(audio.duration);
-        if (!isFinite(audio.duration) || audio.duration <= 0) return;
-        bar.max = String(audio.duration);
-        if (document.activeElement !== bar) bar.value = String(audio.currentTime);
-      }
-
-      btn.addEventListener("click", function () {
-        if (audio.paused) {
-          document.querySelectorAll(".demo audio").forEach(function (other) {
-            if (other !== audio) other.pause();
-          });
-          audio.play();
-        } else {
-          audio.pause();
-        }
-      });
-      audio.addEventListener("play", function () {
-        btn.textContent = "❚❚";
-        btn.setAttribute("aria-label", "Pause");
-      });
-      audio.addEventListener("pause", function () {
-        btn.textContent = "▶";
-        btn.setAttribute("aria-label", "Play");
-      });
-      audio.addEventListener("timeupdate", stamp);
-      audio.addEventListener("loadedmetadata", stamp);
-      bar.addEventListener("input", function () {
-        audio.currentTime = Number(bar.value);
-        stamp();
-      });
-      stamp();
-    });
-
-    if (dialog) {
-      dialog.querySelectorAll("[data-dl-close]").forEach(function (btn) {
-        btn.addEventListener("click", function () { dialog.close(); });
-      });
-      dialog.addEventListener("click", function (event) {
-        if (event.target === dialog) dialog.close();
-      });
-
-      document.querySelectorAll(".actions .download").forEach(function (btn) {
-        btn.addEventListener("click", function (event) {
-          var article = btn.closest(".plugin");
-          var repo = (btn.getAttribute("href") || "").match(/github\.com\/iamtew\/([^/]+)/);
-          if (!article || !repo) return;
-          event.preventDefault();
-          var token = ++opening;
-          var fallback = btn.href;
-          var name = repo[1];
-          loadRelease(name).then(function (data) {
-            if (token !== opening) return;
-            resetLinks();
-            dialog.style.setProperty("--accent", article.style.getPropertyValue("--accent").trim());
-            dialog.style.setProperty("--accent2", article.style.getPropertyValue("--accent2").trim());
-            dialog.querySelector("#dl-title").textContent = "Download " + article.querySelector("h2").textContent;
-            dialog.querySelector(".dl-logo").src = article.querySelector(".logo").src;
-            fill(name, data);
-            if (!dialog.querySelector("a[data-os][href]")) throw new Error("empty");
-            dialog.showModal();
-          }).catch(function () {
-            if (token !== opening) return;
-            window.location.href = fallback;
-          });
-        });
-      });
+    // Old catalog hashes lived on this page. Send them to the instruments list.
+    if (/^#(tew03|k1x|5hkr|v4jb|f4rt)$/.test(location.hash)) {
+      location.replace("instruments.html" + location.hash);
     }
   </script>
 </body>
