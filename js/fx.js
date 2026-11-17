@@ -92,7 +92,7 @@ async function start() {
 
   // Only build scenes the page actually has. Landing is hero only.
   const makers = {
-    top: () => heroScene(PIXI, glow, w0, h0, budget),
+    top: () => vuScene(PIXI, w0, h0),
     catalog: () => heroScene(PIXI, glow, w0, h0, budget, 120),
     tew03: () => tewScene(PIXI),
     k1x: () => kickScene(PIXI, glow),
@@ -190,6 +190,135 @@ function glowLine(g, pts, color, scale = 1, passes = GLOW_PASSES) {
 function wrap(s, w, h, m = 40) {
   if (s.x < -m) s.x += w + 2 * m; else if (s.x > w + m) s.x -= w + 2 * m;
   if (s.y < -m) s.y += h + 2 * m; else if (s.y > h + m) s.y -= h + 2 * m;
+}
+
+// ---------- Landing: analog VU meters ----------
+// Five vintage faces in the lower third. Needles idle, kick together on a
+// 120 BPM bar, never pin. Housing is not additive (that would look neon).
+
+function vuScene(PIXI, _w0, _h0) {
+  const VU_BPM = 120;
+  const VU_BAR = (60 / VU_BPM) * 4; // 2 s
+  const REST = 0.28;
+  const ANG0 = -50 * Math.PI / 180;
+  const ANG1 = 48 * Math.PI / 180;
+  const LEAN = 8 * Math.PI / 180;
+  const NEEDLE_GLOW = [[7, 0.12], [2, 0.85]];
+
+  const root = new PIXI.Container();
+  const chassis = new PIXI.Graphics();
+  const needles = new PIXI.Graphics();
+  needles.blendMode = 'add';
+  root.addChild(chassis, needles);
+
+  const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
+  const meters = colors.map((color, i) => ({
+    color,
+    L: REST,
+    lean: 0,
+    ph: i * 1.17,
+    w: 0.35 + i * 0.07,
+  }));
+
+  return {
+    root,
+    update(t, w, h, dt) {
+      const bandH = Math.min(h * 0.28, w * 0.18);
+      const bandY = h * 0.78;
+      const faceW = Math.min(w / 5.6, bandH * 1.35);
+      const faceH = bandH * 0.92;
+      const inset = Math.max(5, faceW * 0.06);
+      const innerW = faceW - inset * 2;
+      const innerH = faceH - inset * 2;
+      const radius = Math.min(innerW * 0.52, innerH * 0.78);
+      const px = pointer.x * w;
+      const py = pointer.y * h;
+
+      let hit = 0, hitD = Infinity, inside = -1;
+      for (let i = 0; i < 5; i++) {
+        const cx = w * (i + 0.5) / 5;
+        const left = cx - faceW / 2;
+        const top = bandY - faceH / 2;
+        if (px >= left && px <= left + faceW && py >= top && py <= top + faceH) inside = i;
+        const d = (px - cx) * (px - cx) + (py - bandY) * (py - bandY);
+        if (d < hitD) { hitD = d; hit = i; }
+      }
+      if (inside >= 0) hit = inside;
+
+      let kick = 0;
+      if (dt > 0) {
+        const p = t % VU_BAR;
+        if (p < 0.08) kick = p / 0.08;
+        else if (p < 0.78) kick = 1 - (p - 0.08) / 0.7;
+      }
+
+      chassis.clear();
+      needles.clear();
+
+      for (let i = 0; i < 5; i++) {
+        const m = meters[i];
+        const cx = w * (i + 0.5) / 5;
+        const left = cx - faceW / 2;
+        const top = bandY - faceH / 2;
+        const innerL = left + inset;
+        const innerT = top + inset;
+        const pivotX = cx;
+        const pivotY = innerT + innerH - 3;
+
+        if (dt === 0) {
+          m.L = REST;
+          m.lean = 0;
+        } else {
+          const target = clamp(REST + 0.06 * Math.sin(t * m.w + m.ph) + 0.35 * kick, 0.08, 0.82);
+          const tau = target > m.L ? 0.18 : 0.32;
+          m.L += (target - m.L) * (1 - Math.exp(-dt / tau));
+          m.L = clamp(m.L, 0.08, 0.82);
+          const want = i === hit ? clamp((px - cx) / (faceW * 0.5), -1, 1) * LEAN : 0;
+          m.lean += (want - m.lean) * (1 - Math.exp(-dt / 0.12));
+        }
+
+        chassis.roundRect(left, top, faceW, faceH, 7).fill({ color: 0x0b0b0f, alpha: 0.42 });
+        chassis.roundRect(left, top, faceW, faceH, 7).stroke({ width: 1.2, color: C.cream, alpha: 0.15 });
+        chassis.roundRect(innerL, innerT, innerW, innerH, 4).fill({ color: 0x16120c, alpha: 0.55 });
+
+        for (let k = 0; k <= 10; k++) {
+          const a = ANG0 + (50 * Math.PI / 180 - ANG0) * (k / 10);
+          const major = k % 5 === 0;
+          const cA = Math.cos(a), sA = Math.sin(a);
+          const x0 = pivotX + sA * radius;
+          const y0 = pivotY - cA * radius;
+          const tick = major ? 9 : 5;
+          chassis.moveTo(x0, y0);
+          chassis.lineTo(pivotX + sA * (radius - tick), pivotY - cA * (radius - tick));
+          chassis.stroke({
+            width: major ? 1.4 : 1,
+            color: m.color,
+            alpha: major ? 0.45 : 0.28,
+            cap: 'round',
+          });
+        }
+
+        chassis.moveTo(innerL + 5, innerT + 4);
+        chassis.lineTo(innerL + innerW * 0.62, innerT + 4);
+        chassis.lineTo(innerL + 5, innerT + innerH * 0.55);
+        chassis.closePath();
+        chassis.fill({ color: 0xffffff, alpha: 0.05 });
+        chassis.rect(innerL + 8, innerT + 3, innerW - 16, 1.5).fill({ color: C.cream, alpha: 0.06 });
+
+        const ang = ANG0 + (ANG1 - ANG0) * m.L + m.lean;
+        const len = radius - 4;
+        const tx = pivotX + Math.sin(ang) * len;
+        const ty = pivotY - Math.cos(ang) * len;
+        glowLine(needles, [pivotX, pivotY, tx, ty], m.color, 1, NEEDLE_GLOW);
+        const bx = Math.cos(ang) * 1.6, by = Math.sin(ang) * 1.6;
+        needles.moveTo(pivotX - bx, pivotY - by);
+        needles.lineTo(pivotX + bx, pivotY + by);
+        needles.lineTo(tx, ty);
+        needles.closePath();
+        needles.fill({ color: m.color, alpha: 0.85 });
+      }
+    },
+  };
 }
 
 // ---------- Hero: five-color flow field ----------
