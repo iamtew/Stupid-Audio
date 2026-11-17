@@ -10,7 +10,7 @@ const BPM = 124;
 const BEAT = 60 / BPM;
 const SIXTEENTH = BEAT / 4;
 
-// Plugin palettes, matching the inline --accent/--accent2 values in index.html.
+// Plugin palettes, matching the inline --accent/--accent2 values in instruments.html.
 const C = {
   tewYellow: 0xe8c200, tewGreen: 0x22b14c, tewRed: 0xff2a00, cream: 0xf4ead0,
   k1xOrange: 0xd94214, k1xSteel: 0xb8c4d6,
@@ -90,14 +90,20 @@ async function start() {
   // Particle budget scales with screen area so phones stay smooth.
   const budget = clamp(Math.round((w0 * h0) / 4000), 120, 500);
 
-  const scenes = {
-    top: heroScene(PIXI, glow, w0, h0, budget),
-    tew03: tewScene(PIXI),
-    k1x: kickScene(PIXI, glow),
-    '5hkr': grooveScene(PIXI),
-    v4jb: fogScene(PIXI, glow, w0, h0),
-    f4rt: fartScene(PIXI, glow, w0, h0),
+  // Only build scenes the page actually has. Landing is hero only.
+  const makers = {
+    top: () => heroScene(PIXI, glow, w0, h0, budget),
+    tew03: () => tewScene(PIXI),
+    k1x: () => kickScene(PIXI, glow),
+    '5hkr': () => grooveScene(PIXI),
+    v4jb: () => fogScene(PIXI, glow, w0, h0),
+    f4rt: () => fartScene(PIXI, glow, w0, h0),
   };
+  const scenes = {};
+  for (const [key, make] of Object.entries(makers)) {
+    if (!document.querySelector('[data-scene="' + key + '"]')) continue;
+    scenes[key] = make();
+  }
   for (const [key, s] of Object.entries(scenes)) {
     s.root.alpha = key === active ? 1 : 0;
     app.stage.addChild(s.root);

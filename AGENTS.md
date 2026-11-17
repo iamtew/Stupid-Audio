@@ -16,10 +16,13 @@ Humor can name the product as it is (F4RT is a fart designer). Humor cannot dunk
 
 Humble means one person, focused boxes, MIT, the site is the front door. It does not mean talking down or apologizing for the work.
 
-## Main page
+## Landing (`index.html`)
 
 The intro lede is visitor copy in that voice. Do not rewrite it into catalog/hub instructions.
+Tiles and header plugin names link to `instruments.html#id`.
 
-Introduce the collection and give each plugin—TEW03, K1X, SNR3, 5HKR, V4JB, and F4RT—a 3-5 sentence blurb. Base every blurb on verified details from that plugin's checkout or GitHub remote; do not infer or invent features. Locate each project's logo in its checkout, include the logo on the main page, and use static asset paths that work on GitHub Pages. Keep plugin names, logos, and links consistent with the authoritative project sources.
+## Instruments (`instruments.html`)
 
-Page should have section to each plugin that has link to Website, Manual, Download, and GitHub of Plugin.
+Give each plugin—TEW03, K1X, SNR3, 5HKR, V4JB, and F4RT—a 3-5 sentence blurb. Base every blurb on verified details from that plugin's checkout or GitHub remote; do not infer or invent features. Locate each project's logo in its checkout, include the logo, and use static asset paths that work on GitHub Pages. Keep plugin names, logos, and links consistent with the authoritative project sources.
+
+Each plugin section has Website, Manual, Download, and GitHub.
