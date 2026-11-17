@@ -168,6 +168,35 @@ function glowTexture(PIXI, size = 64) {
   return PIXI.Texture.from(c);
 }
 
+// Soft irregular gas: stacked blurred ellipses, tinted per sprite.
+function nebulaTexture(PIXI, size = 256) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const g = c.getContext('2d');
+  const m = size / 2;
+  g.filter = 'blur(' + Math.round(size * 0.08) + 'px)';
+  const n = 7 + Math.floor(Math.random() * 5);
+  for (let i = 0; i < n; i++) {
+    g.save();
+    g.translate(m + rand(-m * 0.3, m * 0.3), m + rand(-m * 0.3, m * 0.3));
+    g.rotate(rand(0, Math.PI * 2));
+    g.scale(rand(0.4, 1.4), rand(0.2, 0.62));
+    const rad = m * rand(0.32, 0.72);
+    const a = rand(0.2, 0.55);
+    const grd = g.createRadialGradient(0, 0, 0, 0, 0, rad);
+    grd.addColorStop(0, 'rgba(255,255,255,' + a + ')');
+    grd.addColorStop(0.42, 'rgba(255,255,255,' + (a * 0.32) + ')');
+    grd.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = grd;
+    g.beginPath();
+    g.arc(0, 0, rad, 0, Math.PI * 2);
+    g.fill();
+    g.restore();
+  }
+  g.filter = 'none';
+  return PIXI.Texture.from(c);
+}
+
 function glowSprite(PIXI, tex, tint) {
   const s = new PIXI.Sprite(tex);
   s.anchor.set(0.5);
@@ -233,12 +262,16 @@ function spaceScene(PIXI, glow, w0, h0) {
     stars.push(s);
   }
 
+  const gas = [0, 1, 2, 3, 4].map(() => nebulaTexture(PIXI));
   const clouds = [];
   for (let i = 0; i < 13; i++) {
     const huge = i < 5;
-    const s = glowSprite(PIXI, glow, colors[i % 5]);
-    s.size = huge ? rand(5.5, 8) : rand(3, 5.2);
-    s.baseAlpha = huge ? rand(0.04, 0.07) : rand(0.06, 0.1);
+    const s = glowSprite(PIXI, gas[i % gas.length], colors[i % 5]);
+    s.size = huge ? rand(1.6, 2.5) : rand(0.95, 1.6);
+    s.aspect = rand(0.55, 1.55);
+    s.rot0 = rand(0, Math.PI * 2);
+    s.spin = rand(-0.05, 0.05);
+    s.baseAlpha = huge ? rand(0.09, 0.16) : rand(0.11, 0.2);
     s.vz = huge ? rand(0.018, 0.032) : rand(0.028, 0.05);
     s.ph = i * 0.87;
     place(s, rand(0.35, 1.15));
@@ -256,7 +289,6 @@ function spaceScene(PIXI, glow, w0, h0) {
         const k = foc / s.z;
         s.x = cx0 + s.ox * k;
         s.y = cy0 + s.oy * k;
-        s.rotation = Math.atan2(s.oy, s.ox);
         return k;
       };
       const passed = (s) => s.z < 0.14
@@ -272,20 +304,23 @@ function spaceScene(PIXI, glow, w0, h0) {
           if (p < 0.78) flashEnv = 1 - (p - 0.08) / 0.7;
           if (p < 1.6) bloom = 1 - (p - 0.08) / 1.52;
         }
-        if (p < 1.5) ringLife = 1 - p / 1.5;
+        if (p < 3) ringLife = 1 - p / 3;
       }
 
       if (dt === 0) {
         for (const s of stars) {
           project(s);
           const g = clamp(1.15 / s.z, 0.9, 6);
+          s.rotation = Math.atan2(s.oy, s.ox);
           s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
           s.scale.set(s.size * g * 1.5, s.size * g);
         }
         for (const s of clouds) {
           project(s);
+          s.rotation = s.rot0;
           s.alpha = s.baseAlpha;
-          s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55));
+          const d = s.size * clamp(0.55 / s.z, 0.45, 1.55);
+          s.scale.set(d * s.aspect, d / s.aspect);
         }
         flash.alpha = 0;
         ring.clear();
@@ -297,6 +332,7 @@ function spaceScene(PIXI, glow, w0, h0) {
         project(s);
         if (passed(s)) { place(s, 1.15); project(s); }
         const g = clamp(1.15 / s.z, 0.9, 6);
+        s.rotation = Math.atan2(s.oy, s.ox);
         s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
         s.scale.set(s.size * g * 1.5, s.size * g);
       }
@@ -305,8 +341,10 @@ function spaceScene(PIXI, glow, w0, h0) {
         const beat = 0.5 + 0.5 * Math.sin(t * beatHz + s.ph);
         project(s);
         if (passed(s)) { place(s, 1.15); project(s); }
+        s.rotation = s.rot0 + t * s.spin;
         s.alpha = s.baseAlpha * (0.55 + 0.45 * beat) * (1 + 0.7 * bloom);
-        s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55) * (1 + 0.04 * beat));
+        const d = s.size * clamp(0.55 / s.z, 0.45, 1.55) * (1 + 0.04 * beat);
+        s.scale.set(d * s.aspect, d / s.aspect);
       }
 
       flash.x = cx0;
@@ -317,7 +355,7 @@ function spaceScene(PIXI, glow, w0, h0) {
       ring.clear();
       if (ringLife > 0) {
         const maxR = Math.hypot(w, h) * 0.45;
-        const r = maxR * (1 - Math.exp(-p * 2.2));
+        const r = maxR * (1 - Math.exp(-p * 1.1));
         for (const [width, alpha] of GLOW_PASSES) {
           ring.circle(cx0, cy0, r).stroke({
             width: width * (0.4 + ringLife),
