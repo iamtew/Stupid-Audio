@@ -92,7 +92,7 @@ async function start() {
 
   // Only build scenes the page actually has. Landing is hero only.
   const makers = {
-    top: () => vuScene(PIXI, glow, w0, h0),
+    top: () => spaceScene(PIXI, glow, w0, h0),
     catalog: () => heroScene(PIXI, glow, w0, h0, budget, 120),
     tew03: () => tewScene(PIXI),
     k1x: () => kickScene(PIXI, glow),
@@ -192,34 +192,24 @@ function wrap(s, w, h, m = 40) {
   if (s.y < -m) s.y += h + 2 * m; else if (s.y > h + m) s.y -= h + 2 * m;
 }
 
-// ---------- Landing: analog VU meters ----------
-// Five vintage faces in the lower third. Needles idle, kick together on a
-// 120 BPM bar, never pin. Housing is not additive (that would look neon).
+// ---------- Landing: fly-through space ----------
+// Stars and nebula fall out of a vanishing point. Every 4 bars at 120 BPM
+// a soft nova hits the whole view (flash + ring + nebula bloom).
 
-function vuScene(PIXI, glow, w0, h0) {
-  const VU_BPM = 120;
-  const VU_BAR = (60 / VU_BPM) * 4; // 2 s
-  const REST = 0.28;
-  const ANG0 = -50 * Math.PI / 180;
-  const ANG1 = 48 * Math.PI / 180;
-  const LEAN = 8 * Math.PI / 180;
-  const NEEDLE_GLOW = [[7, 0.12], [2, 0.85]];
+function spaceScene(PIXI, glow, w0, h0) {
+  const BPM120 = 120;
+  const BAR = (60 / BPM120) * 4; // 2 s
+  const CYCLE = BAR * 4;         // 8 s — one nova
 
   const root = new PIXI.Container();
   const sky = new PIXI.Container();
-  const chassis = new PIXI.Graphics();
-  const needles = new PIXI.Graphics();
-  needles.blendMode = 'add';
-  root.addChild(sky, chassis, needles);
+  const ring = new PIXI.Graphics();
+  ring.blendMode = 'add';
+  const flash = glowSprite(PIXI, glow, C.cream);
+  flash.alpha = 0;
+  root.addChild(sky, ring, flash);
 
   const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
-  const meters = colors.map((color, i) => ({
-    color,
-    L: REST,
-    lean: 0,
-    ph: i * 1.17,
-    w: 0.35 + i * 0.07,
-  }));
 
   // World offsets ox,oy and depth z. Screen pos is center + offset * (focal / z)
   // so motion in z reads as flying into the vanishing point.
@@ -259,39 +249,7 @@ function vuScene(PIXI, glow, w0, h0) {
   return {
     root,
     update(t, w, h, dt) {
-      const bandH = Math.min(h * 0.28, w * 0.18);
-      const bandY = h * 0.78;
-      const padX = Math.max(32, w * 0.05);
-      const span = w - padX * 2;
-      const faceW = Math.min(span / 6.2, bandH * 1.2);
-      const faceH = bandH * 0.92;
-      const slot = (i) => padX + span * (i + 0.5) / 5;
-      const inset = Math.max(5, faceW * 0.06);
-      const innerW = faceW - inset * 2;
-      const innerH = faceH - inset * 2;
-      const radius = Math.min(innerW * 0.52, innerH * 0.78);
-      const px = pointer.x * w;
-      const py = pointer.y * h;
-
-      let hit = 0, hitD = Infinity, inside = -1;
-      for (let i = 0; i < 5; i++) {
-        const cx = slot(i);
-        const left = cx - faceW / 2;
-        const top = bandY - faceH / 2;
-        if (px >= left && px <= left + faceW && py >= top && py <= top + faceH) inside = i;
-        const d = (px - cx) * (px - cx) + (py - bandY) * (py - bandY);
-        if (d < hitD) { hitD = d; hit = i; }
-      }
-      if (inside >= 0) hit = inside;
-
-      let kick = 0;
-      if (dt > 0) {
-        const p = t % VU_BAR;
-        if (p < 0.08) kick = p / 0.08;
-        else if (p < 0.78) kick = 1 - (p - 0.08) / 0.7;
-      }
-
-      const beatHz = Math.PI * 2 * (VU_BPM / 60);
+      const beatHz = Math.PI * 2 * (BPM120 / 60);
       const cx0 = w * 0.5, cy0 = h * 0.5;
       const foc = Math.min(w, h) * 0.55;
       const project = (s) => {
@@ -305,6 +263,18 @@ function vuScene(PIXI, glow, w0, h0) {
         || Math.abs(s.x - cx0) > w * 0.62
         || Math.abs(s.y - cy0) > h * 0.62;
 
+      let flashEnv = 0, bloom = 0, ringLife = 0, p = 0;
+      if (dt > 0) {
+        p = t % CYCLE;
+        if (p < 0.08) {
+          flashEnv = bloom = p / 0.08;
+        } else {
+          if (p < 0.78) flashEnv = 1 - (p - 0.08) / 0.7;
+          if (p < 1.6) bloom = 1 - (p - 0.08) / 1.52;
+        }
+        if (p < 1.5) ringLife = 1 - p / 1.5;
+      }
+
       if (dt === 0) {
         for (const s of stars) {
           project(s);
@@ -317,89 +287,44 @@ function vuScene(PIXI, glow, w0, h0) {
           s.alpha = s.baseAlpha;
           s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55));
         }
-      } else {
-        for (const s of stars) {
-          s.z -= s.vz * dt;
-          project(s);
-          if (passed(s)) { place(s, 1.15); project(s); }
-          const g = clamp(1.15 / s.z, 0.9, 6);
-          s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
-          s.scale.set(s.size * g * 1.5, s.size * g);
-        }
-        for (const s of clouds) {
-          s.z -= s.vz * dt;
-          const beat = 0.5 + 0.5 * Math.sin(t * beatHz + s.ph);
-          project(s);
-          if (passed(s)) { place(s, 1.15); project(s); }
-          s.alpha = s.baseAlpha * (0.55 + 0.45 * beat) * (1 + 0.12 * kick);
-          s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55) * (1 + 0.04 * beat));
-        }
+        flash.alpha = 0;
+        ring.clear();
+        return;
       }
 
-      chassis.clear();
-      needles.clear();
+      for (const s of stars) {
+        s.z -= s.vz * dt;
+        project(s);
+        if (passed(s)) { place(s, 1.15); project(s); }
+        const g = clamp(1.15 / s.z, 0.9, 6);
+        s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
+        s.scale.set(s.size * g * 1.5, s.size * g);
+      }
+      for (const s of clouds) {
+        s.z -= s.vz * dt;
+        const beat = 0.5 + 0.5 * Math.sin(t * beatHz + s.ph);
+        project(s);
+        if (passed(s)) { place(s, 1.15); project(s); }
+        s.alpha = s.baseAlpha * (0.55 + 0.45 * beat) * (1 + 0.7 * bloom);
+        s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55) * (1 + 0.04 * beat));
+      }
 
-      for (let i = 0; i < 5; i++) {
-        const m = meters[i];
-        const cx = slot(i);
-        const left = cx - faceW / 2;
-        const top = bandY - faceH / 2;
-        const innerL = left + inset;
-        const innerT = top + inset;
-        const pivotX = cx;
-        const pivotY = innerT + innerH - 3;
+      flash.x = cx0;
+      flash.y = cy0;
+      flash.alpha = 0.18 * flashEnv;
+      flash.scale.set(6 + 10 * flashEnv);
 
-        if (dt === 0) {
-          m.L = REST;
-          m.lean = 0;
-        } else {
-          const target = clamp(REST + 0.06 * Math.sin(t * m.w + m.ph) + 0.35 * kick, 0.08, 0.82);
-          const tau = target > m.L ? 0.18 : 0.32;
-          m.L += (target - m.L) * (1 - Math.exp(-dt / tau));
-          m.L = clamp(m.L, 0.08, 0.82);
-          const want = i === hit ? clamp((px - cx) / (faceW * 0.5), -1, 1) * LEAN : 0;
-          m.lean += (want - m.lean) * (1 - Math.exp(-dt / 0.12));
-        }
-
-        chassis.roundRect(left, top, faceW, faceH, 7).fill({ color: 0x0b0b0f, alpha: 0.42 });
-        chassis.roundRect(left, top, faceW, faceH, 7).stroke({ width: 1.2, color: C.cream, alpha: 0.15 });
-        chassis.roundRect(innerL, innerT, innerW, innerH, 4).fill({ color: 0x16120c, alpha: 0.55 });
-
-        for (let k = 0; k <= 10; k++) {
-          const a = ANG0 + (50 * Math.PI / 180 - ANG0) * (k / 10);
-          const major = k % 5 === 0;
-          const cA = Math.cos(a), sA = Math.sin(a);
-          const x0 = pivotX + sA * radius;
-          const y0 = pivotY - cA * radius;
-          const tick = major ? 9 : 5;
-          chassis.moveTo(x0, y0);
-          chassis.lineTo(pivotX + sA * (radius - tick), pivotY - cA * (radius - tick));
-          chassis.stroke({
-            width: major ? 1.4 : 1,
-            color: m.color,
-            alpha: major ? 0.45 : 0.28,
-            cap: 'round',
+      ring.clear();
+      if (ringLife > 0) {
+        const maxR = Math.hypot(w, h) * 0.45;
+        const r = maxR * (1 - Math.exp(-p * 2.2));
+        for (const [width, alpha] of GLOW_PASSES) {
+          ring.circle(cx0, cy0, r).stroke({
+            width: width * (0.4 + ringLife),
+            color: C.cream,
+            alpha: alpha * ringLife * ringLife * 0.55,
           });
         }
-
-        chassis.moveTo(innerL + 5, innerT + 4);
-        chassis.lineTo(innerL + innerW * 0.62, innerT + 4);
-        chassis.lineTo(innerL + 5, innerT + innerH * 0.55);
-        chassis.closePath();
-        chassis.fill({ color: 0xffffff, alpha: 0.05 });
-        chassis.rect(innerL + 8, innerT + 3, innerW - 16, 1.5).fill({ color: C.cream, alpha: 0.06 });
-
-        const ang = ANG0 + (ANG1 - ANG0) * m.L + m.lean;
-        const len = radius - 4;
-        const tx = pivotX + Math.sin(ang) * len;
-        const ty = pivotY - Math.cos(ang) * len;
-        glowLine(needles, [pivotX, pivotY, tx, ty], m.color, 1, NEEDLE_GLOW);
-        const bx = Math.cos(ang) * 1.6, by = Math.sin(ang) * 1.6;
-        needles.moveTo(pivotX - bx, pivotY - by);
-        needles.lineTo(pivotX + bx, pivotY + by);
-        needles.lineTo(tx, ty);
-        needles.closePath();
-        needles.fill({ color: m.color, alpha: 0.85 });
       }
     },
   };
