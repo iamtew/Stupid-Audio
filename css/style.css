@@ -184,12 +184,6 @@ footer,
   padding: 4rem clamp(1.25rem, 4vw, 3rem);
 }
 
-.intro.short {
-  min-height: unset;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .intro.short h1 {
   font-family: system-ui, sans-serif;
   font-size: clamp(1.4rem, 3vw, 2rem);

@@ -93,6 +93,7 @@ async function start() {
   // Only build scenes the page actually has. Landing is hero only.
   const makers = {
     top: () => heroScene(PIXI, glow, w0, h0, budget),
+    catalog: () => heroScene(PIXI, glow, w0, h0, budget, 120),
     tew03: () => tewScene(PIXI),
     k1x: () => kickScene(PIXI, glow),
     '5hkr': () => grooveScene(PIXI),
@@ -195,7 +196,7 @@ function wrap(s, w, h, m = 40) {
 // Streaks in all five plugin colors ride a slowly shifting vector field and
 // part around the pointer.
 
-function heroScene(PIXI, glow, w0, h0, n) {
+function heroScene(PIXI, glow, w0, h0, n, pulseBpm) {
   const root = new PIXI.Container();
   const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
   const ps = [];
@@ -206,16 +207,33 @@ function heroScene(PIXI, glow, w0, h0, n) {
     // Mostly small streaks, with ~8% big soft bokeh for depth.
     const big = Math.random() < 0.08;
     s.size = big ? rand(1.2, 2.4) : rand(0.08, 0.3);
-    s.alpha = big ? rand(0.05, 0.12) : rand(0.35, 0.85);
+    s.baseAlpha = big ? rand(0.05, 0.12) : rand(0.35, 0.85);
+    s.alpha = s.baseAlpha;
     s.speed = big ? rand(8, 20) : rand(25, 80);
+    s.pulse = big && pulseBpm;
     root.addChild(s);
     ps.push(s);
+  }
+  if (pulseBpm) {
+    for (let i = 0; i < 5; i++) {
+      const s = glowSprite(PIXI, glow, colors[i]);
+      s.x = rand(0, w0);
+      s.y = rand(0, h0);
+      s.size = rand(2.8, 4.6);
+      s.baseAlpha = rand(0.04, 0.08);
+      s.alpha = s.baseAlpha;
+      s.speed = rand(4, 12);
+      s.pulse = true;
+      root.addChild(s);
+      ps.push(s);
+    }
   }
 
   return {
     root,
     update(t, w, h, dt) {
       const px = pointer.x * w, py = pointer.y * h, r2 = 150 * 150;
+      const beat = pulseBpm ? 0.5 + 0.5 * Math.sin(t * Math.PI * 2 * (pulseBpm / 60)) : 0;
       for (const s of ps) {
         const a = (Math.sin(s.x * 0.0025 + t * 0.15) + Math.cos(s.y * 0.003 - t * 0.1)) * Math.PI;
         let vx = Math.cos(a) * s.speed, vy = Math.sin(a) * s.speed;
@@ -230,6 +248,7 @@ function heroScene(PIXI, glow, w0, h0, n) {
         // Stretch along travel direction so dots read as light trails.
         s.rotation = Math.atan2(vy, vx);
         s.scale.set(s.size * 2.6, s.size);
+        if (s.pulse) s.alpha = s.baseAlpha * (0.45 + 0.55 * beat);
         wrap(s, w, h);
       }
     },
