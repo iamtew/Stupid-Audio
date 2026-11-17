@@ -1,51 +1,53 @@
 # Landing hero backdrop ideas
 
-Pick one. Instruments keeps the current five-color flow field plus the 120 BPM glow pulse. These are for `index.html` only. All of them reuse the existing Pixi canvas in `js/fx.js`, the five plugin colors (TEW03 yellow, K1X orange, 5HKR magenta, V4JB teal, F4RT green), and fall back to CSS if WebGL or reduced-motion is on. No implementation until you say which number.
+Pick one. Instruments keeps its own scenes (flow field, piano-roll squelch, kick rings, groove grid, partials/fog, rising gas). These landing ideas must not repeat those. Five plugin colors still apply (TEW03 yellow, K1X orange, 5HKR magenta, V4JB teal, F4RT green). Pixi canvas, CSS fallback, reduced-motion still frame. No implementation until you say which number.
 
-## 1. Kick drum rings
+Skipped on purpose because they already exist on the catalog: particle flow fields, expanding shockwave rings, sequencer/playhead grids, saw/squelch/elastic waveforms, spectrum/partial bars, fog blobs, rising gas, starfields/crystals.
 
-Concentric rings expand from a low-left “speaker” point on each quarter at 120 BPM, then fade. Each ring is one plugin color, cycling TEW03 → K1X → 5HKR → V4JB → F4RT. Soft additive strokes, not hard UI circles. Pointer nudges the origin a little so it feels live without becoming a toy.
+## 1. Analog VU needles
 
-## 2. Sequencer playhead
+Five vintage meters across the lower third, one per plugin color. Needles idle around a groove and kick together on a slow bar, never pinning. Glass reflections, no bars, no spectrum. Pointer leans the nearest needle. Reads as studio furniture, not a plugin GUI.
 
-A dim 16-step grid sits in the lower third, like a 303/5HKR row seen from far away. A playhead sweeps left to right on the beat. Steps light in plugin colors with a short decay, never busy enough to read as a real sequencer. Pointer can “press” a nearby step, which flashes once and dies.
+## 2. XY scope
 
-## 3. Acid saw wall
+A single phosphor trace draws a slow Lissajous in the middle of the dark, additive green-yellow with the other three colors as ghost afterimages a few degrees out of phase. Persistence decay, no left-to-right waveform. Pointer changes the frequency ratio a little. Classic instrument, none of the plugin scenes use XY.
 
-A few stacked saw-ish polylines span the width, cutoff-bright in the middle, dull at the edges. They drift and squelch slowly; on the beat the brightest line gets a short resonant spike (thicker glow, then back). Colors assigned per voice: yellow and green for the mean one, magenta and teal quieter behind. Pointer warps the nearest vertex like a cutoff knob.
+## 3. Split-flap names
 
-## 4. Fog and partials
+Mechanical airport flaps somewhere behind the lede, cycling TEW03 / K1X / 5HKR / V4JB / F4RT in their colors, then STUPID / AUDIO in cream. Flaps clack on a slow bar, not 16th-note grid. Between flips the rest of the frame is empty. Quiet, graphic, nothing like the current particles.
 
-V4JB mood: a slow teal/indigo fog field with faint sine-partial ticks rising like dust in a shaft of light. Orange specks (K1X) sit low; green (F4RT) high and rare. Almost no beat unless you want a barely-there 2 Hz breath on the fog alpha. Best if the landing should feel like a pad bed, not a rave flyer.
+## 4. Radar sweep
 
-## 5. Lane rain
+A dim polar grid and a rotating beam. Contacts appear as short blips in plugin colors and fade on the phosphor. No expanding kick rings — the beam is a radius that wipes, the blips stay put until the next pass. Pointer is a contact that the beam “paints.”
 
-Eight sparse columns (5HKR’s lane count) drop short ticks and hats downward, staggered, with swing. Each column locked to one color, two leftover colors used as occasional crashes. Density stays low so the wordmark stays readable. Pointer increases gravity in a small radius, like ducking.
+## 5. Label spin
 
-## 6. Morph pad blob
+A large vinyl label, almost filling the viewport, turning very slowly. Five color wedges on the label, spindle hole dark. No radiating shockwaves; the disc is a rigid rotator. Dust specks are stuck to the surface so they rotate with it. Pointer adds a tiny wow/flutter.
 
-A soft four-corner gradient (yellow, orange, magenta, teal) with green as a slow traveler through the middle. The blob morphs along a looping path the way V4JB’s pad does, not a mouse-follow blob. Pointer biases the path a few percent. Quiet, branded, good if the hero copy should stay king.
+## 6. Gel washes
 
-## 7. Formant ghosts
+Theater lights, not plugins: five soft rectangular beams from above, each a plugin color, sweeping independently across a black floor. Edges are barn-door sharp, interiors dim. No particles. On a slow count the beams cross behind the wordmark and part again. Pointer drags the nearest wash.
 
-Three wide, stacked ellipses (vowel-ish) breathe and shift formant-center left/right. Fill is almost transparent; rims use F4RT green and yellow, with the other plugin colors as inner sparks. On each beat the rims thicken a hair, then recede. Reads as “voice/fart designer” without drawing a cartoon.
+## 7. Five-thread weave
 
-## 8. Orbiting logos
+A textile, not cables and not a step grid: warp and weft in the five colors, a slow loom. The cloth occupies the whole frame at low contrast, as if the site were printed on fabric. Beat can tug one shuttle. Pointer snags a thread and lets it spring back.
 
-Five faint plugin-color orbs orbit a dark center behind the wordmark, different radii and periods so they don’t look like a loading spinner. Trails are short. Beat: orbit speed is constant; glow alpha pulses 120 BPM. Pointer tilts the plane. Risk: can look like a splash screen. Only pick this if you want the family to be the picture.
+## 8. Newsprint wordmark
 
-## 9. Spectrum curtain
+Giant halftone dots of the Stupid Audio mark, so coarse you see the dots first. Colors cycle through the five in sectors of the mark. Dots do not drift like the flow field; they scale or threshold on a slow breath. Pointer locally tightens the screen (finer dots).
 
-A mirrored, very low-resolution spectrum (16–32 bars) sits behind the lede, bars in plugin colors cycling across the width. Motion is a fake but musical envelope (kick on 1, hats on offbeats), not live audio. Bars stay dim; peaks never blow out the text. Classic “this is an audio site” cue, easy to overdo — keep the floor near black.
+## 9. Phosphor terminal
 
-## 10. Tape / delay repeats
+A few lines of dim cream/green type, scanline CRT, listing the five names and MIT as if a machine just booted. Cursor blinks. No piano roll, no waveform. Occasional color burst on one keyword. Pointer is ignored, or jitters the horizontal hold.
 
-A single bright streak (cream, then plugin colors) writes a short path and leaves decaying echoes offset in time, like a delay dotted to quarter notes at 120 BPM. Feedback is low so the screen doesn’t fill. New streaks spawn rarely. Pointer is the write head. Feels like studio gear without drawing a rack.
+## 10. Long-exposure highway
 
-## 11. Constellation patch
+Horizontal light paths, like a night photograph of traffic, not a vector-field of dots. Each lane is one plugin color, continuous ribbons with slight perspective. They crawl, they do not wrap like particles. Pointer bends the nearest ribbon (heat haze).
 
-Points in the five colors, sparse, with occasional thin patch-cable curves connecting two of them. Cables fade in, hold, fade out. No beat, or a tiny flash on the destination node at 120 BPM. Pointer reconnects the nearest cable. Quiet, slightly modular, good neighbor to the landing lede.
+## 11. Color organ glass
 
-## 12. Floor dust
+1970s organ lamps behind a frosted pane: five large out-of-focus lamps, one color each, blooming and dimming on complementary rhythms. No rising blobs, no fog drift — lamps are fixed in place, only brightness changes. The frost hides any hard shape so the wordmark stays readable.
 
-Almost nothing: a dark floor, a few large bokeh blobs in plugin colors, slow drift, 120 BPM so faint you only notice if you stare. The landing copy does the work. Use this if every other idea feels too loud next to the wordmark.
+## 12. Isometric crates
+
+A quiet warehouse floor in one-point isometric: five small shipping crates, each stamped with a plugin color. They do not dance. A very slow dolly or a forklift shadow passing once a loop. Pointer can nudge a crate a few pixels. Graphic, object-based, zero overlap with the instrument scenes.
