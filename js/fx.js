@@ -221,18 +221,24 @@ function vuScene(PIXI, glow, w0, h0) {
     w: 0.35 + i * 0.07,
   }));
 
+  // World offsets ox,oy and depth z. Screen pos is center + offset * (focal / z)
+  // so motion in z reads as flying into the vanishing point.
+  const place = (s, z) => {
+    const a = rand(0, Math.PI * 2);
+    const r = rand(0.12, 0.95);
+    s.ox = Math.cos(a) * r;
+    s.oy = Math.sin(a) * r;
+    s.z = z;
+  };
+
   const nStar = clamp(Math.round((w0 * h0) / 9000), 90, 140);
   const stars = [];
   for (let i = 0; i < nStar; i++) {
     const s = glowSprite(PIXI, glow, C.cream);
-    s.x = rand(0, w0);
-    s.y = rand(0, h0);
-    s.z = rand(0.15, 1);
-    s.size = rand(0.04, 0.12);
-    s.vx = rand(4, 14);
-    s.vy = rand(2, 8);
-    s.vz = rand(0.04, 0.12);
-    s.baseAlpha = rand(0.25, 0.7);
+    s.size = rand(0.04, 0.11);
+    s.vz = rand(0.07, 0.16);
+    s.baseAlpha = rand(0.28, 0.75);
+    place(s, rand(0.2, 1.15));
     sky.addChild(s);
     stars.push(s);
   }
@@ -241,14 +247,11 @@ function vuScene(PIXI, glow, w0, h0) {
   for (let i = 0; i < 13; i++) {
     const huge = i < 5;
     const s = glowSprite(PIXI, glow, colors[i % 5]);
-    s.x = rand(0, w0);
-    s.y = rand(0, h0);
     s.size = huge ? rand(5.5, 8) : rand(3, 5.2);
     s.baseAlpha = huge ? rand(0.04, 0.07) : rand(0.06, 0.1);
-    s.vx = rand(-6, 6);
-    s.vy = rand(-4, 4);
+    s.vz = huge ? rand(0.018, 0.032) : rand(0.028, 0.05);
     s.ph = i * 0.87;
-    s.scale.set(s.size);
+    place(s, rand(0.35, 1.15));
     sky.addChild(s);
     clouds.push(s);
   }
@@ -289,36 +292,47 @@ function vuScene(PIXI, glow, w0, h0) {
       }
 
       const beatHz = Math.PI * 2 * (VU_BPM / 60);
+      const cx0 = w * 0.5, cy0 = h * 0.5;
+      const foc = Math.min(w, h) * 0.55;
+      const project = (s) => {
+        const k = foc / s.z;
+        s.x = cx0 + s.ox * k;
+        s.y = cy0 + s.oy * k;
+        s.rotation = Math.atan2(s.oy, s.ox);
+        return k;
+      };
+      const passed = (s) => s.z < 0.14
+        || Math.abs(s.x - cx0) > w * 0.62
+        || Math.abs(s.y - cy0) > h * 0.62;
+
       if (dt === 0) {
         for (const s of stars) {
-          s.alpha = s.baseAlpha * (0.35 + 0.65 * s.z);
-          s.scale.set(s.size * (0.4 + s.z * 2.2));
+          project(s);
+          const g = clamp(1.15 / s.z, 0.9, 6);
+          s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
+          s.scale.set(s.size * g * 1.5, s.size * g);
         }
         for (const s of clouds) {
+          project(s);
           s.alpha = s.baseAlpha;
-          s.scale.set(s.size);
+          s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55));
         }
       } else {
         for (const s of stars) {
-          s.z += s.vz * dt;
-          if (s.z > 1.2) {
-            s.z = 0.15;
-            s.x = rand(0, w);
-            s.y = rand(0, h);
-          }
-          s.x += s.vx * s.z * dt;
-          s.y += s.vy * s.z * dt;
-          s.alpha = s.baseAlpha * (0.35 + 0.65 * s.z);
-          s.scale.set(s.size * (0.4 + s.z * 2.2));
-          wrap(s, w, h);
+          s.z -= s.vz * dt;
+          project(s);
+          if (passed(s)) { place(s, 1.15); project(s); }
+          const g = clamp(1.15 / s.z, 0.9, 6);
+          s.alpha = s.baseAlpha * clamp(0.25 + 0.5 / s.z, 0.2, 0.9);
+          s.scale.set(s.size * g * 1.5, s.size * g);
         }
         for (const s of clouds) {
+          s.z -= s.vz * dt;
           const beat = 0.5 + 0.5 * Math.sin(t * beatHz + s.ph);
-          s.x += s.vx * dt;
-          s.y += s.vy * dt;
+          project(s);
+          if (passed(s)) { place(s, 1.15); project(s); }
           s.alpha = s.baseAlpha * (0.55 + 0.45 * beat) * (1 + 0.12 * kick);
-          s.scale.set(s.size * (1 + 0.04 * beat));
-          wrap(s, w, h, 120);
+          s.scale.set(s.size * clamp(0.55 / s.z, 0.45, 1.55) * (1 + 0.04 * beat));
         }
       }
 
