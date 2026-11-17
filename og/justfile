@@ -1,12 +1,13 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
-# Capture index.html?plugin=NAME. Default TEW03 while we iterate.
+# Capture og/index.html?plugin=NAME. Default TEW03 while we iterate.
+# Server root is the repo, so a bare index.html would be the catalog page.
 og plugin="TEW03":
-    just _shot "index.html?plugin={{ plugin }}" "ogimage-{{ plugin }}.png"
+    just _shot "og/index.html?plugin={{ plugin }}" "ogimage-{{ plugin }}.png"
 
-# Pack OG: index.html with no query.
+# Pack OG: og/index.html with no query.
 og-sa:
-    just _shot "index.html" "ogimage-stupid-audio.png"
+    just _shot "og/index.html" "ogimage-stupid-audio.png"
 
 # Every key in sources.json. Do not run until the composition is settled.
 og-all:
@@ -15,7 +16,7 @@ og-all:
     Set-Location $dir
     $json = Get-Content -Raw (Join-Path $dir 'sources.json') | ConvertFrom-Json
     foreach ($p in $json.PSObject.Properties.Name) {
-      just _shot "index.html?plugin=$p" "ogimage-$p.png"
+      just _shot "og/index.html?plugin=$p" "ogimage-$p.png"
     }
 
 # Capture a local URL path to a PNG via headless Edge.
@@ -24,14 +25,15 @@ og-all:
 _shot path outname:
     #!powershell.exe -NoLogo
     $dir = '{{ justfile_directory() }}'
-    Set-Location $dir
+    $root = (Resolve-Path (Join-Path $dir '..')).Path
+    Set-Location $root
     $out = Join-Path $dir '{{ outname }}'
     $port = 18765
     $url = "http://127.0.0.1:$port/{{ path }}"
     $py = (python -c "import sys; print(sys.executable)").Trim()
     $stdout = Join-Path $env:TEMP 'sa-og-http.out'
     $stderr = Join-Path $env:TEMP 'sa-og-http.err'
-    $p = Start-Process $py -ArgumentList '-m','http.server',"$port",'--bind','127.0.0.1' -WorkingDirectory $dir -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    $p = Start-Process $py -ArgumentList '-m','http.server',"$port",'--bind','127.0.0.1' -WorkingDirectory $root -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     try {
       $ok = $false
       foreach ($i in 1..25) {
@@ -61,9 +63,9 @@ _shot path outname:
     if (-not (Test-Path $out)) { throw "{{ outname }} was not written" }
     Write-Host "Generated $out"
 
-# Serve index.html for live design. Open with or without ?plugin=TEW03. Meat Bag stops this.
+# Serve the repo root so og/index.html can load docs/js. Open /og/index.html. Meat Bag stops this.
 og-serve:
-    python -m http.server 18765 --bind 127.0.0.1
+    python -m http.server 18765 --bind 127.0.0.1 --directory ..
 
 # Move generated PNGs into each site's Pages tree. Does not generate.
 og-install:
@@ -84,7 +86,7 @@ og-install:
       Write-Host 'run those, then just og-install'
       exit 1
     }
-    $catalogImg = (Resolve-Path (Join-Path $dir '..\img')).Path
+    $catalogImg = (Resolve-Path (Join-Path $dir '..\docs\img')).Path
     Move-Item (Join-Path $dir $pack) (Join-Path $catalogImg $pack) -Force
     Write-Host "Moved $pack -> $catalogImg"
     foreach ($p in $json.PSObject.Properties.Name) {
