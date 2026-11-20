@@ -240,19 +240,22 @@
     const C = {
       tewYellow: 0xe8c200,
       k1xOrange: 0xd94214,
+      snrBrass: 0xc4a35a,
       hkrMagenta: 0xff00ff,
       v4jbTeal: 0x6fc3b8,
       f4rtGreen: 0x02f53a,
+      fr3Magenta: 0xe038e9,
+      fn0Mint: 0x35e0a6,
     };
 
     // Hero scene copied from js/fx.js so the pack backdrop matches the site
     // without fetching fx.js. Keep in sync with the original.
     function heroScene(PIXI, glow, w0, h0, n) {
       const root = new PIXI.Container();
-      const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
+      const colors = [C.tewYellow, C.k1xOrange, C.snrBrass, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen, C.fr3Magenta, C.fn0Mint];
       const ps = [];
       for (let i = 0; i < n; i++) {
-        const s = glowSprite(PIXI, glow, colors[i % 5]);
+        const s = glowSprite(PIXI, glow, colors[i % colors.length]);
         s.x = rand(0, w0);
         s.y = rand(0, h0);
         // Mostly small streaks, with ~8% big soft bokeh for depth.

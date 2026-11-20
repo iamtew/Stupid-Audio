@@ -34,5 +34,17 @@
         "background": "https://iamtew.github.io/F4RT/fx.js",
         "logo": "https://iamtew.github.io/F4RT/logo.png",
         "screenshot": "https://iamtew.github.io/F4RT/play.png"
-    }          
+    },
+    "fR3Z0": {
+        "style": "https://iamtew.github.io/fR3Z0/style.css",
+        "background": "https://iamtew.github.io/fR3Z0/fx.js",
+        "logo": "https://iamtew.github.io/fR3Z0/logo.png",
+        "screenshot": "https://iamtew.github.io/fR3Z0/Screenshot1.png"
+    },
+    "fN0B": {
+        "style": "https://iamtew.github.io/fN0B/style.css",
+        "background": "https://iamtew.github.io/fN0B/fx.js",
+        "logo": "https://iamtew.github.io/fN0B/logo.png",
+        "screenshot": "https://iamtew.github.io/fN0B/Screenshot1.png"
+    }
 }
