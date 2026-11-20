@@ -9,13 +9,17 @@ src := env_var_or_default("HOME", env_var("USERPROFILE")) + "\\src"
 default:
     @just --list
 
-# Pull logos from ../TEW03 .. ../F4RT into docs/img/.
+# Pull logos from sibling checkouts into docs/img/.
+# fR3Z0 assets/logo.png is the huge Affinity export; catalog uses the Pages PNG.
 logos:
     Copy-Item '{{src}}\TEW03\assets\logo.png' docs\img\tew03-logo.png -Force
     Copy-Item '{{src}}\K1X\assets\logo.png' docs\img\k1x-logo.png -Force
+    Copy-Item '{{src}}\SNR3\assets\logo.png' docs\img\snr3-logo.png -Force
     Copy-Item '{{src}}\5HKR\assets\logo.png' docs\img\5hkr-logo.png -Force
     Copy-Item '{{src}}\V4JB\assets\logo.png' docs\img\v4jb-logo.png -Force
     Copy-Item '{{src}}\F4RT\assets\logo.png' docs\img\f4rt-logo.png -Force
+    Copy-Item '{{src}}\fR3Z0\docs\logo.png' docs\img\fr3z0-logo.png -Force
+    Copy-Item '{{src}}\fN0B\assets\logo.png' docs\img\fn0b-logo.png -Force
 
 # assets/icon.png is the Affinity export. Source of truth. Never write that file.
 # Derived: docs/img/icon-{32,144,512}.png and docs/img/favicon.ico. Needs ImageMagick (magick).
@@ -50,9 +54,12 @@ wix-copy:
 screenshots:
     Copy-Item '{{src}}\TEW03\docs\screenshot1.png' docs\img\tew03-shot.png -Force
     Copy-Item '{{src}}\K1X\docs\screenshot1.png' docs\img\k1x-shot.png -Force
+    Copy-Item '{{src}}\SNR3\docs\main.png' docs\img\snr3-shot.png -Force
     Copy-Item '{{src}}\5HKR\docs\main.png' docs\img\5hkr-shot.png -Force
     Copy-Item '{{src}}\V4JB\docs\edit.png' docs\img\v4jb-shot.png -Force
     Copy-Item '{{src}}\F4RT\docs\play.png' docs\img\f4rt-shot.png -Force
+    Copy-Item '{{src}}\fR3Z0\docs\Screenshot1.png' docs\img\fr3z0-shot.png -Force
+    Copy-Item '{{src}}\fN0B\docs\Screenshot1.png' docs\img\fn0b-shot.png -Force
 
 # Move generated OG PNGs into each site's Pages tree. See og/justfile.
 og-install:
