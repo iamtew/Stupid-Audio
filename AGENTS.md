@@ -2,7 +2,7 @@
 
 This repository contains a static website hosted on GitHub Pages. Keep changes compatible with static hosting and avoid introducing server-side runtime requirements.
 
-Plugin set and remotes: `.cursor/rules/stupid-audio.mdc`.
+Plugin set and remotes: `.cursor/rules/stupid-audio.mdc`. The full family is live on the public catalog. Do not omit a listed plugin.
 
 # Stupid Audio website
 
@@ -24,7 +24,7 @@ Visible effects names use the Florin (`ƒN0B`, `ƒR3Z0`); IDs and URLs stay ASCI
 
 ## Instruments (`docs/instruments.html`)
 
-Give each plugin—TEW03, K1X, SNR3, 5HKR, V4JB, and F4RT—a 3-5 sentence blurb. Base every blurb on verified details from that plugin's checkout or GitHub remote; do not infer or invent features. Locate each project's logo in its checkout, include the logo, and use static asset paths that work on GitHub Pages. Keep plugin names, logos, and links consistent with the authoritative project sources.
+Give each plugin—TEW03, V4JB, F4RT, K1X, SNR3, and 5HKR—a 3-5 sentence blurb. Base every blurb on verified details from that plugin's checkout or GitHub remote; do not infer or invent features. Locate each project's logo in its checkout, include the logo, and use static asset paths that work on GitHub Pages. Keep plugin names, logos, and links consistent with the authoritative project sources.
 
 Each plugin section has Website, Manual, Download, and GitHub.
 
