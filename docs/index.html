@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stupid Audio — free open source VST3 instruments</title>
-  <meta name="description" content="Free open source VST3 and standalone instruments: TEW03, K1X, SNR3, 5HKR, V4JB, F4RT.">
+  <title>Stupid Audio — free open source VST3 instruments and effects</title>
+  <meta name="description" content="Free open source VST3 plugins: instruments TEW03, K1X, SNR3, 5HKR, V4JB, F4RT, and effects ƒR3Z0, ƒN0B.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Stupid Audio">
-  <meta property="og:title" content="Stupid Audio — free open source VST3 instruments">
-  <meta property="og:description" content="Free open source VST3 and standalone instruments: TEW03, K1X, SNR3, 5HKR, V4JB, F4RT.">
+  <meta property="og:title" content="Stupid Audio — free open source VST3 instruments and effects">
+  <meta property="og:description" content="Free open source VST3 plugins: instruments TEW03, K1X, SNR3, 5HKR, V4JB, F4RT, and effects ƒR3Z0, ƒN0B.">
   <meta property="og:url" content="https://audio.stupid.systems/">
   <meta property="og:image" content="https://audio.stupid.systems/img/ogimage-stupid-audio.png?cachebust=23">
   <meta property="og:image:width" content="1200">
@@ -19,9 +19,9 @@
   <link rel="icon" href="img/favicon.ico" sizes="any">
   <link rel="icon" href="img/icon-32.png" type="image/png">
   <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
-  <link rel="stylesheet" href="css/style.css?v=47">
+  <link rel="stylesheet" href="css/style.css?v=49">
   <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
-  <script type="module" src="js/fx.js?v=11"></script>
+  <script type="module" src="js/fx.js?v=13"></script>
 </head>
 <body data-active="top">
   <a class="skip" href="#main">Skip to content</a>
@@ -39,6 +39,7 @@
     </a>
     <nav aria-label="Site">
       <a href="instruments.html" style="--accent: var(--cream);">Instruments</a>
+      <a href="effects.html" style="--accent: var(--cream);">Effects</a>
       <a href="about.html" style="--accent: var(--cream);">About</a>
     </nav>
   </header>
@@ -56,13 +57,24 @@
         Stupid Audio is a small line of free, open-source VST3 plugins/standalone instruments. 
         See individual plugin websites for full details and manual, this is just the front page. Enjoy!
       </p>
-        <ul class="tiles">
-          <li style="--accent: #e8c200;"><a href="instruments.html#tew03"><img src="img/tew03-logo.png" alt="" width="96" height="96"><span>TEW03</span></a></li>
-          <li style="--accent: #d94214;"><a href="instruments.html#k1x"><img src="img/k1x-logo.png" alt="" width="96" height="96"><span>K1X</span></a></li>
-          <li style="--accent: #ff00ff;"><a href="instruments.html#5hkr"><img src="img/5hkr-logo.png" alt="" width="96" height="96"><span>5HKR</span></a></li>
-          <li style="--accent: #6fc3b8;"><a href="instruments.html#v4jb"><img src="img/v4jb-logo.png" alt="" width="96" height="96"><span>V4JB</span></a></li>
-          <li style="--accent: #02f53a;"><a href="instruments.html#f4rt"><img src="img/f4rt-logo.png" alt="" width="96" height="96"><span>F4RT</span></a></li>
-        </ul>
+        <div class="tile-group">
+          <h2>Instruments</h2>
+          <ul class="tiles cards">
+            <li style="--accent: #e8c200;"><a href="instruments.html#tew03"><img src="img/tew03-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">TEW03</strong><span class="tile-blurb">Monophonic 303 acid synth</span></span></a></li>
+            <li style="--accent: #6fc3b8;"><a href="instruments.html#v4jb"><img src="img/v4jb-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">V4JB</strong><span class="tile-blurb">Additive synth, atmosphere, textures</span></span></a></li>
+            <li style="--accent: #02f53a;"><a href="instruments.html#f4rt"><img src="img/f4rt-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">F4RT</strong><span class="tile-blurb">Psyfarts and stabs, 4-osc FM synth</span></span></a></li>
+            <li style="--accent: #d94214;"><a href="instruments.html#k1x"><img src="img/k1x-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">K1X</strong><span class="tile-blurb">Kick drum creator</span></span></a></li>
+            <li style="--accent: #c4a35a;"><a href="instruments.html#snr3"><img src="img/snr3-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">SNR3</strong><span class="tile-blurb">Snare drum creator</span></span></a></li>
+            <li style="--accent: #ff00ff;"><a href="instruments.html#5hkr"><img src="img/5hkr-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">5HKR</strong><span class="tile-blurb">Percussion overlay</span></span></a></li>
+          </ul>
+        </div>
+        <div class="tile-group">
+          <h2>Effects</h2>
+          <ul class="tiles cards">
+            <li style="--accent: #E038E9;"><a href="effects.html#fr3z0"><img src="img/fr3z0-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">&fnof;R3Z0</strong><span class="tile-blurb">Resonance effect</span></span></a></li>
+            <li style="--accent: #35e0a6;"><a href="effects.html#fn0b"><img src="img/fn0b-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">&fnof;N0B</strong><span class="tile-blurb">Single-knob multi-effect</span></span></a></li>
+          </ul>
+        </div>
     </section>
   </main>
 
@@ -71,9 +83,11 @@
   </footer>
 
   <script>
-    // Old catalog hashes lived on this page. Send them to the instruments list.
-    if (/^#(tew03|k1x|5hkr|v4jb|f4rt)$/.test(location.hash)) {
+    // Old catalog hashes lived on this page. Send them to the right list.
+    if (/^#(tew03|k1x|snr3|5hkr|v4jb|f4rt)$/.test(location.hash)) {
       location.replace("instruments.html" + location.hash);
+    } else if (/^#(fr3z0|fn0b)$/.test(location.hash)) {
+      location.replace("effects.html" + location.hash);
     }
   </script>
 </body>

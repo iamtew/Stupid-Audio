@@ -14,9 +14,12 @@ const SIXTEENTH = BEAT / 4;
 const C = {
   tewYellow: 0xe8c200, tewGreen: 0x22b14c, tewRed: 0xff2a00, cream: 0xf4ead0,
   k1xOrange: 0xd94214, k1xSteel: 0xb8c4d6,
+  snrBrass: 0xc4a35a, snrRust: 0x8a3a22,
   hkrMagenta: 0xff00ff, hkrCyan: 0x00e0e0,
   v4jbTeal: 0x6fc3b8, v4jbOrange: 0xf0a030, v4jbIndigo: 0x4a3f8f,
   f4rtGreen: 0x02f53a, f4rtYellow: 0xe4f20f,
+  fr3Magenta: 0xe038e9, fr3Cyan: 0x2fc1ee,
+  fn0Mint: 0x35e0a6, fn0Amber: 0xf2c14e, fn0Sage: 0x7c918b,
 };
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -96,9 +99,12 @@ async function start() {
     catalog: () => heroScene(PIXI, glow, w0, h0, budget, 120),
     tew03: () => tewScene(PIXI),
     k1x: () => kickScene(PIXI, glow),
+    snr3: () => kickScene(PIXI, glow, C.snrBrass, C.snrRust),
     '5hkr': () => grooveScene(PIXI),
     v4jb: () => fogScene(PIXI, glow, w0, h0),
     f4rt: () => fartScene(PIXI, glow, w0, h0),
+    fr3z0: () => chladniScene(PIXI, glow),
+    fn0b: () => mawScene(PIXI, glow),
   };
   const scenes = {};
   for (const [key, make] of Object.entries(makers)) {
@@ -238,7 +244,7 @@ function spaceScene(PIXI, glow, w0, h0) {
   flash.alpha = 0;
   root.addChild(sky, ring, flash);
 
-  const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
+  const colors = [C.tewYellow, C.k1xOrange, C.snrBrass, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen, C.fr3Magenta, C.fn0Mint];
 
   // World offsets ox,oy and depth z. Screen pos is center + offset * (focal / z)
   // so motion in z reads as flying into the vanishing point.
@@ -266,7 +272,7 @@ function spaceScene(PIXI, glow, w0, h0) {
   const clouds = [];
   for (let i = 0; i < 13; i++) {
     const huge = i < 5;
-    const s = glowSprite(PIXI, gas[i % gas.length], colors[i % 5]);
+    const s = glowSprite(PIXI, gas[i % gas.length], colors[i % colors.length]);
     s.size = huge ? rand(1.6, 2.5) : rand(0.95, 1.6);
     s.aspect = rand(0.55, 1.55);
     s.rot0 = rand(0, Math.PI * 2);
@@ -368,16 +374,16 @@ function spaceScene(PIXI, glow, w0, h0) {
   };
 }
 
-// ---------- Hero: five-color flow field ----------
-// Streaks in all five plugin colors ride a slowly shifting vector field and
+// ---------- Hero: plugin-color flow field ----------
+// Streaks in the catalog plugin colors ride a slowly shifting vector field and
 // part around the pointer.
 
 function heroScene(PIXI, glow, w0, h0, n, pulseBpm) {
   const root = new PIXI.Container();
-  const colors = [C.tewYellow, C.k1xOrange, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen];
+  const colors = [C.tewYellow, C.k1xOrange, C.snrBrass, C.hkrMagenta, C.v4jbTeal, C.f4rtGreen, C.fr3Magenta, C.fn0Mint];
   const ps = [];
   for (let i = 0; i < n; i++) {
-    const s = glowSprite(PIXI, glow, colors[i % 5]);
+    const s = glowSprite(PIXI, glow, colors[i % colors.length]);
     s.x = rand(0, w0);
     s.y = rand(0, h0);
     // Mostly small streaks, with ~8% big soft bokeh for depth.
@@ -391,7 +397,7 @@ function heroScene(PIXI, glow, w0, h0, n, pulseBpm) {
     ps.push(s);
   }
   if (pulseBpm) {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < colors.length; i++) {
       const s = glowSprite(PIXI, glow, colors[i]);
       s.x = rand(0, w0);
       s.y = rand(0, h0);
@@ -506,17 +512,17 @@ function tewScene(PIXI) {
 // Every beat fires a ring burst, a spark spray, and a pitch-dropping sine
 // that decays across the screen like the plugin's waveform view.
 
-function kickScene(PIXI, glow) {
+function kickScene(PIXI, glow, accent = C.k1xOrange, accent2 = C.k1xSteel) {
   const root = new PIXI.Container();
   const rings = new PIXI.Graphics();
   const wave = new PIXI.Graphics();
   rings.blendMode = 'add';
   wave.blendMode = 'add';
-  const core = glowSprite(PIXI, glow, C.k1xOrange);
+  const core = glowSprite(PIXI, glow, accent);
   root.addChild(rings, wave, core);
 
   const sparks = Array.from({ length: 90 }, () => {
-    const s = glowSprite(PIXI, glow, Math.random() < 0.7 ? C.k1xOrange : C.k1xSteel);
+    const s = glowSprite(PIXI, glow, Math.random() < 0.7 ? accent : accent2);
     s.alpha = 0;
     root.addChild(s);
     return s;
@@ -551,10 +557,10 @@ function kickScene(PIXI, glow) {
         if (life <= 0) continue;
         const r = maxR * (1 - Math.exp(-a * 2.2));
         for (const [width, alpha] of GLOW_PASSES) {
-          rings.circle(cx, cy, r).stroke({ width: width * (0.5 + life), color: C.k1xOrange, alpha: alpha * life * life });
+          rings.circle(cx, cy, r).stroke({ width: width * (0.5 + life), color: accent, alpha: alpha * life * life });
         }
         if (a > 0.12) {
-          rings.circle(cx, cy, r * 0.82).stroke({ width: 1.5, color: C.k1xSteel, alpha: 0.5 * life * life });
+          rings.circle(cx, cy, r * 0.82).stroke({ width: 1.5, color: accent2, alpha: 0.5 * life * life });
         }
       }
 
@@ -576,7 +582,7 @@ function kickScene(PIXI, glow) {
         const phase = 70 * u + 55 * (1 - Math.exp(-u * 6)) - t * 6;
         pts.push(x, wy + amp * Math.exp(-u * 2.8) * Math.sin(phase));
       }
-      glowLine(wave, pts, C.k1xOrange);
+      glowLine(wave, pts, accent);
     },
   };
 }
@@ -586,7 +592,7 @@ function kickScene(PIXI, glow) {
 // horizon. Cells flash magenta on quarter notes, cyan otherwise, with a
 // little per-lane swing.
 
-function grooveScene(PIXI) {
+function grooveScene(PIXI, accent = C.hkrMagenta, accent2 = C.hkrCyan) {
   const root = new PIXI.Container();
   const g = new PIXI.Graphics();
   g.blendMode = 'add';
@@ -637,7 +643,7 @@ function grooveScene(PIXI) {
             const a = P(s + 0.06, z0, side), b = P(s + 0.94, z0, side);
             const c = P(s + 0.94, z1, side), d = P(s + 0.06, z1, side);
             const quad = [...a, ...b, ...c, ...d];
-            const color = s % 4 === 0 ? C.hkrMagenta : C.hkrCyan;
+            const color = s % 4 === 0 ? accent : accent2;
             const f = flash[r][s];
             const onHead = s === play ? 0.12 : 0;
             g.poly(quad)
@@ -654,14 +660,14 @@ function grooveScene(PIXI) {
 // Hundreds of slow sine "partials" rise as soft bars under a moving spectral
 // bump; fog drifts through and a few orange sparks float upward.
 
-function fogScene(PIXI, glow, w0, h0) {
+function fogScene(PIXI, glow, w0, h0, accent = C.v4jbTeal, accent2 = C.v4jbOrange, fog3 = C.v4jbIndigo) {
   const root = new PIXI.Container();
   const bars = new PIXI.Graphics();
   bars.blendMode = 'add';
   root.addChild(bars);
 
   const fog = Array.from({ length: 22 }, (_, i) => {
-    const s = glowSprite(PIXI, glow, [C.v4jbTeal, C.v4jbIndigo, 0x8a6fd1][i % 3]);
+    const s = glowSprite(PIXI, glow, [accent, fog3, accent2][i % 3]);
     s.x = rand(0, w0); s.y = rand(0, h0);
     s.scale.set(rand(6, 12));
     s.alpha = rand(0.05, 0.11);
@@ -671,7 +677,7 @@ function fogScene(PIXI, glow, w0, h0) {
   });
 
   const sparks = Array.from({ length: 40 }, () => {
-    const s = glowSprite(PIXI, glow, C.v4jbOrange);
+    const s = glowSprite(PIXI, glow, accent2);
     s.x = rand(0, w0); s.y = rand(0, h0);
     s.scale.set(rand(0.08, 0.22));
     s.vy = rand(-30, -10); s.ph = rand(0, 6.28);
@@ -706,8 +712,8 @@ function fogScene(PIXI, glow, w0, h0) {
         const amp = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * p.sp + p.ph));
         const bh = h * 0.6 * (0.55 * tilt + 0.6 * bump) * amp;
         const x = i * bw;
-        bars.rect(x + bw * 0.2, h - bh, bw * 0.6, bh).fill({ color: C.v4jbTeal, alpha: 0.12 });
-        bars.rect(x + bw * 0.1, h - bh - 2, bw * 0.8, 3).fill({ color: C.v4jbTeal, alpha: 0.7 });
+        bars.rect(x + bw * 0.2, h - bh, bw * 0.6, bh).fill({ color: accent, alpha: 0.12 });
+        bars.rect(x + bw * 0.1, h - bh - 2, bw * 0.8, 3).fill({ color: accent, alpha: 0.7 });
       }
     },
   };
@@ -763,6 +769,401 @@ function fartScene(PIXI, glow, w0, h0) {
       }
       glowLine(wave, echo, C.f4rtYellow, 0.7);
       glowLine(wave, main, C.f4rtGreen, 1 + 0.35 * k);
+    },
+  };
+}
+
+// ---------- fR3Z0: Chladni plate (from fR3Z0/docs/fx.js) ----------
+function chladniScene(PIXI, glow) {
+  const Pal = { magenta: 0xE038E9, cyan: 0x2FC1EE, white: 0xF0F8FF };
+  const PI = Math.PI;
+  const HOLD = 7;
+  const FADE = 1.5;
+  const GX = 40;
+  const GY = 22;
+  const NODE_EPS = 1e-6;
+  const NODE_PASSES = [[10, 0.16], [2.2, 0.9]];
+  const ISO_PASSES = [[1.6, 0.4]];
+  const TRACE_PASSES = [[1.6, 0.28]];
+  const TRAIL = 5;
+  const PATTERNS = [
+    { n1: 4, m1: 4, n2: 2, m2: 6, a1: 1, a2: 0.22 },
+    { n1: 1, m1: 1, n2: 5, m2: 1, a1: 1, a2: 0.28 },
+    { n1: 3, m1: 5, n2: 4, m2: 2, a1: 1, a2: 0.22 },
+    { n1: 3, m1: 1, n2: 1, m2: 5, a1: 1, a2: 0.26 },
+    { n1: 5, m1: 3, n2: 6, m2: 2, a1: 1, a2: 0.20 },
+    { n1: 2, m1: 5, n2: 7, m2: 1, a1: 1, a2: 0.24 },
+    { n1: 6, m1: 4, n2: 3, m2: 3, a1: 1, a2: 0.22 },
+    { n1: 2, m1: 3, n2: 1, m2: 4, a1: 1, a2: 0.22 },
+  ];
+  const smooth = (k) => k * k * (3 - 2 * k);
+  const HIT = new Float32Array(8);
+
+  function glowSegs(g, segs, color, scale = 1, passes = NODE_PASSES) {
+    if (!segs.length) return;
+    for (const [width, alpha] of passes) {
+      for (let i = 0; i < segs.length; i += 4) {
+        g.moveTo(segs[i], segs[i + 1]);
+        g.lineTo(segs[i + 2], segs[i + 3]);
+      }
+      g.stroke({ width: width * scale, color, alpha, cap: 'round' });
+    }
+  }
+
+  function pairU(p, x, y, beat) {
+    return p.a1 * Math.cos(p.n1 * PI * x) * Math.cos(p.m1 * PI * y)
+      + p.a2 * beat * Math.cos(p.n2 * PI * x) * Math.cos(p.m2 * PI * y);
+  }
+
+  function ringEnv(t) {
+    return 0.88 + 0.12 * Math.exp(-((t % 4.2) / 4.2) * 3.4);
+  }
+
+  function makeField(t) {
+    const period = HOLD + FADE;
+    const n = PATTERNS.length;
+    const slot = ((t / period) % n + n) % n;
+    const i = Math.floor(slot);
+    const k = smooth(clamp((slot - i - HOLD / period) / (FADE / period), 0, 1));
+    const beat = 0.78 + 0.22 * Math.cos(t * 1.25);
+    const env = ringEnv(t);
+    const p0 = PATTERNS[i];
+    const p1 = PATTERNS[(i + 1) % n];
+    return (x, y) => {
+      const a = pairU(p0, x, y, beat);
+      const b = pairU(p1, x, y, beat);
+      return env * (a + (b - a) * k);
+    };
+  }
+
+  function sampleGrid(grid, nx, x, y) {
+    const fx = clamp(x * GX, 0, GX - 1.001);
+    const fy = clamp(y * GY, 0, GY - 1.001);
+    const i = fx | 0;
+    const j = fy | 0;
+    const tx = fx - i;
+    const ty = fy - j;
+    const i1 = i + 1;
+    const row = j * nx;
+    const row1 = row + nx;
+    const a = grid[row + i], b = grid[row + i1];
+    const c = grid[row1 + i], d = grid[row1 + i1];
+    return a * (1 - tx) * (1 - ty) + b * tx * (1 - ty) + c * (1 - tx) * ty + d * tx * ty;
+  }
+
+  function hitEdge(n, x0, y0, x1, y1, u0, u1) {
+    const d = u0 - u1;
+    const t = Math.abs(d) < NODE_EPS ? 0.5 : u0 / d;
+    HIT[n] = x0 + (x1 - x0) * t;
+    HIT[n + 1] = y0 + (y1 - y0) * t;
+    return n + 2;
+  }
+
+  function pushContour(grid, nx, w, h, segs, at) {
+    const cellW = w / GX;
+    const cellH = h / GY;
+    for (let j = 0; j < GY; j++) {
+      const row = j * nx;
+      const row1 = row + nx;
+      const y0 = j * cellH;
+      const y1 = y0 + cellH;
+      for (let i = 0; i < GX; i++) {
+        const ua = at(grid[row + i]);
+        const ub = at(grid[row + i + 1]);
+        const uc = at(grid[row1 + i + 1]);
+        const ud = at(grid[row1 + i]);
+        const x0 = i * cellW;
+        const x1 = x0 + cellW;
+        let n = 0;
+        if (ua * ub < 0) n = hitEdge(n, x0, y0, x1, y0, ua, ub);
+        if (ub * uc < 0) n = hitEdge(n, x1, y0, x1, y1, ub, uc);
+        if (ud * uc < 0) n = hitEdge(n, x0, y1, x1, y1, ud, uc);
+        if (ua * ud < 0) n = hitEdge(n, x0, y0, x0, y1, ua, ud);
+        if (n >= 4) {
+          segs.push(HIT[0], HIT[1], HIT[2], HIT[3]);
+          if (n === 8) segs.push(HIT[4], HIT[5], HIT[6], HIT[7]);
+        }
+      }
+    }
+  }
+
+  const root = new PIXI.Container();
+  const hazeCanvas = document.createElement('canvas');
+  hazeCanvas.width = GX;
+  hazeCanvas.height = GY;
+  const hazeCtx = hazeCanvas.getContext('2d', { willReadFrequently: true });
+  const hazePix = hazeCtx.createImageData(GX, GY);
+  const hazeTex = PIXI.Texture.from(hazeCanvas);
+  hazeTex.source.scaleMode = 'linear';
+  const haze = new PIXI.Sprite(hazeTex);
+  haze.blendMode = 'add';
+  haze.alpha = 0.55;
+
+  const nodes = new PIXI.Graphics();
+  const traces = new PIXI.Graphics();
+  nodes.blendMode = 'add';
+  traces.blendMode = 'add';
+
+  const bloom = glowSprite(PIXI, glow, Pal.magenta);
+
+  const sand = Array.from({ length: 80 }, (_, i) => {
+    const tint = i % 5 === 0 ? Pal.magenta : (i % 3 === 0 ? Pal.cyan : Pal.white);
+    const s = glowSprite(PIXI, glow, tint);
+    s.nx = rand(0.03, 0.97);
+    s.ny = rand(0.03, 0.97);
+    s.vx = 0;
+    s.vy = 0;
+    s.size = i % 9 === 0 ? rand(0.28, 0.45) : rand(0.12, 0.22);
+    s.trail = [];
+    return s;
+  });
+
+  root.addChild(haze, nodes, traces, ...sand, bloom);
+
+  const grid = new Float32Array((GX + 1) * (GY + 1));
+  const zeroSegs = [];
+  const isoLo = [];
+  const trailSegs = [];
+
+  return {
+    root,
+    update(t, w, h, dt) {
+      const nx = GX + 1;
+      const ny = GY + 1;
+      const field = makeField(t);
+      for (let j = 0; j < ny; j++) {
+        const y = j / GY;
+        const row = j * nx;
+        for (let i = 0; i < nx; i++) grid[row + i] = field(i / GX, y);
+      }
+
+      const env = ringEnv(t);
+      const pix = hazePix.data;
+      let p = 0;
+      for (let j = 0; j < GY; j++) {
+        const row = j * nx;
+        const row1 = row + nx;
+        for (let i = 0; i < GX; i++) {
+          const avg = (grid[row + i] + grid[row + i + 1] + grid[row1 + i] + grid[row1 + i + 1]) * 0.25;
+          const mag = Math.abs(avg);
+          const a = mag < 0.04 ? 0 : Math.min(255, mag * 200 * env);
+          if (avg >= 0) { pix[p] = 224; pix[p + 1] = 56; pix[p + 2] = 233; }
+          else { pix[p] = 47; pix[p + 1] = 193; pix[p + 2] = 238; }
+          pix[p + 3] = a;
+          p += 4;
+        }
+      }
+      hazeCtx.putImageData(hazePix, 0, 0);
+      hazeTex.source.update();
+      haze.width = w;
+      haze.height = h;
+
+      zeroSegs.length = 0;
+      isoLo.length = 0;
+      pushContour(grid, nx, w, h, zeroSegs, (v) => v);
+      pushContour(grid, nx, w, h, isoLo, (v) => Math.abs(v) - 0.35);
+
+      nodes.clear();
+      glowSegs(nodes, isoLo, Pal.cyan, 0.85, ISO_PASSES);
+      glowSegs(nodes, zeroSegs, Pal.magenta, 1.1);
+      glowSegs(nodes, zeroSegs, Pal.white, 0.5, [[1.2, 0.65]]);
+
+      bloom.x = w * 0.5;
+      bloom.y = h * 0.5;
+      bloom.scale.set((Math.min(w, h) * 0.055) / 8, (Math.min(w, h) * 0.04) / 8);
+      bloom.alpha = 0.12 + 0.18 * ((env - 0.88) / 0.12);
+
+      trailSegs.length = 0;
+      const e = 1 / GX;
+      for (const s of sand) {
+        if (dt > 0) {
+          const u0 = sampleGrid(grid, nx, s.nx, s.ny);
+          const u = Math.abs(u0);
+          const ux = Math.abs(sampleGrid(grid, nx, s.nx + e, s.ny)) - Math.abs(sampleGrid(grid, nx, s.nx - e, s.ny));
+          const uy = Math.abs(sampleGrid(grid, nx, s.nx, s.ny + e)) - Math.abs(sampleGrid(grid, nx, s.nx, s.ny - e));
+          s.vx = s.vx * 0.86 - ux * 2.8;
+          s.vy = s.vy * 0.86 - uy * 2.8;
+          s.vx += rand(-0.0015, 0.0015);
+          s.vy += rand(-0.0015, 0.0015);
+          s.nx = clamp(s.nx + s.vx * dt, 0.02, 0.98);
+          s.ny = clamp(s.ny + s.vy * dt, 0.02, 0.98);
+          if (u < 0.22) {
+            s.trail.push(s.nx, s.ny);
+            if (s.trail.length > TRAIL * 2) s.trail.splice(0, 2);
+          } else if (s.trail.length) {
+            s.trail.length = 0;
+          }
+          s.alpha = 0.22 + 0.7 * clamp(1 - u * 2.2, 0, 1);
+        } else {
+          s.alpha = 0.55;
+        }
+        s.x = s.nx * w;
+        s.y = s.ny * h;
+        s.scale.set(s.size, s.size);
+        const tr = s.trail;
+        for (let k = 2; k < tr.length; k += 2) {
+          const dx = tr[k] - tr[k - 2], dy = tr[k + 1] - tr[k - 1];
+          if (dx * dx + dy * dy > 0.004) continue;
+          trailSegs.push(tr[k - 2] * w, tr[k - 1] * h, tr[k] * w, tr[k + 1] * h);
+        }
+      }
+
+      traces.clear();
+      if (dt > 0) glowSegs(traces, trailSegs, Pal.white, 0.7, TRACE_PASSES);
+    },
+  };
+}
+
+// ---------- fN0B: churn maw (from fN0B/docs/fx.js) ----------
+function mawScene(PIXI, glow) {
+  const Pal = { mint: 0x35e0a6, amber: 0xf2c14e, light: 0xe8f5f0, grey: 0x7c918b, ink: 0x08100f,
+    silver: 0x9fb5ae };
+  const SQUASH = 0.38;
+  const SPIN = 0.75;
+  const ROT = 0.3;
+  const SPIRAL = 2.4;
+  const SHEAR = 0.9;
+  const GULP = 5.5;
+  const FILL = 1.08;
+  const ARMS = 9;
+  const SAMPLES = 30;
+  const TAU = Math.PI * 2;
+  const BODY_PASSES = [[18, 0.05], [8, 0.13], [2.2, 0.5]];
+  const HEAD_PASSES = [[18, 0.12], [7, 0.4], [2.2, 1]];
+  const WAVE_PASSES = [[14, 0.03], [6, 0.07], [1.6, 0.18]];
+  const ARM_COLORS = [Pal.mint, Pal.mint, Pal.amber, Pal.grey, Pal.mint, Pal.amber, Pal.mint, Pal.grey, Pal.mint];
+
+  const root = new PIXI.Container();
+  const waves = new PIXI.Graphics();
+  const arms = new PIXI.Graphics();
+  const pupil = new PIXI.Graphics();
+  const core = new PIXI.Graphics();
+  const shock = new PIXI.Graphics();
+  waves.blendMode = 'add';
+  arms.blendMode = 'add';
+  core.blendMode = 'add';
+  shock.blendMode = 'add';
+
+  const debris = Array.from({ length: 120 }, (_, i) => {
+    const s = glowSprite(PIXI, glow, Math.random() < 0.7 ? Pal.mint : Pal.amber);
+    s.u = rand(0.1, 1.16);
+    s.th = rand(0, TAU);
+    s.su = rand(0.04, 0.15);
+    s.size = i % 11 === 0 ? rand(0.45, 0.8) : rand(0.09, 0.26);
+    s.alpha = 0;
+    return s;
+  });
+
+  const bloom = glowSprite(PIXI, glow, Pal.mint);
+  bloom.alpha = 0;
+  root.addChild(waves, arms, ...debris, pupil, bloom, core, shock);
+
+  return {
+    root,
+    update(t, w, h, dt) {
+      const env = Math.exp(-((t % GULP) / GULP) * 4.6);
+      const ts = t * ROT;
+      const spin = ts * SPIN;
+      const R = Math.min(w * 0.5, (h * 0.5) / SQUASH) * FILL * (1 + 0.04 * env);
+      const Rin = R * 0.05;
+      const cx = w * 0.5;
+      const cy = h * 0.46;
+
+      const at = (a, u) => {
+        const wob = 1 + 0.05 * Math.sin(u * 9 - ts * 1.7 + a * 1.9);
+        const r = (Rin + (R - Rin) * u) * wob;
+        const th = (a / ARMS) * TAU - SPIRAL * u - spin - SHEAR * Math.sin(ts * 1.1 - u * 3.4);
+        return [cx + Math.cos(th) * r, cy + Math.sin(th) * r * SQUASH];
+      };
+
+      arms.clear();
+      for (let a = 0; a < ARMS; a++) {
+        const color = ARM_COLORS[a];
+        const pts = [];
+        for (let i = 0; i <= SAMPLES; i++) pts.push(...at(a, i / SAMPLES));
+        const mid = (SAMPLES >> 1) * 2;
+        glowLine(arms, pts.slice(0, mid + 4), color, 0.45, BODY_PASSES);
+        glowLine(arms, pts.slice(mid), color, 1.2, BODY_PASSES);
+        for (let p = 0; p < 2; p++) {
+          const u = 1 - ((ts * 0.26 + a * 0.19 + p * 0.5) % 1);
+          const seg = [
+            ...at(a, Math.min(1, u + 0.045)),
+            ...at(a, u),
+            ...at(a, Math.max(0, u - 0.045)),
+          ];
+          glowLine(arms, seg, color, 1, HEAD_PASSES);
+        }
+      }
+      for (const [rr, alpha] of [[R, 0.16], [R * 0.62, 0.09], [R * 1.1, 0.05]]) {
+        arms.ellipse(cx, cy, rr, rr * SQUASH).stroke({ width: 1, color: Pal.silver, alpha });
+      }
+
+      waves.clear();
+      const half = R * SQUASH;
+      const bands = [
+        { gap: cy - half, at: cy - half - (cy - half) * 0.5, color: Pal.grey, speed: 1.5, phase: 0 },
+        { gap: h - cy - half, at: cy + half + (h - cy - half) * 0.5, color: Pal.mint, speed: 2.4, phase: 2.1 },
+      ];
+      for (const b of bands) {
+        if (b.gap < h * 0.05) continue;
+        const pts = [];
+        const spread = Math.min(h * 0.045, b.gap * 0.42);
+        for (let x = -20; x <= w + 20; x += 6) {
+          const u = x / w;
+          const taper = Math.sin(Math.PI * u);
+          pts.push(x, b.at + spread * Math.sin(u * 9 - ts * b.speed + b.phase) * taper);
+        }
+        glowLine(waves, pts, b.color, 1, WAVE_PASSES);
+      }
+
+      const rx = R * 0.5 * (1 + 0.08 * env);
+      const ry = R * 0.13 * (1 + 0.45 * env);
+      pupil.clear();
+      pupil.ellipse(cx, cy, rx * 1.12, ry * 1.25).fill({ color: Pal.ink, alpha: 0.55 });
+      pupil.ellipse(cx, cy, rx, ry).fill({ color: Pal.ink, alpha: 0.95 });
+
+      bloom.x = cx;
+      bloom.y = cy;
+      bloom.scale.set(R / 45, (R / 45) * 0.21);
+      bloom.alpha = 0.16 + 0.22 * env;
+
+      core.clear();
+      const seam = [];
+      const step = rx / Math.max(12, Math.round(rx / 22));
+      for (let x = cx - rx; x <= cx + rx; x += step) {
+        seam.push(x, cy + Math.sin(x * 0.02 + ts * 3) * ry * 0.12);
+      }
+      glowLine(core, seam, Pal.mint, 1.9, [[30, 0.06], [12, 0.14]]);
+      glowLine(core, [cx - rx, cy + ry * 0.5, cx + rx, cy + ry * 0.5], Pal.amber, 0.8, [[8, 0.10], [2, 0.35]]);
+      glowLine(core, seam, Pal.light, 1, [[9, 0.18], [3, 0.7], [1.4, 1]]);
+
+      const k = 1 - (t % GULP) / GULP;
+      const rr = R * (0.5 + 0.62 * (1 - k));
+      shock.clear();
+      shock.ellipse(cx, cy, rr, rr * SQUASH * 0.55).stroke({ width: 1 + 2 * k, color: Pal.mint, alpha: 0.32 * k * k });
+      shock.ellipse(cx, cy, rr * 0.8, rr * SQUASH * 0.44).stroke({ width: 1, color: Pal.amber, alpha: 0.18 * k * k });
+
+      for (const s of debris) {
+        if (dt > 0) {
+          s.u -= s.su * dt;
+          if (s.u < 0.08) {
+            s.u = rand(1.02, 1.18);
+            s.th = rand(0, TAU);
+            s.su = rand(0.04, 0.15);
+          }
+          s.th -= (SPIN + 0.9 / (0.3 + s.u)) * ROT * dt;
+        }
+        const r = Rin + (R - Rin) * s.u;
+        const ct = Math.cos(s.th), st = Math.sin(s.th);
+        s.x = cx + ct * r;
+        s.y = cy + st * r * SQUASH;
+        const om = (SPIN + 0.9 / (0.3 + s.u)) * ROT;
+        const vr = (R - Rin) * s.su;
+        s.rotation = Math.atan2(-ct * r * SQUASH * om - st * SQUASH * vr, st * r * om - ct * vr);
+        const wpx = s.size * R * (0.05 + 0.2 * s.u);
+        s.scale.set((wpx * 4) / 64, wpx / 64);
+        s.alpha = 0.55 * clamp((1.14 - s.u) / 0.14, 0, 1) * clamp((s.u - 0.06) / 0.18, 0, 1);
+      }
     },
   };
 }

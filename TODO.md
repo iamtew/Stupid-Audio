@@ -3,11 +3,6 @@ Plugins with prefix lower case 'f' is effects, from FX.
 When displaying the names, it should use the Florin sign.
 That is U+0192 or &fnof;
 
-Following plugins are still under development and shall not be included on main website.
-- SNR3
-- fN0B
-- fR3Z0
-
 ## Add `just docs-screenshot` to all plugins
 `TEW03` and `5HKR` have `just docs-screenshot` target and a script that will automatically take screenshots of the standalone debug build, for the docs website.
 This needs to be implemented across the whole suite of plugins.

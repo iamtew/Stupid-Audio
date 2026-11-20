@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Effects — Stupid Audio</title>
+  <meta name="description" content="Stupid Audio effects: ƒR3Z0 and ƒN0B. Free open source VST3.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Stupid Audio">
+  <meta property="og:title" content="Effects — Stupid Audio">
+  <meta property="og:description" content="Stupid Audio effects: ƒR3Z0 and ƒN0B. Free open source VST3.">
+  <meta property="og:url" content="https://audio.stupid.systems/effects.html">
+  <meta property="og:image" content="https://audio.stupid.systems/img/ogimage-stupid-audio.png?cachebust=23">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://audio.stupid.systems/img/ogimage-stupid-audio.png?cachebust=23">
+  <meta name="theme-color" content="#0b0b0f">
+  <link rel="icon" href="img/favicon.ico" sizes="any">
+  <link rel="icon" href="img/icon-32.png" type="image/png">
+  <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/beyonders">
+  <link rel="stylesheet" href="css/style.css?v=49">
+  <!-- fx.js paints the animated PixiJS backdrop. The page is complete without it. -->
+  <script type="module" src="js/fx.js?v=13"></script>
+</head>
+<body data-active="top">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- One shared WebGL canvas behind everything; decorative only. -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <header>
+    <a class="brand" href="index.html" aria-label="Stupid Audio">
+      <img src="img/icon-32.png" alt="" width="32" height="32">
+      <span class="wordmark">
+        <span data-text="Stupid"><span class="fill-stupid">Stupid</span></span>
+        <span data-text="Audio"><span class="fill-udio">Audio</span></span>
+      </span>
+    </a>
+    <nav aria-label="Plugins">
+      <a href="#fr3z0" style="--accent: #E038E9;">&fnof;R3Z0</a>
+      <a href="#fn0b" style="--accent: #35e0a6;">&fnof;N0B</a>
+      <a href="index.html" style="--accent: var(--cream);">Home</a>
+      <a href="instruments.html" style="--accent: var(--cream);">Instruments</a>
+      <a href="about.html" style="--accent: var(--cream);">About</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="intro short" id="top" data-scene="catalog">
+      <h1 aria-label="Effects">Effects</h1>
+      <p class="lede">
+        Two effects, each built for one job. Pick one to jump to it.
+      </p>
+      <ul class="tiles cards">
+        <li style="--accent: #E038E9;"><a href="#fr3z0"><img src="img/fr3z0-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">&fnof;R3Z0</strong><span class="tile-blurb">Resonance effect</span></span></a></li>
+        <li style="--accent: #35e0a6;"><a href="#fn0b"><img src="img/fn0b-logo.png" alt="" width="72" height="72"><span class="tile-copy"><strong class="tile-name">&fnof;N0B</strong><span class="tile-blurb">Single-knob multi-effect</span></span></a></li>
+      </ul>
+    </section>
+
+    <article class="plugin" id="fr3z0" data-scene="fr3z0" style="--accent: #E038E9; --accent2: #2FC1EE; --bg: #000000;">
+      <div class="copy">
+        <img class="logo" src="img/fr3z0-logo.png" alt="" width="144" height="144">
+        <h2>&fnof;R3Z0</h2>
+        <p class="tagline">A resonator you can actually tweak. Eight bandpass voices, decay, intensity, mix, and a graph that writes the same parameters as the knobs.</p>
+        <p>Globals cover root, width, noise, freeze, kill, and two LFOs with destination amounts. MIDI notes set the root. Pitch bend is ±2 semitones.</p>
+        <p>The graph is not a hidden macro. Every control is its own host-automatable parameter.</p>
+        <p class="meta">VST3.</p>
+        <p class="actions">
+          <a class="download" href="https://github.com/iamtew/fR3Z0/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
+          <a href="https://iamtew.github.io/fR3Z0/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
+          <a href="https://iamtew.github.io/fR3Z0/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
+          <a href="https://github.com/iamtew/fR3Z0"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
+        </p>
+      </div>
+      <figure class="frame"><img class="shot" src="img/fr3z0-shot.png" alt="ƒR3Z0 editor: resonator graph and knobs" loading="lazy"></figure>
+    </article>
+
+    <article class="plugin" id="fn0b" data-scene="fn0b" style="--accent: #35e0a6; --accent2: #f2c14e; --bg: #0c1414;">
+      <div class="copy">
+        <img class="logo" src="img/fn0b-logo.png" alt="" width="144" height="144">
+        <h2>&fnof;N0B</h2>
+        <p class="tagline">One knob. That is the whole plugin. Pick a preset, turn the knob, and hear the chain move together.</p>
+        <p>Each preset is one effect or a short chain. The knob sweeps the parameters that matter so every position sounds intentional. Input and output sliders are trim only.</p>
+        <p>Six presets: Warm Drive, Filter Funk, Bitcrush Destruct, Tape Echo, Shimmer Verb, Phaser Sweep.</p>
+        <p class="meta">VST3.</p>
+        <p class="actions">
+          <a class="download" href="https://github.com/iamtew/fN0B/releases/latest"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#download"></use></svg>Download</a>
+          <a href="https://iamtew.github.io/fN0B/"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#world"></use></svg>Website</a>
+          <a href="https://iamtew.github.io/fN0B/docs.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#book"></use></svg>Manual</a>
+          <a href="https://github.com/iamtew/fN0B"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#github"></use></svg>GitHub</a>
+        </p>
+      </div>
+      <figure class="frame"><img class="shot" src="img/fn0b-shot.png" alt="ƒN0B: the knob and preset list" loading="lazy"></figure>
+    </article>
+  </main>
+
+  <footer>
+    <p>Free Open Source. Stupid Audio.</p>
+  </footer>
+
+  <dialog id="dl" class="dl-dialog" aria-labelledby="dl-title">
+    <button type="button" class="dl-close" data-dl-close aria-label="Close">
+      <svg class="icon" aria-hidden="true"><use href="img/icons.svg#close"></use></svg>
+    </button>
+    <h2 id="dl-title">Download</h2>
+    <div class="dl-kind">
+      <p>The Windows installer is the easy path. It can put the VST3, the standalone app, or both on the machine, and it adds a Start menu shortcut for the app.</p>
+      <div class="dl-row" data-kind="installer" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
+          Windows installer
+        </a>
+      </div>
+    </div>
+    <div class="dl-kind">
+      <p>The VST3 zip is just the plugin. Drop it where your DAW looks for VST3s. Mac builds are ad-hoc signed. The first launch may need a right-click and Open so Gatekeeper lets it through.</p>
+      <div class="dl-row" data-kind="vst3" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
+          Windows
+        </a>
+        <a class="download os" data-os="linux" hidden>
+          <svg class="icon tux" aria-hidden="true"><use href="img/icons.svg#linux"></use></svg>
+          Linux
+        </a>
+        <a class="download os" data-os="mac" hidden>
+          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#apple"></use></svg>
+          macOS
+        </a>
+      </div>
+    </div>
+    <div class="dl-kind">
+      <p>The standalone zip is the app, no DAW required. Same first-launch step on Mac. Linux wants the usual system ALSA, FreeType, fontconfig, and X11 libraries.</p>
+      <div class="dl-row" data-kind="standalone" hidden>
+        <a class="download os" data-os="win" hidden>
+          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#windows"></use></svg>
+          Windows
+        </a>
+        <a class="download os" data-os="linux" hidden>
+          <svg class="icon tux" aria-hidden="true"><use href="img/icons.svg#linux"></use></svg>
+          Linux
+        </a>
+        <a class="download os" data-os="mac" hidden>
+          <svg class="icon" aria-hidden="true"><use href="img/icons.svg#apple"></use></svg>
+          macOS
+        </a>
+      </div>
+    </div>
+    <img class="dl-logo" alt="" width="192" height="192">
+  </dialog>
+
+  <script>
+    // External sprite refs fail in some browsers. Inline the sheet, then point <use> at the local id.
+    fetch("img/icons.svg?v=5")
+      .then(function (res) { return res.ok ? res.text() : ""; })
+      .then(function (text) {
+        if (!text) return;
+        var wrap = document.createElement("div");
+        wrap.innerHTML = text;
+        var sprite = wrap.firstElementChild;
+        if (!sprite) return;
+        sprite.setAttribute("aria-hidden", "true");
+        sprite.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
+        document.body.insertBefore(sprite, document.body.firstChild);
+        document.querySelectorAll("use").forEach(function (node) {
+          var href = node.getAttribute("href") || "";
+          var hashAt = href.indexOf("#");
+          if (hashAt > 0) node.setAttribute("href", href.slice(hashAt));
+        });
+      });
+
+    // Same names as the plugin sites. Bare *-win-x64.msi is an installer too.
+    var FILE = /-(win|linux|mac)-[^-]+-(installer|vst3|standalone)(?:\.zip|\.msi)$/i;
+    var MSI = /-(win|linux|mac)-[^-]+\.msi$/i;
+    var dialog = document.getElementById("dl");
+    var cache = Object.create(null);
+    var opening = 0;
+
+    function parseAsset(name) {
+      var named = name.match(FILE);
+      if (named) return { os: named[1].toLowerCase(), kind: named[2].toLowerCase() };
+      var msi = name.match(MSI);
+      if (msi) return { os: msi[1].toLowerCase(), kind: "installer" };
+      return null;
+    }
+
+    function resetLinks() {
+      dialog.querySelectorAll("a[data-os]").forEach(function (a) {
+        a.hidden = true;
+        a.removeAttribute("href");
+      });
+      dialog.querySelectorAll(".dl-row").forEach(function (row) { row.hidden = true; });
+    }
+
+    function fill(repo, data) {
+      var base = "https://github.com/iamtew/" + repo + "/releases/download/" + data.tag + "/";
+      data.files.forEach(function (name) {
+        var parsed = parseAsset(name);
+        if (!parsed) return;
+        var link = dialog.querySelector('[data-kind="' + parsed.kind + '"] a[data-os="' + parsed.os + '"]');
+        if (!link) return;
+        link.href = base + encodeURIComponent(name);
+        link.hidden = false;
+      });
+      dialog.querySelectorAll(".dl-row").forEach(function (row) {
+        if (row.querySelector("a[href]")) row.hidden = false;
+      });
+    }
+
+    function loadRelease(repo) {
+      if (cache[repo]) return Promise.resolve(cache[repo]);
+      return fetch("https://iamtew.github.io/" + repo + "/releases.json")
+        .then(function (res) { if (!res.ok) throw new Error("http"); return res.json(); })
+        .then(function (data) {
+          if (!data || !data.tag || !Array.isArray(data.files)) throw new Error("shape");
+          cache[repo] = data;
+          return data;
+        });
+    }
+
+    if (dialog) {
+      dialog.querySelectorAll("[data-dl-close]").forEach(function (btn) {
+        btn.addEventListener("click", function () { dialog.close(); });
+      });
+      dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) dialog.close();
+      });
+
+      document.querySelectorAll(".actions .download").forEach(function (btn) {
+        btn.addEventListener("click", function (event) {
+          var article = btn.closest(".plugin");
+          var repo = (btn.getAttribute("href") || "").match(/github\.com\/iamtew\/([^/]+)/);
+          if (!article || !repo) return;
+          event.preventDefault();
+          var token = ++opening;
+          var fallback = btn.href;
+          var name = repo[1];
+          loadRelease(name).then(function (data) {
+            if (token !== opening) return;
+            resetLinks();
+            dialog.style.setProperty("--accent", article.style.getPropertyValue("--accent").trim());
+            dialog.style.setProperty("--accent2", article.style.getPropertyValue("--accent2").trim());
+            dialog.querySelector("#dl-title").textContent = "Download " + article.querySelector("h2").textContent;
+            dialog.querySelector(".dl-logo").src = article.querySelector(".logo").src;
+            fill(name, data);
+            if (!dialog.querySelector("a[data-os][href]")) throw new Error("empty");
+            dialog.showModal();
+          }).catch(function () {
+            if (token !== opening) return;
+            window.location.href = fallback;
+          });
+        });
+      });
+    }
+  </script>
+</body>
+</html>
